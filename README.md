@@ -62,8 +62,8 @@ Our experiments show no significant difference in temporal consistency (IoU) bet
 │   ├── train_movi.py                   # 学習スクリプト（多様性損失含む）
 │   ├── analyze_metal_vs_rubber.py      # Metal vs Mixed分析
 │   ├── download_movi.py                # MOVi-Aデータダウンロード
-│   ├── ex_comparison.ipynb             # 旧：Pixel vs DINOSAUR比較実験
-│   └── ex_movi_explore.ipynb           # MOVi-Aデータ探索
+│   ├── ex_movi_explore.ipynb           # MOVi-Aデータ探索
+│   └── archive/                        # 旧実験ノートブック（Pixel vs DINOSAUR）
 ├── docs/
 │   ├── RESEARCH_LOG.md                 # 研究活動記録
 │   └── METHODS.md                      # 手法の詳細説明
@@ -78,8 +78,8 @@ Our experiments show no significant difference in temporal consistency (IoU) bet
 
 \`\`\`bash
 # リポジトリのクローン
-git clone https://github.com/YOUR_USERNAME/object-centric-learning.git
-cd object-centric-learning
+git clone https://github.com/Menserve/Object-centric-representation.git
+cd Object-centric-representation
 
 # 仮想環境の作成と有効化（uv推奨）
 uv venv
