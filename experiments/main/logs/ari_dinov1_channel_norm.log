@@ -1,0 +1,26 @@
+Using cache found in /home/menserve/.cache/torch/hub/facebookresearch_dino_main
+Loading model: dino_vits16 from checkpoints/dinov1_channel_norm/dino_vits16/best_model.pt
+  Auto-adjusting num_slots: 7 -> 5
+Loading dino_vits16 model...
+MoviDataset: Found 60 samples (split=all)
+Evaluating 60 samples...
+  [10/60] FG-ARI: 0.1403, Full-ARI: 0.1898
+  [20/60] FG-ARI: 0.0423, Full-ARI: 0.0423
+  [30/60] FG-ARI: -0.1003, Full-ARI: -0.0268
+  [40/60] FG-ARI: 0.0639, Full-ARI: 0.0081
+  [50/60] FG-ARI: 0.0247, Full-ARI: -0.0625
+  [60/60] FG-ARI: 0.1348, Full-ARI: 0.1803
+
+============================================================
+ARI Results
+============================================================
+Backbone:      dino_vits16
+Loss type:     channel_norm
+Checkpoint:    checkpoints/dinov1_channel_norm/dino_vits16/best_model.pt
+Samples:       60
+------------------------------------------------------------
+FG-ARI:        0.1527 ± 0.1717
+Full-ARI:      0.0468 ± 0.0749
+Metal FG-ARI:  0.1539
+Non-metal FG-ARI: 0.1515
+============================================================

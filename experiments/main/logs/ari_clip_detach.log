@@ -1,0 +1,27 @@
+/home/menserve/Object-centric-representation/.venv/lib/python3.12/site-packages/open_clip/factory.py:450: UserWarning: QuickGELU mismatch between final model config (quick_gelu=False) and pretrained tag 'openai' (quick_gelu=True).
+  warnings.warn(
+Loading model: clip_vitb16 from checkpoints/clip_detach_fix/clip_vitb16/best_model.pt
+  Auto-adjusting num_slots: 7 -> 5
+Loading clip_vitb16 model...
+MoviDataset: Found 60 samples (split=all)
+Evaluating 60 samples...
+  [10/60] FG-ARI: 0.0290, Full-ARI: -0.0141
+  [20/60] FG-ARI: -0.1464, Full-ARI: 0.1528
+  [30/60] FG-ARI: 0.0834, Full-ARI: -0.0844
+  [40/60] FG-ARI: 0.0000, Full-ARI: 0.0000
+  [50/60] FG-ARI: 0.2118, Full-ARI: 0.0000
+  [60/60] FG-ARI: 0.0000, Full-ARI: -0.0071
+
+============================================================
+ARI Results
+============================================================
+Backbone:      clip_vitb16
+Loss type:     mse
+Checkpoint:    checkpoints/clip_detach_fix/clip_vitb16/best_model.pt
+Samples:       60
+------------------------------------------------------------
+FG-ARI:        0.0410 ± 0.1179
+Full-ARI:      -0.0260 ± 0.0643
+Metal FG-ARI:  0.0478
+Non-metal FG-ARI: 0.0342
+============================================================

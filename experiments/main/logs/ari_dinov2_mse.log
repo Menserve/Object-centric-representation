@@ -1,0 +1,32 @@
+Using cache found in /home/menserve/.cache/torch/hub/facebookresearch_dinov2_main
+/home/menserve/.cache/torch/hub/facebookresearch_dinov2_main/dinov2/layers/swiglu_ffn.py:51: UserWarning: xFormers is not available (SwiGLU)
+  warnings.warn("xFormers is not available (SwiGLU)")
+/home/menserve/.cache/torch/hub/facebookresearch_dinov2_main/dinov2/layers/attention.py:33: UserWarning: xFormers is not available (Attention)
+  warnings.warn("xFormers is not available (Attention)")
+/home/menserve/.cache/torch/hub/facebookresearch_dinov2_main/dinov2/layers/block.py:40: UserWarning: xFormers is not available (Block)
+  warnings.warn("xFormers is not available (Block)")
+Loading model: dinov2_vits14 from checkpoints/temp_scaling_tau05/dinov2_vits14/best_model.pt
+  Auto-adjusting num_slots: 7 -> 5
+Loading dinov2_vits14 model...
+MoviDataset: Found 60 samples (split=all)
+Evaluating 60 samples...
+  [10/60] FG-ARI: 0.4481, Full-ARI: 0.0529
+  [20/60] FG-ARI: 0.3256, Full-ARI: 0.0329
+  [30/60] FG-ARI: 0.2996, Full-ARI: 0.0680
+  [40/60] FG-ARI: 0.0795, Full-ARI: 0.0356
+  [50/60] FG-ARI: 0.0263, Full-ARI: 0.0025
+  [60/60] FG-ARI: 0.2602, Full-ARI: 0.3020
+
+============================================================
+ARI Results
+============================================================
+Backbone:      dinov2_vits14
+Loss type:     mse
+Checkpoint:    checkpoints/temp_scaling_tau05/dinov2_vits14/best_model.pt
+Samples:       60
+------------------------------------------------------------
+FG-ARI:        0.1654 ± 0.1859
+Full-ARI:      0.0734 ± 0.0800
+Metal FG-ARI:  0.1848
+Non-metal FG-ARI: 0.1460
+============================================================
