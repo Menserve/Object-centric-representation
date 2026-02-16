@@ -60,7 +60,7 @@ Our experiments show no significant difference in temporal consistency (IoU) bet
 
 ## プロジェクト構成 / Project Structure
 
-\`\`\`
+```text
 .
 ├── README.md                           # このファイル
 ├── src/                                # コアモジュール
@@ -103,7 +103,7 @@ Our experiments show no significant difference in temporal consistency (IoU) bet
 ├── requirements.txt                    # 依存パッケージ
 ├── pyproject.toml                      # プロジェクト設定
 └── LICENSE                             # ライセンス
-\`\`\`
+```
 
 **ディレクトリ整理方針（2026-02-16）:**
 - **論文直結の実験** (`experiments/main/`) と **補助実験** (`experiments/sub/`) を明確に分離
