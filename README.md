@@ -6,9 +6,18 @@
 
 ## 研究課題名 / Research Title
 
-**時間的物体中心学習における鏡面反射物体の追跡安定性検証：SAVi-DINOSAURによるMetal vs Rubber比較**
+**複数ViT事前学習手法が鏡面反射物体の物体中心分離に与える影響**
 
-*Temporal Stability of Specular Object Tracking in Object-Centric Learning: A Comparison of Metal vs Rubber using SAVi-DINOSAUR*
+*Impact of Multiple ViT Pre-training Objectives on Specular Object Decomposition in Object-Centric Learning*
+
+### Phase 2 拡張（2026年2月15日）
+
+TAフィードバックに基づき、複数のViT backboneを比較する実験を追加実装：
+- **DINOv2 ViT-S/14**: 密な自己蒸留学習（baseline）
+- **DINOv1 ViT-S/16**: 初代DINO自己蒸留学習
+- **CLIP ViT-B/16**: 言語-画像対照学習
+
+詳細プランは [docs/IMPLEMENTATION_PLAN_PHASE2.md](docs/IMPLEMENTATION_PLAN_PHASE2.md) 参照。
 
 ## 概要 / Abstract
 
@@ -54,25 +63,53 @@ Our experiments show no significant difference in temporal consistency (IoU) bet
 \`\`\`
 .
 ├── README.md                           # このファイル
-├── notebooks/
-│   ├── experiment_report.ipynb         # 実験レポート（画像付き）
-│   └── experiment_2026_02_01/          # 実験画像
-├── src/
+├── src/                                # コアモジュール
 │   ├── savi_dinosaur.py                # SAVi-DINOSAURモデル実装
-│   ├── train_movi.py                   # 学習スクリプト（多様性損失含む）
-│   ├── analyze_metal_vs_rubber.py      # Metal vs Mixed分析
-│   ├── download_movi.py                # MOVi-Aデータダウンロード
-│   ├── ex_movi_explore.ipynb           # MOVi-Aデータ探索
-│   └── archive/                        # 旧実験ノートブック（Pixel vs DINOSAUR）
+│   ├── train_movi.py                   # 学習スクリプト
+│   └── compute_ari.py                  # ARI評価
+├── experiments/                        # 実験スクリプトと結果
+│   ├── main/                           # 論文の主要実験
+│   │   ├── download_movi.py            # データダウンロード
+│   │   └── logs/                       # 論文引用ログ（Tier 1, 8ファイル）
+│   ├── sub/                            # サブ実験・アブレーション
+│   │   ├── alternative_diversity_loss.py
+│   │   ├── analyze_video_masks.py      # 等々
+│   │   └── logs/                       # 対照実験ログ（Tier 2, 10ファイル）
+│   └── analysis/                       # 結果分析ツール
+│       ├── analyze_metal_vs_rubber.py  # 材質別比較
+│       ├── compare_single_frame_backbones.py
+│       ├── visualize_checkpoint.py     # 等々
+│       └── experiment_report.ipynb     # 実験レポート
+├── debug/                              # デバッグ・開発ツール
+│   ├── debug_features.py               # 特徴量デバッグ
+│   ├── test_architecture.py            # 等々
+│   └── README.md
+├── notebooks/
+│   └── phase1_exploration/             # Phase 1探索ノートブック
+│       ├── ex_comparison.ipynb
+│       └── ex_movi_explore.ipynb
 ├── docs/
-│   ├── RESEARCH_LOG.md                 # 研究活動記録
-│   └── METHODS.md                      # 手法の詳細説明
-├── checkpoints/                        # 学習済みモデル（git管理外）
+│   ├── paper/                          # 論文ソース（LaTeX）
+│   │   ├── paper.tex                   # 最終論文
+│   │   ├── slide.tex                   # プレゼンテーション
+│   │   ├── script.md                   # 発表原稿
+│   │   └── figures/                    # 論文図版
+│   └── research_log/                   # 研究記録
+│       ├── RESEARCH_LOG.md             # 研究活動記録
+│       ├── METHODS.md                  # 手法詳細
+│       └── log_analysis_handoff.md     # ログ分析文書
+├── checkpoints/                        # 学習済みモデル（git管理外, 12GB）
 ├── data/                               # データセット（git管理外）
 ├── requirements.txt                    # 依存パッケージ
 ├── pyproject.toml                      # プロジェクト設定
 └── LICENSE                             # ライセンス
 \`\`\`
+
+**ディレクトリ整理方針（2026-02-16）:**
+- **論文直結の実験** (`experiments/main/`) と **補助実験** (`experiments/sub/`) を明確に分離
+- **開発過程のデバッグスクリプト** は `debug/` に集約
+- **論文ソース** (`docs/paper/`) と **研究記録** (`docs/research_log/`) を分離
+- 詳細は [docs/research_log/log_analysis_handoff.md](docs/research_log/log_analysis_handoff.md) 参照
 
 ## セットアップ / Setup
 
@@ -89,24 +126,55 @@ source .venv/bin/activate
 uv pip install -r requirements.txt
 
 # MOVi-Aデータのダウンロード
-python src/download_movi.py
+python experiments/main/download_movi.py
 \`\`\`
 
 ## 実行方法 / How to Run
 
-### 1. 学習
+### 1. 学習（複数Backbone対応）
+
+**単一Backboneの学習**:
 \`\`\`bash
-python src/train_movi.py
+# DINOv2 (baseline)
+python src/train_movi.py --backbone dinov2_vits14 --save_dir checkpoints/dinov2_vits14
+
+# DINOv1
+python src/train_movi.py --backbone dino_vits16 --save_dir checkpoints/dino_vits16
+
+# CLIP
+python src/train_movi.py --backbone clip_vitb16 --save_dir checkpoints/clip_vitb16
+\`\`\`
+
+**複数Backboneの一括学習**:
+\`\`\`bash
+cd src
+
+# 順次実行（1台のマシンで全て）
+./run_phase2_training.sh sequential
+
+# 並列実行（メイン機: DINOv2 + DINOv1）
+./run_phase2_training.sh parallel
+
+# サブ機用（CLIP単独）
+./run_phase2_training.sh clip
+
+# デバッグモード（10エポックでテスト）
+./run_phase2_training.sh debug
+\`\`\`
+
+詳細オプション:
+\`\`\`bash
+python src/train_movi.py --help
 \`\`\`
 
 ### 2. Metal vs Mixed 分析
 \`\`\`bash
-python src/analyze_metal_vs_rubber.py
+python experiments/analysis/analyze_metal_vs_rubber.py
 \`\`\`
 
 ### 3. 実験レポート確認
 \`\`\`bash
-jupyter notebook notebooks/experiment_report.ipynb
+jupyter notebook experiments/analysis/experiment_report.ipynb
 \`\`\`
 
 ## モデル構成 / Model Architecture
@@ -114,7 +182,10 @@ jupyter notebook notebooks/experiment_report.ipynb
 \`\`\`
 入力動画 (B, T, 3, 224, 224)
     ↓
-DINOv2 ViT-S/14 [凍結] → 特徴量 (B, T, 384, 16, 16)
+ViT Feature Extractor [凍結] → 特徴量 (B, T, 384, 16, 16)
+│   ├─ DINOv2 ViT-S/14 (dense self-supervised)
+│   ├─ DINOv1 ViT-S/16 (self-distillation)
+│   └─ CLIP ViT-B/16 (language-aligned)
     ↓
 Slot Attention (K=5 slots, 5 iterations)
     ↓
@@ -123,17 +194,30 @@ Slot Predictor [次フレーム予測]
 Feature Decoder → 再構成特徴量 (B, T, 384, 16, 16)
 \`\`\`
 
-**パラメータ数:**
+**パラメータ数（DINOv2 baseline）:**
 - 総パラメータ: 32,918,145
 - 学習可能: 10,944,641
 - 凍結（DINOv2）: 21,973,504
 
+**Backbone比較:**
+
+| Backbone | 事前学習手法 | feat_dim | 総パラメータ | 学習可能 |
+|----------|------------|---------|-------------|---------|
+| DINOv2 ViT-S/14 | 密な自己蒸留 | 384 | 33.0M | 10.9M |
+| DINOv1 ViT-S/16 | 自己蒸留 | 384 | 32.6M | 10.9M |
+| CLIP ViT-B/16 | 言語対照学習 | 768→384 | 160.9M | 11.2M |
+
 ## 参考文献 / References
 
+### Object-Centric Learning
 1. Kipf, T., et al. (2022). "Conditional Object-Centric Learning from Video." *ICLR 2022*. (SAVi)
 2. Seitzer, M., et al. (2023). "Bridging the Gap to Real-World Object-Centric Learning." *ICLR 2023*. (DINOSAUR)
-3. Oquab, M., et al. (2024). "DINOv2: Learning Robust Visual Features without Supervision." *TMLR 2024*.
-4. Greff, K., et al. (2022). "Kubric: A Scalable Dataset Generator." *CVPR 2022*. (MOVi)
+3. Greff, K., et al. (2022). "Kubric: A Scalable Dataset Generator." *CVPR 2022*. (MOVi)
+
+### Vision Transformers & Pre-training
+4. Oquab, M., et al. (2024). "DINOv2: Learning Robust Visual Features without Supervision." *TMLR 2024*.
+5. Caron, M., et al. (2021). "Emerging Properties in Self-Supervised Vision Transformers." *ICCV 2021*. (DINO)
+6. Radford, A., et al. (2021). "Learning Transferable Visual Models From Natural Language Supervision." *ICML 2021*. (CLIP)
 
 ## ライセンス / License
 

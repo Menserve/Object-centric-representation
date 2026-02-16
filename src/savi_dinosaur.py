@@ -18,6 +18,7 @@ DINOSAURを動画（時系列）に拡張したモデル。
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
@@ -31,19 +32,70 @@ from typing import Optional, Tuple, List
 
 
 # ==========================================
-# 1. DINOv2 Feature Extractor
+# 1. Feature Extractor (Multiple Backbone Support)
 # ==========================================
-class DinoFeatureExtractor(nn.Module):
-    """DINOv2 ViT-S/14 による特徴抽出（frozen）"""
+class FeatureExtractor(nn.Module):
+    """
+    複数のViT backboneに対応する特徴抽出器
     
-    def __init__(self):
+    サポートするbackbone:
+    - dinov2_vits14: DINOv2 ViT-S/14 (384dim, 16×16 patches)
+    - dino_vits16: DINOv1 ViT-S/16 (384dim, 14×14 patches)
+    - clip_vitb16: CLIP ViT-B/16 (768dim, 14×14 patches)
+    
+    出力は全て統一: (B, 384, 16, 16) に正規化
+    """
+    
+    def __init__(self, backbone: str = 'dinov2_vits14'):
         super().__init__()
-        print("Loading DINOv2 model...")
-        self.dino = torch.hub.load('facebookresearch/dinov2', 'dinov2_vits14')
-        for param in self.dino.parameters():
+        self.backbone_name = backbone
+        self.target_feat_dim = 384
+        self.target_spatial_size = 16
+        
+        print(f"Loading {backbone} model...")
+        
+        if backbone == 'dinov2_vits14':
+            # DINOv2 ViT-S/14
+            self.model = torch.hub.load('facebookresearch/dinov2', 'dinov2_vits14')
+            self.feat_dim = 384
+            self.spatial_size = 16  # 224/14 = 16
+            self.projection = None  # 次元変換不要
+            
+        elif backbone == 'dino_vits16':
+            # DINOv1 ViT-S/16
+            self.model = torch.hub.load('facebookresearch/dino:main', 'dino_vits16')
+            self.feat_dim = 384
+            self.spatial_size = 14  # 224/16 = 14
+            self.projection = None  # 次元変換不要
+            
+        elif backbone == 'clip_vitb16':
+            # CLIP ViT-B/16
+            import open_clip
+            self.model, _, self.preprocess = open_clip.create_model_and_transforms(
+                'ViT-B-16', pretrained='openai'
+            )
+            self.feat_dim = 768
+            self.spatial_size = 14  # 224/16 = 14
+            # 768 → 384 への projection
+            self.projection = nn.Conv2d(768, 384, 1)
+            
+        else:
+            raise ValueError(f"Unknown backbone: {backbone}")
+        
+        # Freeze all parameters
+        for param in self.model.parameters():
             param.requires_grad = False
-        self.dino.eval()
-        self.feat_dim = 384  # ViT-S の次元
+        self.model.eval()
+        
+        # 空間解像度を16×16に統一するためのアップサンプリング（DINOv1, CLIP用）
+        if self.spatial_size != self.target_spatial_size:
+            self.upsample = nn.Upsample(
+                size=(self.target_spatial_size, self.target_spatial_size),
+                mode='bilinear',
+                align_corners=False
+            )
+        else:
+            self.upsample = None
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
@@ -53,11 +105,67 @@ class DinoFeatureExtractor(nn.Module):
             features: (B, 384, 16, 16) パッチ特徴量
         """
         with torch.no_grad():
-            features = self.dino.forward_features(x)["x_norm_patchtokens"]
-        b, n, d = features.shape
-        h = w = int(n**0.5)
-        features = features.permute(0, 2, 1).reshape(b, d, h, w)
+            if self.backbone_name == 'dinov2_vits14':
+                # DINOv2: forward_features() を使用
+                features = self.model.forward_features(x)["x_norm_patchtokens"]
+                b, n, d = features.shape
+                h = w = int(n**0.5)
+                features = features.permute(0, 2, 1).reshape(b, d, h, w)
+                
+            elif self.backbone_name == 'dino_vits16':
+                # DINOv1: get_intermediate_layers() を使用
+                # 最後の層の特徴を取得し、[CLS] token を除く
+                features = self.model.get_intermediate_layers(x, n=1)[0]
+                features = features[:, 1:, :]  # [CLS] tokenを除く
+                b, n, d = features.shape
+                h = w = int(n**0.5)
+                features = features.permute(0, 2, 1).reshape(b, d, h, w)
+                
+            elif self.backbone_name == 'clip_vitb16':
+                # CLIP: visual encoder を直接使用
+                # encode_image はパッチトークンを返さないので、visual.forward を使う
+                x = self.model.visual.conv1(x)  # patch embedding
+                x = x.reshape(x.shape[0], x.shape[1], -1)  # (B, D, N)
+                x = x.permute(0, 2, 1)  # (B, N, D)
+                x = torch.cat([self.model.visual.class_embedding.to(x.dtype) + torch.zeros(x.shape[0], 1, x.shape[-1], dtype=x.dtype, device=x.device), x], dim=1)
+                x = x + self.model.visual.positional_embedding.to(x.dtype)
+                x = self.model.visual.ln_pre(x)
+                
+                x = x.permute(1, 0, 2)  # NLD -> LND
+                x = self.model.visual.transformer(x)
+                x = x.permute(1, 0, 2)  # LND -> NLD
+                
+                features = x[:, 1:, :]  # [CLS] tokenを除く
+                b, n, d = features.shape
+                h = w = int(n**0.5)
+                features = features.permute(0, 2, 1).reshape(b, d, h, w)
+        
+        # Projection (CLIPのみ: 768→384)
+        if self.projection is not None:
+            features = self.projection(features)
+        
+        # 空間解像度を16×16に統一
+        if self.upsample is not None:
+            features = self.upsample(features)
+        
+        # ★ REMOVED: Feature normalization/scaling destroyed spatial structure
+        # All attempts (normalization, fixed scaling) caused slot collapse:
+        # - Normalization (mean/std): Removed spatial information → uniform masks
+        # - Fixed scaling (×0.65, ×4.8): Amplified/compressed features → lost object contours
+        # 
+        # Decision: Accept backbone-specific training dynamics
+        # - DINOv2 (std=2.4): Works well with τ=0.5 ✅
+        # - DINOv1 (std=3.7): May require adjusted hyperparameters
+        # - CLIP (std=0.5): May require adjusted hyperparameters
+        
         return features
+
+
+# Backward compatibility: DinoFeatureExtractor は FeatureExtractor のエイリアス
+class DinoFeatureExtractor(FeatureExtractor):
+    """後方互換性のため: DINOv2を使用するFeatureExtractor"""
+    def __init__(self):
+        super().__init__(backbone='dinov2_vits14')
 
 
 # ==========================================
@@ -76,30 +184,49 @@ class SlotAttentionSAVi(nn.Module):
         self,
         num_slots: int,
         dim: int,
+        feature_dim: Optional[int] = None,
+        kvq_dim: Optional[int] = None,
         iters: int = 5,
         hidden_dim: int = 512,
         eps: float = 1e-8
     ):
         super().__init__()
         self.num_slots = num_slots
+        self.dim = dim
         self.iters = iters
-        self.scale = dim ** -0.5
         self.eps = eps
         
-        # 学習可能なスロット初期化パラメータ（ランダム初期化時に使用）
-        self.slots_mu = nn.Parameter(torch.randn(1, 1, dim) * 0.1)
+        # Feature dim: dimension of input features (may differ from slot dim)
+        self.feature_dim = feature_dim if feature_dim is not None else dim
+        
+        # KVQ dim: dimension for keys, values, queries (larger attention space)
+        # Following OCL Framework: use 2×dim for richer attention
+        self.kvq_dim = kvq_dim if kvq_dim is not None else dim
+        self.scale = (self.kvq_dim // 1) ** -0.5  # Scale by kvq_dim per head
+        
+        # ★ 修正: Xavier初期化（Over-smoothing対策）
+        # OCL Frameworkに準拠した初期化で適切な分散を確保
+        self.slots_mu = nn.Parameter(torch.zeros(1, num_slots, dim))
         self.slots_log_sigma = nn.Parameter(torch.zeros(1, 1, dim))
         
+        # Xavier uniform初期化を適用
+        with torch.no_grad():
+            nn.init.xavier_uniform_(self.slots_mu)
+            nn.init.xavier_uniform_(self.slots_log_sigma)
+        
         # Attention layers
-        self.norm_features = nn.LayerNorm(dim)
+        self.norm_features = nn.LayerNorm(self.feature_dim)
         self.norm_slots = nn.LayerNorm(dim)
         self.norm_pre_ff = nn.LayerNorm(dim)
         
-        self.to_q = nn.Linear(dim, dim)
-        self.to_k = nn.Linear(dim, dim)
-        self.to_v = nn.Linear(dim, dim)
+        # K, V project from feature_dim; Q projects from dim
+        self.to_q = nn.Linear(dim, self.kvq_dim, bias=False)
+        self.to_k = nn.Linear(self.feature_dim, self.kvq_dim, bias=False)
+        self.to_v = nn.Linear(self.feature_dim, self.kvq_dim, bias=False)
         
-        self.gru = nn.GRUCell(dim, dim)
+        self.gru = nn.GRUCell(self.kvq_dim, dim)
+        
+        # ★ Fix 2: ff_mlp with proper hidden_dim (4×dim per OCL reference)
         self.mlp = nn.Sequential(
             nn.Linear(dim, hidden_dim),
             nn.ReLU(inplace=True),
@@ -134,13 +261,13 @@ class SlotAttentionSAVi(nn.Module):
             sigma = self.slots_log_sigma.exp().expand(b, n_s, -1)
             slots = mu + sigma * torch.randn_like(mu)
         
-        k = self.to_k(inputs)
-        v = self.to_v(inputs)
+        k = self.to_k(inputs)  # (B, N, kvq_dim)
+        v = self.to_v(inputs)  # (B, N, kvq_dim)
 
         for _ in range(self.iters):
             slots_prev = slots
             slots = self.norm_slots(slots)
-            q = self.to_q(slots)
+            q = self.to_q(slots)  # (B, K, kvq_dim)
             
             # Attention: dots (B, K, N)
             dots = torch.einsum('bid,bjd->bij', q, k) * self.scale
@@ -150,14 +277,14 @@ class SlotAttentionSAVi(nn.Module):
             
             # Weighted mean
             attn_sum = attn.sum(dim=-1, keepdim=True)
-            updates = torch.einsum('bjd,bij->bid', v, attn / attn_sum)
+            updates = torch.einsum('bjd,bij->bid', v, attn / attn_sum)  # (B, K, kvq_dim)
             
-            # GRU update
+            # GRU update: kvq_dim → dim
             slots = self.gru(
-                updates.reshape(-1, d),
-                slots_prev.reshape(-1, d)
+                updates.reshape(-1, self.kvq_dim),
+                slots_prev.reshape(-1, self.dim)
             )
-            slots = slots.reshape(b, -1, d)
+            slots = slots.reshape(b, -1, self.dim)
             slots = slots + self.mlp(self.norm_pre_ff(slots))
         
         return slots
@@ -172,16 +299,25 @@ class SlotPredictor(nn.Module):
     
     これにより、スロットが物体を「追跡」できるようになる。
     単純なMLPで実装（TransformerやLSTMも可能）。
+    
+    ★ Collapse Prevention: 
+    - LayerNormで正規化してスケール崩壊を防ぐ
+    - 残差接続で急激な変化を抑制
     """
     
-    def __init__(self, dim: int, hidden_dim: int = 512):
+    def __init__(self, dim: int, hidden_dim: int = 512, use_diversity_regularization: bool = True):
         super().__init__()
+        self.use_diversity_regularization = use_diversity_regularization
+        
         self.predictor = nn.Sequential(
             nn.LayerNorm(dim),
             nn.Linear(dim, hidden_dim),
             nn.ReLU(inplace=True),
             nn.Linear(hidden_dim, dim)
         )
+        
+        # ★ Output normalization to prevent scale collapse
+        self.output_norm = nn.LayerNorm(dim)
     
     def forward(self, slots: torch.Tensor) -> torch.Tensor:
         """
@@ -191,7 +327,13 @@ class SlotPredictor(nn.Module):
             predicted_slots: (B, K, D) 次フレームの初期スロット
         """
         # 残差接続: 物体が大きく動かない場合に有効
-        return slots + self.predictor(slots)
+        delta = self.predictor(slots)
+        predicted = slots + delta
+        
+        # ★ Normalize output to maintain proper scale
+        predicted = self.output_norm(predicted)
+        
+        return predicted
 
 
 # ==========================================
@@ -200,11 +342,16 @@ class SlotPredictor(nn.Module):
 class FeatureDecoder(nn.Module):
     """スロットからDINO特徴量とマスクを復元"""
     
-    def __init__(self, feat_dim: int = 384, resolution: Tuple[int, int] = (16, 16)):
+    def __init__(self, feat_dim: int = 384, resolution: Tuple[int, int] = (16, 16),
+                 mask_temperature: float = 0.5):
         super().__init__()
         self.feat_dim = feat_dim
         self.resolution = resolution
+        self.mask_temperature = mask_temperature  # τ for mask logits sharpening
         
+        # Spatial Broadcast Decoder (intentionally shallow - Slot Attention design principle)
+        # A weak decoder forces the model to rely on slot representations for reconstruction,
+        # preventing shortcut learning where a powerful decoder ignores slot assignments.
         self.decoder = nn.Sequential(
             nn.Conv2d(feat_dim + 2, 384, 5, padding=2),
             nn.ReLU(inplace=True),
@@ -247,7 +394,14 @@ class FeatureDecoder(nn.Module):
         out = out.view(b, k, d + 1, h, w)
         
         pred_feats = out[:, :, :d, :, :]
-        masks = torch.softmax(out[:, :, d:, :, :], dim=1)
+        # ★ Temperature Scaling for mask sharpening
+        # Problem: mask logits have std ≈ 0.03, causing uniform softmax output (~1/K)
+        # Solution: Divide by τ < 1 to amplify small differences before softmax
+        # τ=0.5 → logits doubled → sharper masks with stronger gradients
+        mask_logits = out[:, :, d:, :, :]
+        mask_logits = mask_logits / self.mask_temperature
+        mask_logits = torch.clamp(mask_logits, min=-10, max=10)
+        masks = torch.softmax(mask_logits, dim=1)
         
         recon_combined = torch.sum(pred_feats * masks, dim=1)
         
@@ -266,26 +420,61 @@ class SAViDinosaur(nn.Module):
     2. 動画モード: forward_video() を使用（フレーム間でスロットを引き継ぐ）
     """
     
-    def __init__(self, num_slots: int = 5, feat_dim: int = 384):
+    def __init__(self, num_slots: int = 5, feat_dim: int = 384, backbone: str = 'dinov2_vits14', slot_dim: int = 64, mask_temperature: float = 0.5):
         super().__init__()
         self.num_slots = num_slots
-        self.feat_dim = feat_dim
+        self.feat_dim = feat_dim  # DINOv2の出力次元（384）
+        self.slot_dim = slot_dim  # Slot Attentionの次元（64）
+        self.backbone = backbone
         
         # Components
-        self.feature_extractor = DinoFeatureExtractor()
-        self.pos_emb = nn.Parameter(torch.randn(1, 16, 16, feat_dim) * 0.05)
-        self.slot_attention = SlotAttentionSAVi(num_slots, feat_dim, iters=5, hidden_dim=512)
-        self.slot_predictor = SlotPredictor(feat_dim, hidden_dim=512)
-        self.decoder = FeatureDecoder(feat_dim, resolution=(16, 16))
+        self.feature_extractor = FeatureExtractor(backbone=backbone)
+        
+        # ★ Fix 1: Two-layer MLP for feature projection (following DINOSAUR reference)
+        # DummyPositionEmbed (pass-through) + two-layer MLP with ReLU
+        # This preserves spatial variance when projecting 384 → 64
+        self.feature_projection = nn.Sequential(
+            nn.LayerNorm(feat_dim),
+            nn.Linear(feat_dim, feat_dim),
+            nn.ReLU(inplace=True),
+            nn.Linear(feat_dim, slot_dim)
+        )
+        
+        # Slot Attentionは低次元（64）で動作
+        # kvq_dim=64, hidden_dim=128 (小規模データセットに適切なサイズ)
+        # Two-layer MLP projectionは維持（理論的に重要）
+        self.slot_attention = SlotAttentionSAVi(
+            num_slots, 
+            dim=slot_dim, 
+            feature_dim=slot_dim,  # After projection
+            kvq_dim=None,   # Same as slot_dim (64)
+            iters=5, 
+            hidden_dim=128  # 2× for ff_mlp (小規模データ向け)
+        )
+        self.slot_predictor = SlotPredictor(slot_dim, hidden_dim=128, use_diversity_regularization=True)
+        
+        # Decoderは元の特徴量次元（384）で再構成するため、逆変換が必要
+        # ★ CRITICAL FIX: 2-layer MLP for upsampling (same as feature_projection)
+        # Single linear layer collapses diversity when upsampling 64→384
+        self.slot_to_feature = nn.Sequential(
+            nn.LayerNorm(slot_dim),
+            nn.Linear(slot_dim, slot_dim * 2),  # 64 → 128
+            nn.ReLU(inplace=True),
+            nn.Linear(slot_dim * 2, feat_dim)   # 128 → 384
+        )
+        self.decoder = FeatureDecoder(feat_dim, resolution=(16, 16), mask_temperature=mask_temperature)
     
-    def encode(self, img: torch.Tensor) -> torch.Tensor:
-        """画像をDINO特徴量に変換"""
-        features = self.feature_extractor(img)  # (B, D, H, W)
+    def encode(self, img: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
+        """画像をDINO特徴量に変換し、Slot Attention用に低次元化"""
+        features = self.feature_extractor(img)  # (B, 384, H, W)
         b, c, h, w = features.shape
-        features_perm = features.permute(0, 2, 3, 1)  # (B, H, W, D)
-        features_pos = features_perm + self.pos_emb
-        features_flat = features_pos.reshape(b, -1, c)  # (B, N, D)
-        return features_flat, features
+        features_perm = features.permute(0, 2, 3, 1)  # (B, H, W, 384)
+        features_flat = features_perm.reshape(b, -1, c)  # (B, N, 384)
+        
+        # LayerNorm + Projection: 384 → 64
+        features_projected = self.feature_projection(features_flat)  # (B, N, 64)
+        
+        return features_projected, features
     
     def forward_image(
         self,
@@ -304,16 +493,22 @@ class SAViDinosaur(nn.Module):
             masks: (B, K, 1, H, W) マスク
             slots: (B, K, D) 出力スロット
         """
-        features_flat, target_feat = self.encode(img)
-        slots = self.slot_attention(features_flat, slots_init=slots_init)
-        recon_feat, _, masks = self.decoder(slots, self.num_slots)
+        features_flat, target_feat = self.encode(img)  # features_flat: (B, N, 64), target_feat: (B, 384, H, W)
+        slots = self.slot_attention(features_flat, slots_init=slots_init)  # slots: (B, K, 64)
+        
+        # Slotを高次元特徴量空間（384次元）に変換してDecoderへ
+        slots_upsampled = self.slot_to_feature(slots)  # (B, K, 384)
+        recon_feat, _, masks = self.decoder(slots_upsampled, self.num_slots)
         
         return recon_feat, target_feat, masks, slots
     
     def forward_video(
         self,
         video: torch.Tensor,
-        return_all_masks: bool = True
+        return_all_masks: bool = True,
+        refresh_interval: int = 0,
+        use_stop_gradient: bool = False,
+        loss_type: str = 'mse'
     ) -> dict:
         """
         動画モード（複数フレーム処理）
@@ -323,6 +518,9 @@ class SAViDinosaur(nn.Module):
         Args:
             video: (B, T, 3, 224, 224) 動画（Tフレーム）
             return_all_masks: 全フレームのマスクを返すか
+            refresh_interval: N>0 なら N フレームごとにスロットをリフレッシュ (0=無効)
+            use_stop_gradient: True なら Slot Predictor への入力に stop-gradient を適用
+            loss_type: 損失関数の種類 ('mse', 'cosine', 'channel_norm')
         Returns:
             dict with:
                 - total_loss: スカラー
@@ -341,9 +539,17 @@ class SAViDinosaur(nn.Module):
         for frame_idx in range(t):
             frame = video[:, frame_idx]  # (B, 3, H, W)
             
+            # ★ Collapse Prevention: Periodic refresh
+            # 定期的にスロットをリセットして、累積的な崩壊を防ぐ
+            if refresh_interval > 0 and frame_idx > 0 and frame_idx % refresh_interval == 0:
+                slots = None  # Force re-initialization
+            
             # ★ SAVi: 前フレームのスロットがあれば、予測して初期値にする
             if slots is not None:
-                slots_init = self.slot_predictor(slots)
+                # ★ Collapse Prevention: Stop-gradient
+                # 勾配を遮断して、Slot Predictorが崩壊を学習するのを防ぐ
+                slots_for_prediction = slots.detach() if use_stop_gradient else slots
+                slots_init = self.slot_predictor(slots_for_prediction)
             else:
                 slots_init = None
             
@@ -353,7 +559,23 @@ class SAViDinosaur(nn.Module):
             )
             
             # 損失計算
-            loss = ((target_feat - recon_feat) ** 2).mean()
+            # ★ target_feat.detach(): CLIPのprojection(学習可能)経由で
+            #   勾配がターゲットに流入し、ゼロ崩壊を起こすバグを修正
+            #   DINOv1/v2は元からrequires_grad=Falseなので影響なし
+            target_detached = target_feat.detach()
+            if loss_type == 'cosine':
+                # コサイン類似度損失: スケール完全不変
+                t_flat = target_detached.permute(0, 2, 3, 1).reshape(-1, self.feat_dim)
+                r_flat = recon_feat.permute(0, 2, 3, 1).reshape(-1, self.feat_dim)
+                loss = 1 - F.cosine_similarity(t_flat, r_flat, dim=1).mean()
+            elif loss_type == 'channel_norm':
+                # チャンネル正規化MSE: 各位置の384次元ベクトルを正規化してからMSE
+                # → スケール差を吸収しつつ空間構造を保存
+                t_flat = target_detached.permute(0, 2, 3, 1).reshape(-1, self.feat_dim)
+                r_flat = recon_feat.permute(0, 2, 3, 1).reshape(-1, self.feat_dim)
+                loss = ((F.layer_norm(t_flat, [self.feat_dim]) - F.layer_norm(r_flat, [self.feat_dim])) ** 2).mean()
+            else:  # 'mse' (default)
+                loss = ((target_detached - recon_feat) ** 2).mean()
             all_losses.append(loss)
             
             if return_all_masks:

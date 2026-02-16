@@ -4,6 +4,11 @@ MOVi-A データセットを使った SAVi-DINOSAUR 学習スクリプト
 
 保存済みの .pt ファイルを読み込んで学習する。
 TensorFlow は不要。
+
+複数のViT backboneをサポート:
+- dinov2_vits14: DINOv2 ViT-S/14 (default)
+- dino_vits16: DINOv1 ViT-S/16
+- clip_vitb16: CLIP ViT-B/16
 """
 
 import torch
@@ -16,6 +21,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from typing import List, Optional, Tuple
 import time
+import argparse
 
 from savi_dinosaur import SAViDinosaur
 
@@ -135,7 +141,11 @@ def train_on_movi(
     lr: float = 0.0004,
     device: str = 'cuda',
     log_interval: int = 5,
-    save_dir: Optional[str] = None
+    save_dir: Optional[str] = None,
+    diversity_weight: float = 0.1,
+    refresh_interval: int = 0,
+    use_stop_gradient: bool = False,
+    loss_type: str = 'mse'
 ) -> dict:
     """
     MOVi-A データセットで SAVi-DINOSAUR を学習
@@ -148,6 +158,10 @@ def train_on_movi(
         device: デバイス
         log_interval: ログ出力間隔（バッチ数）
         save_dir: モデル保存先（Noneなら保存しない）
+        diversity_weight: 多様性損失の重み
+        refresh_interval: N>0 なら N フレームごとにスロットをリフレッシュ
+        use_stop_gradient: True なら Slot Predictor への入力に stop-gradient
+        loss_type: 損失関数の種類 ('mse', 'cosine', 'channel_norm')
     
     Returns:
         dict with training history
@@ -158,8 +172,26 @@ def train_on_movi(
         lr=lr
     )
     
-    # 学習率スケジューラ
-    scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=num_epochs)
+    # 学習率スケジューラ with Warmup (critical for Slot Attention!)
+    # Warmup: 最初の5エポックで0→lrまで線形増加
+    warmup_epochs = 5
+    warmup_scheduler = optim.lr_scheduler.LinearLR(
+        optimizer, 
+        start_factor=0.01,  # 0.01*lr からスタート
+        end_factor=1.0,     # lr まで上昇
+        total_iters=warmup_epochs
+    )
+    # その後、CosineAnnealing
+    cosine_scheduler = optim.lr_scheduler.CosineAnnealingLR(
+        optimizer, 
+        T_max=num_epochs - warmup_epochs
+    )
+    # 2つを連結
+    scheduler = optim.lr_scheduler.SequentialLR(
+        optimizer,
+        schedulers=[warmup_scheduler, cosine_scheduler],
+        milestones=[warmup_epochs]
+    )
     
     history = {
         'epoch_losses': [],
@@ -174,13 +206,15 @@ def train_on_movi(
     print(f"{'='*60}")
     print(f"Device: {device}")
     print(f"Epochs: {num_epochs}")
-    print(f"Learning rate: {lr}")
+    print(f"Learning rate: {lr} (with {warmup_epochs}-epoch warmup)")
     print(f"Batch size: {train_loader.batch_size}")
     print(f"Dataset size: {len(train_loader.dataset)}")
+    print(f"Diversity weight: {diversity_weight}")
+    if refresh_interval > 0:
+        print(f"Slot refresh interval: every {refresh_interval} frames")
+    if use_stop_gradient:
+        print(f"Using stop-gradient for Slot Predictor")
     print(f"{'='*60}\n")
-    
-    # 多様性損失の重み
-    diversity_weight = 0.1
     
     for epoch in range(num_epochs):
         model.train()
@@ -193,22 +227,29 @@ def train_on_movi(
             optimizer.zero_grad()
             
             # Forward pass（マスクも取得）
-            result = model.forward_video(video, return_all_masks=True)
+            result = model.forward_video(
+                video, 
+                return_all_masks=True,
+                refresh_interval=refresh_interval,
+                use_stop_gradient=use_stop_gradient,
+                loss_type=loss_type
+            )
             recon_loss = result['total_loss']
             
-            # 多様性損失：スロット間のマスクが異なることを促進
+            # === 多様性正則化（穏やか版） ===
             # all_masks: (B, T, K, 1, H, W)
             masks = result['all_masks']  # (B, T, K, 1, H, W)
             b, t, k, _, h, w = masks.shape
             masks_flat = masks.view(b * t, k, h * w)  # (B*T, K, H*W)
             
-            # 各スロット対間のコサイン類似度を計算
-            masks_norm = F.normalize(masks_flat, dim=-1)  # (B*T, K, H*W)
-            similarity = torch.bmm(masks_norm, masks_norm.transpose(1, 2))  # (B*T, K, K)
+            # Slotベクトル自体の多様性（Slot Attention後）
+            all_slots = result['all_slots']  # (B, T, K, D)
+            slots_flat = all_slots.view(b * t, k, -1)  # (B*T, K, D)
+            slots_norm = F.normalize(slots_flat, dim=-1)
+            slot_similarity = torch.bmm(slots_norm, slots_norm.transpose(1, 2))  # (B*T, K, K)
             
-            # 対角成分（自己類似度=1）を除いた非対角成分の平均を最小化
             mask_diag = torch.eye(k, device=device).unsqueeze(0).expand(b*t, -1, -1)
-            off_diag = similarity * (1 - mask_diag)
+            off_diag = slot_similarity * (1 - mask_diag)
             diversity_loss = off_diag.sum() / (b * t * k * (k - 1))
             
             # 総損失
@@ -250,6 +291,7 @@ def train_on_movi(
                 'model_state_dict': model.state_dict(),
                 'optimizer_state_dict': optimizer.state_dict(),
                 'loss': avg_loss,
+                'backbone': model.backbone,
             }, save_path)
             print(f"  ✓ Saved best model (loss={avg_loss:.6f})")
     
@@ -267,7 +309,10 @@ def train_on_movi(
 def evaluate_model(
     model: SAViDinosaur,
     test_loader: DataLoader,
-    device: str = 'cuda'
+    device: str = 'cuda',
+    refresh_interval: int = 0,
+    use_stop_gradient: bool = False,
+    loss_type: str = 'mse'
 ) -> dict:
     """モデル評価"""
     model.eval()
@@ -278,7 +323,13 @@ def evaluate_model(
     with torch.no_grad():
         for batch in test_loader:
             video = batch['video'].to(device)
-            result = model.forward_video(video, return_all_masks=False)
+            result = model.forward_video(
+                video, 
+                return_all_masks=False,
+                refresh_interval=refresh_interval,
+                use_stop_gradient=use_stop_gradient,
+                loss_type=loss_type
+            )
             total_loss += result['total_loss'].item()
             num_batches += 1
     
@@ -292,7 +343,10 @@ def visualize_movi_results(
     sample: dict,
     device: str = 'cuda',
     save_path: Optional[str] = None,
-    num_frames: int = 8
+    num_frames: int = 8,
+    refresh_interval: int = 0,
+    use_stop_gradient: bool = False,
+    loss_type: str = 'mse'
 ):
     """MOVi-A サンプルのスロット可視化"""
     model.eval()
@@ -300,7 +354,13 @@ def visualize_movi_results(
     video = sample['video'].unsqueeze(0).to(device)  # (1, T, 3, H, W)
     
     with torch.no_grad():
-        result = model.forward_video(video, return_all_masks=True)
+        result = model.forward_video(
+            video, 
+            return_all_masks=True,
+            refresh_interval=refresh_interval,
+            use_stop_gradient=use_stop_gradient,
+            loss_type=loss_type
+        )
     
     all_masks = result['all_masks'][0]  # (T, K, 1, H, W)
     t, k, _, h, w = all_masks.shape
@@ -315,8 +375,8 @@ def visualize_movi_results(
         mode='bilinear'
     ).view(t, k, 224, 224)
     
-    # 可視化
-    fig, axes = plt.subplots(len(frame_indices), k + 2, figsize=(3 * (k + 2), 3 * len(frame_indices)))
+    # 可視化（squeeze=Falseで常に2次元配列にする）
+    fig, axes = plt.subplots(len(frame_indices), k + 2, figsize=(3 * (k + 2), 3 * len(frame_indices)), squeeze=False)
     
     for i, t_idx in enumerate(frame_indices):
         # 入力フレーム
@@ -387,17 +447,57 @@ def plot_training_history(history: dict, save_path: Optional[str] = None):
 def main():
     """MOVi-A での SAVi-DINOSAUR 学習デモ"""
     
+    # コマンドライン引数のパース
+    parser = argparse.ArgumentParser(description='Train SAVi-DINOSAUR on MOVi-A dataset')
+    parser.add_argument('--backbone', type=str, default='dinov2_vits14',
+                        choices=['dinov2_vits14', 'dino_vits16', 'clip_vitb16'],
+                        help='ViT backbone to use')
+    parser.add_argument('--data_dir', type=str, default='../data/movi_a_subset',
+                        help='Path to MOVi-A data directory')
+    parser.add_argument('--save_dir', type=str, default='../checkpoints',
+                        help='Path to save checkpoints')
+    parser.add_argument('--num_epochs', type=int, default=200,
+                        help='Number of training epochs')
+    parser.add_argument('--batch_size', type=int, default=2,
+                        help='Batch size')
+    parser.add_argument('--num_slots', type=int, default=5,
+                        help='Number of slots')
+    parser.add_argument('--max_frames', type=int, default=12,
+                        help='Maximum number of frames per video')
+    parser.add_argument('--lr', type=float, default=0.001,
+                        help='Learning rate')
+    parser.add_argument('--diversity_weight', type=float, default=0.01,
+                        help='Weight for diversity loss (small value to prevent slot collapse)')
+    parser.add_argument('--mask_temperature', type=float, default=0.5,
+                        help='Temperature for mask logits (τ<1 = sharper masks)')
+    parser.add_argument('--refresh_interval', type=int, default=0,
+                        help='Refresh slots every N frames (0 = disabled, 4-8 recommended)')
+    parser.add_argument('--use_stop_gradient', action='store_true',
+                        help='Use stop-gradient for Slot Predictor to prevent collapse')
+    parser.add_argument('--loss_type', type=str, default='mse',
+                        choices=['mse', 'cosine', 'channel_norm'],
+                        help='Loss function type: mse (default), cosine (scale-invariant), channel_norm (LayerNorm + MSE)')
+    
+    args = parser.parse_args()
+    
     # 設定
-    DATA_DIR = "../data/movi_a_subset"
-    SAVE_DIR = "../checkpoints"
-    NUM_EPOCHS = 200  # 多様性損失を追加したので短めに
-    BATCH_SIZE = 2
-    NUM_SLOTS = 5  # 物体数に近い数に（3〜5物体が多い）
-    MAX_FRAMES = 12  # メモリ節約のため
-    LR = 0.001  # 学習率を上げる
+    DATA_DIR = args.data_dir
+    SAVE_DIR = os.path.join(args.save_dir, args.backbone)
+    NUM_EPOCHS = args.num_epochs
+    BATCH_SIZE = args.batch_size
+    NUM_SLOTS = args.num_slots
+    MAX_FRAMES = args.max_frames
+    LR = args.lr
+    DIVERSITY_WEIGHT = args.diversity_weight
+    MASK_TEMPERATURE = args.mask_temperature
+    REFRESH_INTERVAL = args.refresh_interval
+    USE_STOP_GRADIENT = args.use_stop_gradient
+    LOSS_TYPE = args.loss_type
+    BACKBONE = args.backbone
     
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"Device: {device}")
+    print(f"Backbone: {BACKBONE}")
     
     # データセット
     print("\n1. Loading MOVi-A dataset...")
@@ -420,27 +520,36 @@ def main():
         batch_size=BATCH_SIZE,
         shuffle=True,
         collate_fn=collate_fn,
-        num_workers=0
+        num_workers=8,
+        pin_memory=True,
+        persistent_workers=True
     )
     test_loader = DataLoader(
         test_dataset,
         batch_size=1,
         shuffle=False,
         collate_fn=collate_fn,
-        num_workers=0
+        num_workers=4,
+        pin_memory=True
     )
     
     print(f"Train samples: {len(train_dataset)}")
     print(f"Test samples: {len(test_dataset)}")
     
     # モデル作成
-    print("\n2. Creating SAVi-DINOSAUR model...")
-    model = SAViDinosaur(num_slots=NUM_SLOTS)
+    print(f"\n2. Creating SAVi-DINOSAUR model with {BACKBONE}...")
+    model = SAViDinosaur(num_slots=NUM_SLOTS, backbone=BACKBONE, mask_temperature=MASK_TEMPERATURE)
+    print(f"Mask temperature (τ): {MASK_TEMPERATURE}")
+    if REFRESH_INTERVAL > 0:
+        print(f"Slot refresh interval: {REFRESH_INTERVAL} frames")
+    if USE_STOP_GRADIENT:
+        print(f"Stop-gradient: enabled")
     trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
     print(f"Trainable parameters: {trainable_params:,}")
     
     # 学習
     print("\n3. Training...")
+    print(f"Loss type: {LOSS_TYPE}")
     history = train_on_movi(
         model=model,
         train_loader=train_loader,
@@ -448,12 +557,21 @@ def main():
         lr=LR,
         device=device,
         log_interval=10,
-        save_dir=SAVE_DIR
+        save_dir=SAVE_DIR,
+        diversity_weight=DIVERSITY_WEIGHT,
+        refresh_interval=REFRESH_INTERVAL,
+        use_stop_gradient=USE_STOP_GRADIENT,
+        loss_type=LOSS_TYPE
     )
     
     # 評価
     print("\n4. Evaluating...")
-    eval_result = evaluate_model(model, test_loader, device)
+    eval_result = evaluate_model(
+        model, test_loader, device,
+        refresh_interval=REFRESH_INTERVAL,
+        use_stop_gradient=USE_STOP_GRADIENT,
+        loss_type=LOSS_TYPE
+    )
     print(f"Test Loss: {eval_result['avg_loss']:.6f}")
     
     # 可視化
@@ -461,7 +579,10 @@ def main():
     test_sample = dataset[test_indices[0]]
     visualize_movi_results(
         model, test_sample, device,
-        save_path=os.path.join(SAVE_DIR, "movi_result.png")
+        save_path=os.path.join(SAVE_DIR, "movi_result.png"),
+        refresh_interval=REFRESH_INTERVAL,
+        use_stop_gradient=USE_STOP_GRADIENT,
+        loss_type=LOSS_TYPE
     )
     
     # 学習曲線

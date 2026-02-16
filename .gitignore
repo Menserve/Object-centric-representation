@@ -132,8 +132,10 @@ data/
 # Model checkpoints (too large for git)
 checkpoints/
 
-# Training logs
+# Training logs (globally ignore, but track experiment logs)
 *.log
+!experiments/main/logs/*.log
+!experiments/sub/logs/*.log
 
 # Temporary files
 *.tmp
@@ -141,3 +143,18 @@ checkpoints/
 
 # OCL Framework (third-party)
 ocl_framework/
+
+# LaTeX build artifacts
+*.aux
+*.dvi
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.xbb
+docs/paper/*.log
+docs/paper/paper_old.tex
+docs/paper/paper_draft_*.pdf
+docs/paper/paper_1221.pdf
+docs/paper/guide-*
+docs/paper/data.tex
+docs/paper/final_assignment.txt
