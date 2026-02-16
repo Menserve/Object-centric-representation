@@ -1,0 +1,363 @@
+nohup: ignoring input
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+WARNING:huggingface_hub.utils._http:Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+/home/menserve/Object-centric-representation/.venv/lib/python3.12/site-packages/open_clip/factory.py:450: UserWarning: QuickGELU mismatch between final model config (quick_gelu=False) and pretrained tag 'openai' (quick_gelu=True).
+  warnings.warn(
+Device: cuda
+Backbone: clip_vitb16
+
+1. Loading MOVi-A dataset...
+MoviDataset: Found 60 samples (split=all)
+Train samples: 58
+Test samples: 2
+
+2. Creating SAVi-DINOSAUR model with clip_vitb16...
+Loading clip_vitb16 model...
+Mask temperature (τ): 0.5
+Trainable parameters: 9,321,665
+
+3. Training...
+
+============================================================
+Training SAVi-DINOSAUR on MOVi-A
+============================================================
+Device: cuda
+Epochs: 50
+Learning rate: 0.0004 (with 5-epoch warmup)
+Batch size: 2
+Dataset size: 58
+Diversity weight: 0.1
+============================================================
+
+  Batch 0/29: Loss = 0.256731
+  Batch 10/29: Loss = 0.249551
+  Batch 20/29: Loss = 0.233956
+
+Epoch 1/50 | Loss: 0.252597 | LR: 0.000083 | Time: 1.5s
+
+  ✓ Saved best model (loss=0.252597)
+  Batch 0/29: Loss = 0.191596
+  Batch 10/29: Loss = 0.117694
+  Batch 20/29: Loss = 0.054433
+
+Epoch 2/50 | Loss: 0.093574 | LR: 0.000162 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.093574)
+  Batch 0/29: Loss = 0.030255
+  Batch 10/29: Loss = 0.038908
+  Batch 20/29: Loss = 0.029819
+
+Epoch 3/50 | Loss: 0.029387 | LR: 0.000242 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.029387)
+  Batch 0/29: Loss = 0.014319
+  Batch 10/29: Loss = 0.014380
+  Batch 20/29: Loss = 0.009488
+
+Epoch 4/50 | Loss: 0.015449 | LR: 0.000321 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.015449)
+  Batch 0/29: Loss = 0.021703
+  Batch 10/29: Loss = -0.000577
+  Batch 20/29: Loss = 0.009884
+
+Epoch 5/50 | Loss: 0.011101 | LR: 0.000400 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.011101)
+  Batch 0/29: Loss = 0.011518
+  Batch 10/29: Loss = -0.007260
+  Batch 20/29: Loss = 0.018964
+
+Epoch 6/50 | Loss: 0.008560 | LR: 0.000400 | Time: 0.7s
+
+  ✓ Saved best model (loss=0.008560)
+  Batch 0/29: Loss = 0.015240
+  Batch 10/29: Loss = -0.003313
+  Batch 20/29: Loss = 0.004619
+
+Epoch 7/50 | Loss: 0.008587 | LR: 0.000398 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.020039
+  Batch 10/29: Loss = 0.004162
+  Batch 20/29: Loss = 0.007951
+
+Epoch 8/50 | Loss: 0.006400 | LR: 0.000396 | Time: 0.5s
+
+  ✓ Saved best model (loss=0.006400)
+  Batch 0/29: Loss = -0.011815
+  Batch 10/29: Loss = 0.005608
+  Batch 20/29: Loss = -0.001513
+
+Epoch 9/50 | Loss: 0.004905 | LR: 0.000392 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.004905)
+  Batch 0/29: Loss = 0.036417
+  Batch 10/29: Loss = -0.008546
+  Batch 20/29: Loss = -0.008255
+
+Epoch 10/50 | Loss: 0.010332 | LR: 0.000388 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.005999
+  Batch 10/29: Loss = -0.002810
+  Batch 20/29: Loss = -0.008434
+
+Epoch 11/50 | Loss: 0.007703 | LR: 0.000383 | Time: 0.7s
+
+  Batch 0/29: Loss = 0.008856
+  Batch 10/29: Loss = -0.003557
+  Batch 20/29: Loss = 0.033844
+
+Epoch 12/50 | Loss: 0.007222 | LR: 0.000377 | Time: 0.5s
+
+  Batch 0/29: Loss = -0.003827
+  Batch 10/29: Loss = 0.016961
+  Batch 20/29: Loss = 0.000157
+
+Epoch 13/50 | Loss: 0.009205 | LR: 0.000370 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.033939
+  Batch 10/29: Loss = 0.006263
+  Batch 20/29: Loss = -0.010272
+
+Epoch 14/50 | Loss: 0.007935 | LR: 0.000362 | Time: 0.7s
+
+  Batch 0/29: Loss = -0.012325
+  Batch 10/29: Loss = 0.002070
+  Batch 20/29: Loss = 0.025216
+
+Epoch 15/50 | Loss: 0.004268 | LR: 0.000353 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.004268)
+  Batch 0/29: Loss = 0.023193
+  Batch 10/29: Loss = -0.000329
+  Batch 20/29: Loss = 0.025012
+
+Epoch 16/50 | Loss: 0.008619 | LR: 0.000344 | Time: 0.6s
+
+  Batch 0/29: Loss = -0.008624
+  Batch 10/29: Loss = 0.010294
+  Batch 20/29: Loss = -0.013796
+
+Epoch 17/50 | Loss: 0.006223 | LR: 0.000334 | Time: 0.6s
+
+  Batch 0/29: Loss = -0.014465
+  Batch 10/29: Loss = 0.006846
+  Batch 20/29: Loss = -0.011082
+
+Epoch 18/50 | Loss: 0.004367 | LR: 0.000323 | Time: 0.7s
+
+  Batch 0/29: Loss = -0.008357
+  Batch 10/29: Loss = 0.031937
+  Batch 20/29: Loss = 0.002145
+
+Epoch 19/50 | Loss: 0.002433 | LR: 0.000312 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.002433)
+  Batch 0/29: Loss = 0.027103
+  Batch 10/29: Loss = 0.019756
+  Batch 20/29: Loss = -0.006689
+
+Epoch 20/50 | Loss: 0.013832 | LR: 0.000300 | Time: 0.6s
+
+  Batch 0/29: Loss = -0.003746
+  Batch 10/29: Loss = 0.011060
+  Batch 20/29: Loss = -0.013656
+
+Epoch 21/50 | Loss: 0.008173 | LR: 0.000288 | Time: 0.7s
+
+  Batch 0/29: Loss = -0.004055
+  Batch 10/29: Loss = 0.023366
+  Batch 20/29: Loss = 0.000056
+
+Epoch 22/50 | Loss: 0.002966 | LR: 0.000275 | Time: 0.6s
+
+  Batch 0/29: Loss = -0.008564
+  Batch 10/29: Loss = 0.049001
+  Batch 20/29: Loss = 0.023905
+
+Epoch 23/50 | Loss: 0.005325 | LR: 0.000262 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.014691
+  Batch 10/29: Loss = -0.000727
+  Batch 20/29: Loss = 0.031301
+
+Epoch 24/50 | Loss: 0.003989 | LR: 0.000248 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.001908
+  Batch 10/29: Loss = -0.004522
+  Batch 20/29: Loss = -0.005177
+
+Epoch 25/50 | Loss: 0.008115 | LR: 0.000235 | Time: 0.7s
+
+  Batch 0/29: Loss = 0.052639
+  Batch 10/29: Loss = 0.004518
+  Batch 20/29: Loss = -0.000626
+
+Epoch 26/50 | Loss: 0.005415 | LR: 0.000221 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.040156
+  Batch 10/29: Loss = -0.012907
+  Batch 20/29: Loss = 0.003858
+
+Epoch 27/50 | Loss: 0.002583 | LR: 0.000207 | Time: 0.5s
+
+  Batch 0/29: Loss = -0.004358
+  Batch 10/29: Loss = -0.010317
+  Batch 20/29: Loss = -0.001837
+
+Epoch 28/50 | Loss: 0.001357 | LR: 0.000193 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.001357)
+  Batch 0/29: Loss = -0.006127
+  Batch 10/29: Loss = 0.027849
+  Batch 20/29: Loss = -0.014479
+
+Epoch 29/50 | Loss: 0.011857 | LR: 0.000179 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.011350
+  Batch 10/29: Loss = 0.005078
+  Batch 20/29: Loss = -0.003098
+
+Epoch 30/50 | Loss: -0.000382 | LR: 0.000165 | Time: 0.6s
+
+  ✓ Saved best model (loss=-0.000382)
+  Batch 0/29: Loss = 0.021763
+  Batch 10/29: Loss = -0.005351
+  Batch 20/29: Loss = -0.001068
+
+Epoch 31/50 | Loss: -0.000690 | LR: 0.000152 | Time: 0.6s
+
+  ✓ Saved best model (loss=-0.000690)
+  Batch 0/29: Loss = 0.029731
+  Batch 10/29: Loss = 0.025687
+  Batch 20/29: Loss = -0.016361
+
+Epoch 32/50 | Loss: 0.004580 | LR: 0.000138 | Time: 0.5s
+
+  Batch 0/29: Loss = 0.029769
+  Batch 10/29: Loss = 0.013544
+  Batch 20/29: Loss = 0.055181
+
+Epoch 33/50 | Loss: 0.006355 | LR: 0.000125 | Time: 0.4s
+
+  Batch 0/29: Loss = -0.004592
+  Batch 10/29: Loss = -0.001656
+  Batch 20/29: Loss = -0.008417
+
+Epoch 34/50 | Loss: 0.000244 | LR: 0.000112 | Time: 0.5s
+
+  Batch 0/29: Loss = 0.005847
+  Batch 10/29: Loss = 0.019375
+  Batch 20/29: Loss = -0.001310
+
+Epoch 35/50 | Loss: 0.000556 | LR: 0.000100 | Time: 0.4s
+
+  Batch 0/29: Loss = -0.011006
+  Batch 10/29: Loss = 0.028387
+  Batch 20/29: Loss = 0.000088
+
+Epoch 36/50 | Loss: 0.006319 | LR: 0.000088 | Time: 0.4s
+
+  Batch 0/29: Loss = 0.003896
+  Batch 10/29: Loss = 0.004057
+  Batch 20/29: Loss = -0.011626
+
+Epoch 37/50 | Loss: 0.000235 | LR: 0.000077 | Time: 0.4s
+
+  Batch 0/29: Loss = 0.014934
+  Batch 10/29: Loss = 0.033418
+  Batch 20/29: Loss = -0.009072
+
+Epoch 38/50 | Loss: 0.009128 | LR: 0.000066 | Time: 0.4s
+
+  Batch 0/29: Loss = 0.017486
+  Batch 10/29: Loss = 0.030824
+  Batch 20/29: Loss = -0.005566
+
+Epoch 39/50 | Loss: 0.005093 | LR: 0.000056 | Time: 0.4s
+
+  Batch 0/29: Loss = 0.006878
+  Batch 10/29: Loss = -0.009054
+  Batch 20/29: Loss = -0.011680
+
+Epoch 40/50 | Loss: 0.000963 | LR: 0.000047 | Time: 0.4s
+
+  Batch 0/29: Loss = 0.007644
+  Batch 10/29: Loss = -0.005616
+  Batch 20/29: Loss = -0.006151
+
+Epoch 41/50 | Loss: 0.004664 | LR: 0.000038 | Time: 0.4s
+
+  Batch 0/29: Loss = -0.014650
+  Batch 10/29: Loss = 0.007075
+  Batch 20/29: Loss = 0.002192
+
+Epoch 42/50 | Loss: 0.002810 | LR: 0.000030 | Time: 1.0s
+
+  Batch 0/29: Loss = 0.020929
+  Batch 10/29: Loss = 0.023371
+  Batch 20/29: Loss = -0.013551
+
+Epoch 43/50 | Loss: 0.004794 | LR: 0.000023 | Time: 0.4s
+
+  Batch 0/29: Loss = -0.013652
+  Batch 10/29: Loss = -0.015887
+  Batch 20/29: Loss = 0.027020
+
+Epoch 44/50 | Loss: 0.002859 | LR: 0.000017 | Time: 0.4s
+
+  Batch 0/29: Loss = -0.014670
+  Batch 10/29: Loss = 0.002464
+  Batch 20/29: Loss = -0.004050
+
+Epoch 45/50 | Loss: -0.004551 | LR: 0.000012 | Time: 0.4s
+
+  ✓ Saved best model (loss=-0.004551)
+  Batch 0/29: Loss = 0.007335
+  Batch 10/29: Loss = -0.006775
+  Batch 20/29: Loss = 0.004457
+
+Epoch 46/50 | Loss: -0.001723 | LR: 0.000008 | Time: 0.4s
+
+  Batch 0/29: Loss = -0.002883
+  Batch 10/29: Loss = 0.005169
+  Batch 20/29: Loss = 0.001892
+
+Epoch 47/50 | Loss: -0.000996 | LR: 0.000004 | Time: 0.4s
+
+  Batch 0/29: Loss = 0.021685
+  Batch 10/29: Loss = 0.013651
+  Batch 20/29: Loss = 0.017131
+
+Epoch 48/50 | Loss: 0.000571 | LR: 0.000002 | Time: 0.4s
+
+  Batch 0/29: Loss = -0.003897
+  Batch 10/29: Loss = 0.019273
+  Batch 20/29: Loss = 0.036600
+
+Epoch 49/50 | Loss: -0.000514 | LR: 0.000000 | Time: 0.4s
+
+  Batch 0/29: Loss = 0.004881
+  Batch 10/29: Loss = 0.002638
+  Batch 20/29: Loss = 0.018702
+
+Epoch 50/50 | Loss: 0.001505 | LR: 0.000000 | Time: 0.4s
+
+
+============================================================
+Training completed!
+Best loss: -0.004551
+============================================================
+
+4. Evaluating...
+/home/menserve/Object-centric-representation/src/train_movi.py:401: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.show()
+/home/menserve/Object-centric-representation/src/train_movi.py:434: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.show()
+Test Loss: 0.000683
+
+5. Visualizing results...
+Saved to checkpoints/clip_baseline_50ep/clip_vitb16/movi_result.png
+Saved to checkpoints/clip_baseline_50ep/clip_vitb16/training_history.png
+
+✅ Training completed!

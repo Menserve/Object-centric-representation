@@ -1,0 +1,1386 @@
+nohup: ignoring input
+Using cache found in /home/menserve/.cache/torch/hub/facebookresearch_dinov2_main
+/home/menserve/.cache/torch/hub/facebookresearch_dinov2_main/dinov2/layers/swiglu_ffn.py:51: UserWarning: xFormers is not available (SwiGLU)
+  warnings.warn("xFormers is not available (SwiGLU)")
+/home/menserve/.cache/torch/hub/facebookresearch_dinov2_main/dinov2/layers/attention.py:33: UserWarning: xFormers is not available (Attention)
+  warnings.warn("xFormers is not available (Attention)")
+/home/menserve/.cache/torch/hub/facebookresearch_dinov2_main/dinov2/layers/block.py:40: UserWarning: xFormers is not available (Block)
+  warnings.warn("xFormers is not available (Block)")
+Device: cuda
+Backbone: dinov2_vits14
+
+1. Loading MOVi-A dataset...
+MoviDataset: Found 60 samples (split=all)
+Train samples: 58
+Test samples: 2
+
+2. Creating SAVi-DINOSAUR model with dinov2_vits14...
+Loading dinov2_vits14 model...
+Trainable parameters: 9,026,241
+
+3. Training...
+
+============================================================
+Training SAVi-DINOSAUR on MOVi-A
+============================================================
+Device: cuda
+Epochs: 200
+Learning rate: 0.0004 (with 5-epoch warmup)
+Batch size: 2
+Dataset size: 58
+Diversity weight: 0.1
+============================================================
+
+  Batch 0/29: Loss = 5.481126
+  Batch 10/29: Loss = 5.811743
+  Batch 20/29: Loss = 5.621581
+
+Epoch 1/200 | Loss: 5.630279 | LR: 0.000083 | Time: 1.3s
+
+  ✓ Saved best model (loss=5.630279)
+  Batch 0/29: Loss = 5.428270
+  Batch 10/29: Loss = 4.424999
+  Batch 20/29: Loss = 3.469781
+
+Epoch 2/200 | Loss: 4.413761 | LR: 0.000162 | Time: 0.5s
+
+  ✓ Saved best model (loss=4.413761)
+  Batch 0/29: Loss = 3.314194
+  Batch 10/29: Loss = 3.085299
+  Batch 20/29: Loss = 2.986005
+
+Epoch 3/200 | Loss: 3.084253 | LR: 0.000242 | Time: 0.5s
+
+  ✓ Saved best model (loss=3.084253)
+  Batch 0/29: Loss = 2.635095
+  Batch 10/29: Loss = 2.328290
+  Batch 20/29: Loss = 2.314230
+
+Epoch 4/200 | Loss: 2.566741 | LR: 0.000321 | Time: 0.6s
+
+  ✓ Saved best model (loss=2.566741)
+  Batch 0/29: Loss = 2.634874
+  Batch 10/29: Loss = 2.759185
+  Batch 20/29: Loss = 2.409748
+
+Epoch 5/200 | Loss: 2.518884 | LR: 0.000400 | Time: 0.6s
+
+  ✓ Saved best model (loss=2.518884)
+  Batch 0/29: Loss = 2.258725
+  Batch 10/29: Loss = 2.257229
+  Batch 20/29: Loss = 2.411011
+
+Epoch 6/200 | Loss: 2.419768 | LR: 0.000400 | Time: 0.6s
+
+  ✓ Saved best model (loss=2.419768)
+  Batch 0/29: Loss = 2.467310
+  Batch 10/29: Loss = 2.670276
+  Batch 20/29: Loss = 2.507360
+
+Epoch 7/200 | Loss: 2.397812 | LR: 0.000400 | Time: 0.6s
+
+  ✓ Saved best model (loss=2.397812)
+  Batch 0/29: Loss = 2.264375
+  Batch 10/29: Loss = 2.162653
+  Batch 20/29: Loss = 2.167573
+
+Epoch 8/200 | Loss: 2.346699 | LR: 0.000400 | Time: 0.6s
+
+  ✓ Saved best model (loss=2.346699)
+  Batch 0/29: Loss = 2.232643
+  Batch 10/29: Loss = 2.452403
+  Batch 20/29: Loss = 2.449888
+
+Epoch 9/200 | Loss: 2.221057 | LR: 0.000400 | Time: 0.8s
+
+  ✓ Saved best model (loss=2.221057)
+  Batch 0/29: Loss = 2.284988
+  Batch 10/29: Loss = 1.982965
+  Batch 20/29: Loss = 2.035132
+
+Epoch 10/200 | Loss: 2.200827 | LR: 0.000399 | Time: 0.7s
+
+  ✓ Saved best model (loss=2.200827)
+  Batch 0/29: Loss = 2.358109
+  Batch 10/29: Loss = 1.982039
+  Batch 20/29: Loss = 2.173078
+
+Epoch 11/200 | Loss: 2.158337 | LR: 0.000399 | Time: 0.6s
+
+  ✓ Saved best model (loss=2.158337)
+  Batch 0/29: Loss = 1.944307
+  Batch 10/29: Loss = 2.297590
+  Batch 20/29: Loss = 2.131620
+
+Epoch 12/200 | Loss: 2.095373 | LR: 0.000399 | Time: 0.6s
+
+  ✓ Saved best model (loss=2.095373)
+  Batch 0/29: Loss = 2.082550
+  Batch 10/29: Loss = 2.098442
+  Batch 20/29: Loss = 2.047798
+
+Epoch 13/200 | Loss: 2.084145 | LR: 0.000398 | Time: 0.6s
+
+  ✓ Saved best model (loss=2.084145)
+  Batch 0/29: Loss = 1.940751
+  Batch 10/29: Loss = 1.794579
+  Batch 20/29: Loss = 1.886910
+
+Epoch 14/200 | Loss: 2.007789 | LR: 0.000398 | Time: 0.6s
+
+  ✓ Saved best model (loss=2.007789)
+  Batch 0/29: Loss = 2.375461
+  Batch 10/29: Loss = 1.919050
+  Batch 20/29: Loss = 2.048267
+
+Epoch 15/200 | Loss: 1.994043 | LR: 0.000397 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.994043)
+  Batch 0/29: Loss = 2.076777
+  Batch 10/29: Loss = 2.047573
+  Batch 20/29: Loss = 2.001730
+
+Epoch 16/200 | Loss: 1.970173 | LR: 0.000397 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.970173)
+  Batch 0/29: Loss = 1.856946
+  Batch 10/29: Loss = 1.908709
+  Batch 20/29: Loss = 1.997826
+
+Epoch 17/200 | Loss: 1.935849 | LR: 0.000396 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.935849)
+  Batch 0/29: Loss = 1.973699
+  Batch 10/29: Loss = 1.960099
+  Batch 20/29: Loss = 1.843088
+
+Epoch 18/200 | Loss: 1.952770 | LR: 0.000396 | Time: 0.6s
+
+  Batch 0/29: Loss = 2.096475
+  Batch 10/29: Loss = 1.878925
+  Batch 20/29: Loss = 1.869046
+
+Epoch 19/200 | Loss: 1.949879 | LR: 0.000395 | Time: 0.6s
+
+  Batch 0/29: Loss = 2.136325
+  Batch 10/29: Loss = 1.943782
+  Batch 20/29: Loss = 1.682887
+
+Epoch 20/200 | Loss: 1.966538 | LR: 0.000394 | Time: 0.6s
+
+  Batch 0/29: Loss = 1.665779
+  Batch 10/29: Loss = 1.817108
+  Batch 20/29: Loss = 1.888313
+
+Epoch 21/200 | Loss: 1.910391 | LR: 0.000393 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.910391)
+  Batch 0/29: Loss = 1.728617
+  Batch 10/29: Loss = 1.743673
+  Batch 20/29: Loss = 1.912121
+
+Epoch 22/200 | Loss: 1.903438 | LR: 0.000393 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.903438)
+  Batch 0/29: Loss = 1.671549
+  Batch 10/29: Loss = 1.665479
+  Batch 20/29: Loss = 1.918247
+
+Epoch 23/200 | Loss: 1.884995 | LR: 0.000392 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.884995)
+  Batch 0/29: Loss = 1.836514
+  Batch 10/29: Loss = 1.612747
+  Batch 20/29: Loss = 2.003542
+
+Epoch 24/200 | Loss: 1.862171 | LR: 0.000391 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.862171)
+  Batch 0/29: Loss = 1.584001
+  Batch 10/29: Loss = 2.201244
+  Batch 20/29: Loss = 2.034902
+
+Epoch 25/200 | Loss: 1.849072 | LR: 0.000390 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.849072)
+  Batch 0/29: Loss = 1.647419
+  Batch 10/29: Loss = 2.000604
+  Batch 20/29: Loss = 1.756787
+
+Epoch 26/200 | Loss: 1.849924 | LR: 0.000389 | Time: 0.6s
+
+  Batch 0/29: Loss = 1.869855
+  Batch 10/29: Loss = 1.942466
+  Batch 20/29: Loss = 1.810450
+
+Epoch 27/200 | Loss: 1.853553 | LR: 0.000388 | Time: 0.6s
+
+  Batch 0/29: Loss = 1.548287
+  Batch 10/29: Loss = 1.885453
+  Batch 20/29: Loss = 1.707078
+
+Epoch 28/200 | Loss: 1.826856 | LR: 0.000386 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.826856)
+  Batch 0/29: Loss = 1.849299
+  Batch 10/29: Loss = 1.918656
+  Batch 20/29: Loss = 1.545366
+
+Epoch 29/200 | Loss: 1.817392 | LR: 0.000385 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.817392)
+  Batch 0/29: Loss = 2.045573
+  Batch 10/29: Loss = 1.906178
+  Batch 20/29: Loss = 1.624608
+
+Epoch 30/200 | Loss: 1.819518 | LR: 0.000384 | Time: 0.6s
+
+  Batch 0/29: Loss = 1.596340
+  Batch 10/29: Loss = 1.770959
+  Batch 20/29: Loss = 1.888162
+
+Epoch 31/200 | Loss: 1.829617 | LR: 0.000383 | Time: 0.6s
+
+  Batch 0/29: Loss = 1.534094
+  Batch 10/29: Loss = 1.814755
+  Batch 20/29: Loss = 1.940457
+
+Epoch 32/200 | Loss: 1.828610 | LR: 0.000381 | Time: 0.6s
+
+  Batch 0/29: Loss = 1.636740
+  Batch 10/29: Loss = 1.785606
+  Batch 20/29: Loss = 1.841693
+
+Epoch 33/200 | Loss: 1.811356 | LR: 0.000380 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.811356)
+  Batch 0/29: Loss = 1.781851
+  Batch 10/29: Loss = 1.830422
+  Batch 20/29: Loss = 1.618215
+
+Epoch 34/200 | Loss: 1.794151 | LR: 0.000379 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.794151)
+  Batch 0/29: Loss = 1.686522
+  Batch 10/29: Loss = 1.698892
+  Batch 20/29: Loss = 1.634051
+
+Epoch 35/200 | Loss: 1.790493 | LR: 0.000377 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.790493)
+  Batch 0/29: Loss = 1.730853
+  Batch 10/29: Loss = 1.706792
+  Batch 20/29: Loss = 2.078907
+
+Epoch 36/200 | Loss: 1.790123 | LR: 0.000376 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.790123)
+  Batch 0/29: Loss = 1.862082
+  Batch 10/29: Loss = 1.934725
+  Batch 20/29: Loss = 1.641022
+
+Epoch 37/200 | Loss: 1.786069 | LR: 0.000374 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.786069)
+  Batch 0/29: Loss = 1.558161
+  Batch 10/29: Loss = 1.792032
+  Batch 20/29: Loss = 2.069267
+
+Epoch 38/200 | Loss: 1.754075 | LR: 0.000372 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.754075)
+  Batch 0/29: Loss = 1.698662
+  Batch 10/29: Loss = 1.871370
+  Batch 20/29: Loss = 1.550314
+
+Epoch 39/200 | Loss: 1.753142 | LR: 0.000371 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.753142)
+  Batch 0/29: Loss = 1.661085
+  Batch 10/29: Loss = 1.822825
+  Batch 20/29: Loss = 1.716822
+
+Epoch 40/200 | Loss: 1.732820 | LR: 0.000369 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.732820)
+  Batch 0/29: Loss = 1.782458
+  Batch 10/29: Loss = 1.797883
+  Batch 20/29: Loss = 1.527220
+
+Epoch 41/200 | Loss: 1.711914 | LR: 0.000367 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.711914)
+  Batch 0/29: Loss = 1.417461
+  Batch 10/29: Loss = 1.680828
+  Batch 20/29: Loss = 1.675420
+
+Epoch 42/200 | Loss: 1.709281 | LR: 0.000366 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.709281)
+  Batch 0/29: Loss = 1.771902
+  Batch 10/29: Loss = 1.740661
+  Batch 20/29: Loss = 1.620350
+
+Epoch 43/200 | Loss: 1.696210 | LR: 0.000364 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.696210)
+  Batch 0/29: Loss = 1.722837
+  Batch 10/29: Loss = 1.680771
+  Batch 20/29: Loss = 1.525063
+
+Epoch 44/200 | Loss: 1.696254 | LR: 0.000362 | Time: 0.6s
+
+  Batch 0/29: Loss = 1.625448
+  Batch 10/29: Loss = 1.758659
+  Batch 20/29: Loss = 1.954140
+
+Epoch 45/200 | Loss: 1.692145 | LR: 0.000360 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.692145)
+  Batch 0/29: Loss = 1.532439
+  Batch 10/29: Loss = 1.820989
+  Batch 20/29: Loss = 1.761077
+
+Epoch 46/200 | Loss: 1.671482 | LR: 0.000358 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.671482)
+  Batch 0/29: Loss = 1.645573
+  Batch 10/29: Loss = 1.561061
+  Batch 20/29: Loss = 1.518810
+
+Epoch 47/200 | Loss: 1.661845 | LR: 0.000356 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.661845)
+  Batch 0/29: Loss = 1.643899
+  Batch 10/29: Loss = 1.511737
+  Batch 20/29: Loss = 1.540627
+
+Epoch 48/200 | Loss: 1.658136 | LR: 0.000354 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.658136)
+  Batch 0/29: Loss = 1.654971
+  Batch 10/29: Loss = 1.561008
+  Batch 20/29: Loss = 1.563008
+
+Epoch 49/200 | Loss: 1.628405 | LR: 0.000352 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.628405)
+  Batch 0/29: Loss = 1.559175
+  Batch 10/29: Loss = 1.795894
+  Batch 20/29: Loss = 1.731291
+
+Epoch 50/200 | Loss: 1.616763 | LR: 0.000350 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.616763)
+  Batch 0/29: Loss = 1.564825
+  Batch 10/29: Loss = 1.500137
+  Batch 20/29: Loss = 1.804093
+
+Epoch 51/200 | Loss: 1.610933 | LR: 0.000348 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.610933)
+  Batch 0/29: Loss = 1.365437
+  Batch 10/29: Loss = 1.439748
+  Batch 20/29: Loss = 1.537924
+
+Epoch 52/200 | Loss: 1.609063 | LR: 0.000345 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.609063)
+  Batch 0/29: Loss = 1.647764
+  Batch 10/29: Loss = 1.397500
+  Batch 20/29: Loss = 1.522064
+
+Epoch 53/200 | Loss: 1.596900 | LR: 0.000343 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.596900)
+  Batch 0/29: Loss = 1.669399
+  Batch 10/29: Loss = 1.719232
+  Batch 20/29: Loss = 1.728896
+
+Epoch 54/200 | Loss: 1.568125 | LR: 0.000341 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.568125)
+  Batch 0/29: Loss = 1.449905
+  Batch 10/29: Loss = 1.753801
+  Batch 20/29: Loss = 1.566118
+
+Epoch 55/200 | Loss: 1.575664 | LR: 0.000339 | Time: 0.7s
+
+  Batch 0/29: Loss = 1.262811
+  Batch 10/29: Loss = 1.525614
+  Batch 20/29: Loss = 1.659338
+
+Epoch 56/200 | Loss: 1.550632 | LR: 0.000336 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.550632)
+  Batch 0/29: Loss = 1.551330
+  Batch 10/29: Loss = 1.621612
+  Batch 20/29: Loss = 1.681981
+
+Epoch 57/200 | Loss: 1.554412 | LR: 0.000334 | Time: 0.6s
+
+  Batch 0/29: Loss = 1.702608
+  Batch 10/29: Loss = 1.408890
+  Batch 20/29: Loss = 1.413188
+
+Epoch 58/200 | Loss: 1.553884 | LR: 0.000331 | Time: 0.6s
+
+  Batch 0/29: Loss = 1.542914
+  Batch 10/29: Loss = 1.527632
+  Batch 20/29: Loss = 1.401204
+
+Epoch 59/200 | Loss: 1.530885 | LR: 0.000329 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.530885)
+  Batch 0/29: Loss = 1.672739
+  Batch 10/29: Loss = 1.503929
+  Batch 20/29: Loss = 1.523473
+
+Epoch 60/200 | Loss: 1.515099 | LR: 0.000326 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.515099)
+  Batch 0/29: Loss = 1.426648
+  Batch 10/29: Loss = 1.605236
+  Batch 20/29: Loss = 1.679893
+
+Epoch 61/200 | Loss: 1.506465 | LR: 0.000324 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.506465)
+  Batch 0/29: Loss = 1.286492
+  Batch 10/29: Loss = 1.245394
+  Batch 20/29: Loss = 1.663260
+
+Epoch 62/200 | Loss: 1.511429 | LR: 0.000321 | Time: 0.6s
+
+  Batch 0/29: Loss = 1.491935
+  Batch 10/29: Loss = 1.561700
+  Batch 20/29: Loss = 1.451315
+
+Epoch 63/200 | Loss: 1.517561 | LR: 0.000319 | Time: 0.6s
+
+  Batch 0/29: Loss = 1.561095
+  Batch 10/29: Loss = 1.742268
+  Batch 20/29: Loss = 1.570488
+
+Epoch 64/200 | Loss: 1.488898 | LR: 0.000316 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.488898)
+  Batch 0/29: Loss = 1.491470
+  Batch 10/29: Loss = 1.596630
+  Batch 20/29: Loss = 1.361565
+
+Epoch 65/200 | Loss: 1.486020 | LR: 0.000314 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.486020)
+  Batch 0/29: Loss = 1.622440
+  Batch 10/29: Loss = 1.595880
+  Batch 20/29: Loss = 1.344053
+
+Epoch 66/200 | Loss: 1.500944 | LR: 0.000311 | Time: 0.6s
+
+  Batch 0/29: Loss = 1.483697
+  Batch 10/29: Loss = 1.482842
+  Batch 20/29: Loss = 1.304194
+
+Epoch 67/200 | Loss: 1.470600 | LR: 0.000308 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.470600)
+  Batch 0/29: Loss = 1.440025
+  Batch 10/29: Loss = 1.348480
+  Batch 20/29: Loss = 1.272040
+
+Epoch 68/200 | Loss: 1.450417 | LR: 0.000306 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.450417)
+  Batch 0/29: Loss = 1.333100
+  Batch 10/29: Loss = 1.337856
+  Batch 20/29: Loss = 1.347182
+
+Epoch 69/200 | Loss: 1.441912 | LR: 0.000303 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.441912)
+  Batch 0/29: Loss = 1.580101
+  Batch 10/29: Loss = 1.478021
+  Batch 20/29: Loss = 1.474618
+
+Epoch 70/200 | Loss: 1.436813 | LR: 0.000300 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.436813)
+  Batch 0/29: Loss = 1.347320
+  Batch 10/29: Loss = 1.495246
+  Batch 20/29: Loss = 1.545059
+
+Epoch 71/200 | Loss: 1.437242 | LR: 0.000297 | Time: 0.6s
+
+  Batch 0/29: Loss = 1.415016
+  Batch 10/29: Loss = 1.275644
+  Batch 20/29: Loss = 1.392517
+
+Epoch 72/200 | Loss: 1.437530 | LR: 0.000294 | Time: 0.6s
+
+  Batch 0/29: Loss = 1.239776
+  Batch 10/29: Loss = 1.541140
+  Batch 20/29: Loss = 1.449560
+
+Epoch 73/200 | Loss: 1.418683 | LR: 0.000292 | Time: 0.7s
+
+  ✓ Saved best model (loss=1.418683)
+  Batch 0/29: Loss = 1.301665
+  Batch 10/29: Loss = 1.539832
+  Batch 20/29: Loss = 1.327332
+
+Epoch 74/200 | Loss: 1.409680 | LR: 0.000289 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.409680)
+  Batch 0/29: Loss = 1.400618
+  Batch 10/29: Loss = 1.563288
+  Batch 20/29: Loss = 1.226016
+
+Epoch 75/200 | Loss: 1.394614 | LR: 0.000286 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.394614)
+  Batch 0/29: Loss = 1.219458
+  Batch 10/29: Loss = 1.452508
+  Batch 20/29: Loss = 1.451152
+
+Epoch 76/200 | Loss: 1.398011 | LR: 0.000283 | Time: 0.6s
+
+  Batch 0/29: Loss = 1.255566
+  Batch 10/29: Loss = 1.594926
+  Batch 20/29: Loss = 1.481918
+
+Epoch 77/200 | Loss: 1.386998 | LR: 0.000280 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.386998)
+  Batch 0/29: Loss = 1.449724
+  Batch 10/29: Loss = 1.401320
+  Batch 20/29: Loss = 1.620117
+
+Epoch 78/200 | Loss: 1.365138 | LR: 0.000277 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.365138)
+  Batch 0/29: Loss = 1.256092
+  Batch 10/29: Loss = 1.390928
+  Batch 20/29: Loss = 1.235351
+
+Epoch 79/200 | Loss: 1.357237 | LR: 0.000274 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.357237)
+  Batch 0/29: Loss = 1.292124
+  Batch 10/29: Loss = 1.285072
+  Batch 20/29: Loss = 1.436074
+
+Epoch 80/200 | Loss: 1.343350 | LR: 0.000271 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.343350)
+  Batch 0/29: Loss = 1.045447
+  Batch 10/29: Loss = 1.160426
+  Batch 20/29: Loss = 1.365822
+
+Epoch 81/200 | Loss: 1.336606 | LR: 0.000268 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.336606)
+  Batch 0/29: Loss = 1.373708
+  Batch 10/29: Loss = 1.417027
+  Batch 20/29: Loss = 1.468674
+
+Epoch 82/200 | Loss: 1.350122 | LR: 0.000265 | Time: 0.5s
+
+  Batch 0/29: Loss = 1.304898
+  Batch 10/29: Loss = 1.199711
+  Batch 20/29: Loss = 1.326904
+
+Epoch 83/200 | Loss: 1.335743 | LR: 0.000262 | Time: 0.5s
+
+  ✓ Saved best model (loss=1.335743)
+  Batch 0/29: Loss = 1.350287
+  Batch 10/29: Loss = 1.093059
+  Batch 20/29: Loss = 1.472864
+
+Epoch 84/200 | Loss: 1.308828 | LR: 0.000259 | Time: 0.5s
+
+  ✓ Saved best model (loss=1.308828)
+  Batch 0/29: Loss = 1.179739
+  Batch 10/29: Loss = 1.147385
+  Batch 20/29: Loss = 1.277439
+
+Epoch 85/200 | Loss: 1.325293 | LR: 0.000256 | Time: 0.6s
+
+  Batch 0/29: Loss = 1.404719
+  Batch 10/29: Loss = 1.380411
+  Batch 20/29: Loss = 1.292383
+
+Epoch 86/200 | Loss: 1.307604 | LR: 0.000253 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.307604)
+  Batch 0/29: Loss = 1.233508
+  Batch 10/29: Loss = 1.426517
+  Batch 20/29: Loss = 1.258558
+
+Epoch 87/200 | Loss: 1.304126 | LR: 0.000249 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.304126)
+  Batch 0/29: Loss = 1.613460
+  Batch 10/29: Loss = 1.219095
+  Batch 20/29: Loss = 1.238270
+
+Epoch 88/200 | Loss: 1.281621 | LR: 0.000246 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.281621)
+  Batch 0/29: Loss = 1.180410
+  Batch 10/29: Loss = 1.186750
+  Batch 20/29: Loss = 1.375653
+
+Epoch 89/200 | Loss: 1.272283 | LR: 0.000243 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.272283)
+  Batch 0/29: Loss = 1.276043
+  Batch 10/29: Loss = 1.239061
+  Batch 20/29: Loss = 1.286208
+
+Epoch 90/200 | Loss: 1.275787 | LR: 0.000240 | Time: 0.6s
+
+  Batch 0/29: Loss = 1.149515
+  Batch 10/29: Loss = 1.155135
+  Batch 20/29: Loss = 1.467790
+
+Epoch 91/200 | Loss: 1.264181 | LR: 0.000237 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.264181)
+  Batch 0/29: Loss = 1.084081
+  Batch 10/29: Loss = 1.092435
+  Batch 20/29: Loss = 1.117815
+
+Epoch 92/200 | Loss: 1.280646 | LR: 0.000234 | Time: 0.6s
+
+  Batch 0/29: Loss = 1.219736
+  Batch 10/29: Loss = 1.312662
+  Batch 20/29: Loss = 1.329948
+
+Epoch 93/200 | Loss: 1.235558 | LR: 0.000230 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.235558)
+  Batch 0/29: Loss = 1.490832
+  Batch 10/29: Loss = 1.221129
+  Batch 20/29: Loss = 1.245243
+
+Epoch 94/200 | Loss: 1.234114 | LR: 0.000227 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.234114)
+  Batch 0/29: Loss = 1.252540
+  Batch 10/29: Loss = 1.267508
+  Batch 20/29: Loss = 1.413762
+
+Epoch 95/200 | Loss: 1.241517 | LR: 0.000224 | Time: 0.6s
+
+  Batch 0/29: Loss = 1.147654
+  Batch 10/29: Loss = 1.198616
+  Batch 20/29: Loss = 1.182688
+
+Epoch 96/200 | Loss: 1.213903 | LR: 0.000221 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.213903)
+  Batch 0/29: Loss = 1.161385
+  Batch 10/29: Loss = 1.197033
+  Batch 20/29: Loss = 0.956363
+
+Epoch 97/200 | Loss: 1.215850 | LR: 0.000218 | Time: 0.6s
+
+  Batch 0/29: Loss = 1.047060
+  Batch 10/29: Loss = 1.101490
+  Batch 20/29: Loss = 1.434415
+
+Epoch 98/200 | Loss: 1.206787 | LR: 0.000214 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.206787)
+  Batch 0/29: Loss = 1.187377
+  Batch 10/29: Loss = 1.082418
+  Batch 20/29: Loss = 1.118022
+
+Epoch 99/200 | Loss: 1.194194 | LR: 0.000211 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.194194)
+  Batch 0/29: Loss = 0.830191
+  Batch 10/29: Loss = 1.339188
+  Batch 20/29: Loss = 1.222706
+
+Epoch 100/200 | Loss: 1.219211 | LR: 0.000208 | Time: 0.6s
+
+  Batch 0/29: Loss = 1.335768
+  Batch 10/29: Loss = 1.164366
+  Batch 20/29: Loss = 1.122992
+
+Epoch 101/200 | Loss: 1.176298 | LR: 0.000205 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.176298)
+  Batch 0/29: Loss = 1.009906
+  Batch 10/29: Loss = 1.400173
+  Batch 20/29: Loss = 1.162284
+
+Epoch 102/200 | Loss: 1.169843 | LR: 0.000202 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.169843)
+  Batch 0/29: Loss = 1.357904
+  Batch 10/29: Loss = 1.219195
+  Batch 20/29: Loss = 1.126114
+
+Epoch 103/200 | Loss: 1.154274 | LR: 0.000198 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.154274)
+  Batch 0/29: Loss = 1.299961
+  Batch 10/29: Loss = 1.224775
+  Batch 20/29: Loss = 1.202089
+
+Epoch 104/200 | Loss: 1.159517 | LR: 0.000195 | Time: 0.6s
+
+  Batch 0/29: Loss = 1.256033
+  Batch 10/29: Loss = 1.008798
+  Batch 20/29: Loss = 1.239646
+
+Epoch 105/200 | Loss: 1.141802 | LR: 0.000192 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.141802)
+  Batch 0/29: Loss = 1.012263
+  Batch 10/29: Loss = 1.268433
+  Batch 20/29: Loss = 1.178785
+
+Epoch 106/200 | Loss: 1.141851 | LR: 0.000189 | Time: 0.6s
+
+  Batch 0/29: Loss = 1.249236
+  Batch 10/29: Loss = 1.065343
+  Batch 20/29: Loss = 1.063701
+
+Epoch 107/200 | Loss: 1.124253 | LR: 0.000186 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.124253)
+  Batch 0/29: Loss = 1.287114
+  Batch 10/29: Loss = 1.377088
+  Batch 20/29: Loss = 0.938238
+
+Epoch 108/200 | Loss: 1.118439 | LR: 0.000182 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.118439)
+  Batch 0/29: Loss = 1.014121
+  Batch 10/29: Loss = 1.374176
+  Batch 20/29: Loss = 0.947663
+
+Epoch 109/200 | Loss: 1.116352 | LR: 0.000179 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.116352)
+  Batch 0/29: Loss = 1.155512
+  Batch 10/29: Loss = 1.140023
+  Batch 20/29: Loss = 1.235505
+
+Epoch 110/200 | Loss: 1.099164 | LR: 0.000176 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.099164)
+  Batch 0/29: Loss = 1.001181
+  Batch 10/29: Loss = 1.240973
+  Batch 20/29: Loss = 1.243470
+
+Epoch 111/200 | Loss: 1.102219 | LR: 0.000173 | Time: 0.6s
+
+  Batch 0/29: Loss = 1.067624
+  Batch 10/29: Loss = 1.092899
+  Batch 20/29: Loss = 1.245563
+
+Epoch 112/200 | Loss: 1.092267 | LR: 0.000170 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.092267)
+  Batch 0/29: Loss = 1.212808
+  Batch 10/29: Loss = 1.065940
+  Batch 20/29: Loss = 1.357754
+
+Epoch 113/200 | Loss: 1.075195 | LR: 0.000166 | Time: 0.7s
+
+  ✓ Saved best model (loss=1.075195)
+  Batch 0/29: Loss = 1.184055
+  Batch 10/29: Loss = 1.209190
+  Batch 20/29: Loss = 1.278547
+
+Epoch 114/200 | Loss: 1.084703 | LR: 0.000163 | Time: 0.6s
+
+  Batch 0/29: Loss = 1.184493
+  Batch 10/29: Loss = 0.993120
+  Batch 20/29: Loss = 1.159967
+
+Epoch 115/200 | Loss: 1.067753 | LR: 0.000160 | Time: 0.5s
+
+  ✓ Saved best model (loss=1.067753)
+  Batch 0/29: Loss = 0.782949
+  Batch 10/29: Loss = 0.987555
+  Batch 20/29: Loss = 1.195006
+
+Epoch 116/200 | Loss: 1.059091 | LR: 0.000157 | Time: 0.7s
+
+  ✓ Saved best model (loss=1.059091)
+  Batch 0/29: Loss = 1.057453
+  Batch 10/29: Loss = 1.139961
+  Batch 20/29: Loss = 0.844174
+
+Epoch 117/200 | Loss: 1.050070 | LR: 0.000154 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.050070)
+  Batch 0/29: Loss = 1.265127
+  Batch 10/29: Loss = 1.011386
+  Batch 20/29: Loss = 1.204989
+
+Epoch 118/200 | Loss: 1.044201 | LR: 0.000151 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.044201)
+  Batch 0/29: Loss = 1.102711
+  Batch 10/29: Loss = 1.029601
+  Batch 20/29: Loss = 0.890247
+
+Epoch 119/200 | Loss: 1.037445 | LR: 0.000147 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.037445)
+  Batch 0/29: Loss = 1.143712
+  Batch 10/29: Loss = 0.697348
+  Batch 20/29: Loss = 0.845900
+
+Epoch 120/200 | Loss: 1.028943 | LR: 0.000144 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.028943)
+  Batch 0/29: Loss = 0.999767
+  Batch 10/29: Loss = 0.852929
+  Batch 20/29: Loss = 1.158946
+
+Epoch 121/200 | Loss: 1.034294 | LR: 0.000141 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.880466
+  Batch 10/29: Loss = 0.933066
+  Batch 20/29: Loss = 1.082052
+
+Epoch 122/200 | Loss: 1.017620 | LR: 0.000138 | Time: 0.5s
+
+  ✓ Saved best model (loss=1.017620)
+  Batch 0/29: Loss = 0.949967
+  Batch 10/29: Loss = 0.935340
+  Batch 20/29: Loss = 1.086079
+
+Epoch 123/200 | Loss: 1.011330 | LR: 0.000135 | Time: 0.6s
+
+  ✓ Saved best model (loss=1.011330)
+  Batch 0/29: Loss = 0.684363
+  Batch 10/29: Loss = 1.023105
+  Batch 20/29: Loss = 0.834890
+
+Epoch 124/200 | Loss: 0.999182 | LR: 0.000132 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.999182)
+  Batch 0/29: Loss = 0.920434
+  Batch 10/29: Loss = 0.840928
+  Batch 20/29: Loss = 1.209018
+
+Epoch 125/200 | Loss: 0.999804 | LR: 0.000129 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.884383
+  Batch 10/29: Loss = 1.172926
+  Batch 20/29: Loss = 0.949100
+
+Epoch 126/200 | Loss: 0.992131 | LR: 0.000126 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.992131)
+  Batch 0/29: Loss = 0.999223
+  Batch 10/29: Loss = 1.088125
+  Batch 20/29: Loss = 0.985117
+
+Epoch 127/200 | Loss: 0.979802 | LR: 0.000123 | Time: 0.7s
+
+  ✓ Saved best model (loss=0.979802)
+  Batch 0/29: Loss = 0.944485
+  Batch 10/29: Loss = 0.993696
+  Batch 20/29: Loss = 0.989407
+
+Epoch 128/200 | Loss: 0.971015 | LR: 0.000120 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.971015)
+  Batch 0/29: Loss = 0.816830
+  Batch 10/29: Loss = 0.899282
+  Batch 20/29: Loss = 1.006877
+
+Epoch 129/200 | Loss: 0.962490 | LR: 0.000117 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.962490)
+  Batch 0/29: Loss = 1.105870
+  Batch 10/29: Loss = 0.843431
+  Batch 20/29: Loss = 1.238773
+
+Epoch 130/200 | Loss: 0.963378 | LR: 0.000114 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.839408
+  Batch 10/29: Loss = 0.916857
+  Batch 20/29: Loss = 0.990333
+
+Epoch 131/200 | Loss: 0.954997 | LR: 0.000111 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.954997)
+  Batch 0/29: Loss = 0.905031
+  Batch 10/29: Loss = 1.121677
+  Batch 20/29: Loss = 1.179866
+
+Epoch 132/200 | Loss: 0.954134 | LR: 0.000108 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.954134)
+  Batch 0/29: Loss = 0.987929
+  Batch 10/29: Loss = 0.896650
+  Batch 20/29: Loss = 0.853945
+
+Epoch 133/200 | Loss: 0.946894 | LR: 0.000106 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.946894)
+  Batch 0/29: Loss = 0.907145
+  Batch 10/29: Loss = 1.136683
+  Batch 20/29: Loss = 0.790486
+
+Epoch 134/200 | Loss: 0.948689 | LR: 0.000103 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.733454
+  Batch 10/29: Loss = 0.936407
+  Batch 20/29: Loss = 1.103078
+
+Epoch 135/200 | Loss: 0.939792 | LR: 0.000100 | Time: 0.5s
+
+  ✓ Saved best model (loss=0.939792)
+  Batch 0/29: Loss = 1.022758
+  Batch 10/29: Loss = 0.861404
+  Batch 20/29: Loss = 0.928758
+
+Epoch 136/200 | Loss: 0.932934 | LR: 0.000097 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.932934)
+  Batch 0/29: Loss = 0.806962
+  Batch 10/29: Loss = 1.131275
+  Batch 20/29: Loss = 0.866501
+
+Epoch 137/200 | Loss: 0.927798 | LR: 0.000094 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.927798)
+  Batch 0/29: Loss = 0.812717
+  Batch 10/29: Loss = 1.019341
+  Batch 20/29: Loss = 1.124721
+
+Epoch 138/200 | Loss: 0.924137 | LR: 0.000092 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.924137)
+  Batch 0/29: Loss = 1.006039
+  Batch 10/29: Loss = 1.196380
+  Batch 20/29: Loss = 0.815106
+
+Epoch 139/200 | Loss: 0.918480 | LR: 0.000089 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.918480)
+  Batch 0/29: Loss = 0.681021
+  Batch 10/29: Loss = 0.764480
+  Batch 20/29: Loss = 0.725689
+
+Epoch 140/200 | Loss: 0.909861 | LR: 0.000086 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.909861)
+  Batch 0/29: Loss = 0.929996
+  Batch 10/29: Loss = 0.861625
+  Batch 20/29: Loss = 1.039006
+
+Epoch 141/200 | Loss: 0.907211 | LR: 0.000084 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.907211)
+  Batch 0/29: Loss = 0.924310
+  Batch 10/29: Loss = 0.900010
+  Batch 20/29: Loss = 0.845331
+
+Epoch 142/200 | Loss: 0.900488 | LR: 0.000081 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.900488)
+  Batch 0/29: Loss = 0.972077
+  Batch 10/29: Loss = 0.951055
+  Batch 20/29: Loss = 1.074136
+
+Epoch 143/200 | Loss: 0.896155 | LR: 0.000079 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.896155)
+  Batch 0/29: Loss = 0.645088
+  Batch 10/29: Loss = 0.753012
+  Batch 20/29: Loss = 0.949228
+
+Epoch 144/200 | Loss: 0.890036 | LR: 0.000076 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.890036)
+  Batch 0/29: Loss = 0.533555
+  Batch 10/29: Loss = 0.872506
+  Batch 20/29: Loss = 1.022933
+
+Epoch 145/200 | Loss: 0.882881 | LR: 0.000074 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.882881)
+  Batch 0/29: Loss = 0.914228
+  Batch 10/29: Loss = 0.878880
+  Batch 20/29: Loss = 0.799137
+
+Epoch 146/200 | Loss: 0.882376 | LR: 0.000071 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.882376)
+  Batch 0/29: Loss = 1.013554
+  Batch 10/29: Loss = 0.897824
+  Batch 20/29: Loss = 1.051956
+
+Epoch 147/200 | Loss: 0.879281 | LR: 0.000069 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.879281)
+  Batch 0/29: Loss = 1.032620
+  Batch 10/29: Loss = 1.048606
+  Batch 20/29: Loss = 0.797277
+
+Epoch 148/200 | Loss: 0.877154 | LR: 0.000066 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.877154)
+  Batch 0/29: Loss = 0.949780
+  Batch 10/29: Loss = 0.727852
+  Batch 20/29: Loss = 0.843050
+
+Epoch 149/200 | Loss: 0.876467 | LR: 0.000064 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.876467)
+  Batch 0/29: Loss = 0.785392
+  Batch 10/29: Loss = 0.815855
+  Batch 20/29: Loss = 1.005822
+
+Epoch 150/200 | Loss: 0.867204 | LR: 0.000061 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.867204)
+  Batch 0/29: Loss = 0.928722
+  Batch 10/29: Loss = 1.062895
+  Batch 20/29: Loss = 0.781774
+
+Epoch 151/200 | Loss: 0.862102 | LR: 0.000059 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.862102)
+  Batch 0/29: Loss = 0.817520
+  Batch 10/29: Loss = 0.901593
+  Batch 20/29: Loss = 0.921501
+
+Epoch 152/200 | Loss: 0.865989 | LR: 0.000057 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.780980
+  Batch 10/29: Loss = 0.620211
+  Batch 20/29: Loss = 0.806603
+
+Epoch 153/200 | Loss: 0.860203 | LR: 0.000055 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.860203)
+  Batch 0/29: Loss = 0.867857
+  Batch 10/29: Loss = 0.787974
+  Batch 20/29: Loss = 0.934142
+
+Epoch 154/200 | Loss: 0.855969 | LR: 0.000052 | Time: 0.7s
+
+  ✓ Saved best model (loss=0.855969)
+  Batch 0/29: Loss = 0.891297
+  Batch 10/29: Loss = 0.695496
+  Batch 20/29: Loss = 0.975143
+
+Epoch 155/200 | Loss: 0.850389 | LR: 0.000050 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.850389)
+  Batch 0/29: Loss = 0.935060
+  Batch 10/29: Loss = 0.751054
+  Batch 20/29: Loss = 0.852015
+
+Epoch 156/200 | Loss: 0.843731 | LR: 0.000048 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.843731)
+  Batch 0/29: Loss = 0.874138
+  Batch 10/29: Loss = 0.844072
+  Batch 20/29: Loss = 0.802257
+
+Epoch 157/200 | Loss: 0.838833 | LR: 0.000046 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.838833)
+  Batch 0/29: Loss = 0.764858
+  Batch 10/29: Loss = 0.954206
+  Batch 20/29: Loss = 0.774794
+
+Epoch 158/200 | Loss: 0.836324 | LR: 0.000044 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.836324)
+  Batch 0/29: Loss = 1.025721
+  Batch 10/29: Loss = 0.865239
+  Batch 20/29: Loss = 0.842748
+
+Epoch 159/200 | Loss: 0.833569 | LR: 0.000042 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.833569)
+  Batch 0/29: Loss = 0.813885
+  Batch 10/29: Loss = 0.800188
+  Batch 20/29: Loss = 0.687641
+
+Epoch 160/200 | Loss: 0.831858 | LR: 0.000040 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.831858)
+  Batch 0/29: Loss = 0.901657
+  Batch 10/29: Loss = 0.716609
+  Batch 20/29: Loss = 0.739433
+
+Epoch 161/200 | Loss: 0.829761 | LR: 0.000038 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.829761)
+  Batch 0/29: Loss = 0.736870
+  Batch 10/29: Loss = 0.741895
+  Batch 20/29: Loss = 0.839530
+
+Epoch 162/200 | Loss: 0.827844 | LR: 0.000036 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.827844)
+  Batch 0/29: Loss = 0.738254
+  Batch 10/29: Loss = 0.782109
+  Batch 20/29: Loss = 0.843119
+
+Epoch 163/200 | Loss: 0.821141 | LR: 0.000034 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.821141)
+  Batch 0/29: Loss = 0.747249
+  Batch 10/29: Loss = 0.775660
+  Batch 20/29: Loss = 0.654398
+
+Epoch 164/200 | Loss: 0.821133 | LR: 0.000033 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.821133)
+  Batch 0/29: Loss = 0.900842
+  Batch 10/29: Loss = 0.787196
+  Batch 20/29: Loss = 0.781952
+
+Epoch 165/200 | Loss: 0.819223 | LR: 0.000031 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.819223)
+  Batch 0/29: Loss = 0.965575
+  Batch 10/29: Loss = 0.717068
+  Batch 20/29: Loss = 1.009581
+
+Epoch 166/200 | Loss: 0.821095 | LR: 0.000029 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.683340
+  Batch 10/29: Loss = 1.060016
+  Batch 20/29: Loss = 0.794315
+
+Epoch 167/200 | Loss: 0.812752 | LR: 0.000028 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.812752)
+  Batch 0/29: Loss = 0.783274
+  Batch 10/29: Loss = 0.902090
+  Batch 20/29: Loss = 0.658023
+
+Epoch 168/200 | Loss: 0.812913 | LR: 0.000026 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.804536
+  Batch 10/29: Loss = 0.963997
+  Batch 20/29: Loss = 0.833066
+
+Epoch 169/200 | Loss: 0.809560 | LR: 0.000024 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.809560)
+  Batch 0/29: Loss = 0.863898
+  Batch 10/29: Loss = 0.774894
+  Batch 20/29: Loss = 0.834504
+
+Epoch 170/200 | Loss: 0.807801 | LR: 0.000023 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.807801)
+  Batch 0/29: Loss = 0.846381
+  Batch 10/29: Loss = 0.888212
+  Batch 20/29: Loss = 0.709130
+
+Epoch 171/200 | Loss: 0.804232 | LR: 0.000021 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.804232)
+  Batch 0/29: Loss = 0.832368
+  Batch 10/29: Loss = 0.780717
+  Batch 20/29: Loss = 0.576233
+
+Epoch 172/200 | Loss: 0.797572 | LR: 0.000020 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.797572)
+  Batch 0/29: Loss = 0.745878
+  Batch 10/29: Loss = 0.717608
+  Batch 20/29: Loss = 0.883115
+
+Epoch 173/200 | Loss: 0.806010 | LR: 0.000019 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.797092
+  Batch 10/29: Loss = 0.910502
+  Batch 20/29: Loss = 0.638336
+
+Epoch 174/200 | Loss: 0.801370 | LR: 0.000017 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.843227
+  Batch 10/29: Loss = 0.751642
+  Batch 20/29: Loss = 0.847927
+
+Epoch 175/200 | Loss: 0.802776 | LR: 0.000016 | Time: 0.6s
+
+  Batch 0/29: Loss = 1.004266
+  Batch 10/29: Loss = 0.862672
+  Batch 20/29: Loss = 0.670954
+
+Epoch 176/200 | Loss: 0.797757 | LR: 0.000015 | Time: 0.5s
+
+  Batch 0/29: Loss = 0.787291
+  Batch 10/29: Loss = 0.778223
+  Batch 20/29: Loss = 0.887125
+
+Epoch 177/200 | Loss: 0.790410 | LR: 0.000014 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.790410)
+  Batch 0/29: Loss = 0.824578
+  Batch 10/29: Loss = 0.602418
+  Batch 20/29: Loss = 0.613779
+
+Epoch 178/200 | Loss: 0.802933 | LR: 0.000012 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.824605
+  Batch 10/29: Loss = 0.650146
+  Batch 20/29: Loss = 0.778441
+
+Epoch 179/200 | Loss: 0.793741 | LR: 0.000011 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.906026
+  Batch 10/29: Loss = 0.593748
+  Batch 20/29: Loss = 0.914970
+
+Epoch 180/200 | Loss: 0.793472 | LR: 0.000010 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.700180
+  Batch 10/29: Loss = 0.893551
+  Batch 20/29: Loss = 0.610387
+
+Epoch 181/200 | Loss: 0.785706 | LR: 0.000009 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.785706)
+  Batch 0/29: Loss = 0.653216
+  Batch 10/29: Loss = 0.692057
+  Batch 20/29: Loss = 0.966002
+
+Epoch 182/200 | Loss: 0.791064 | LR: 0.000008 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.946372
+  Batch 10/29: Loss = 0.559189
+  Batch 20/29: Loss = 0.848408
+
+Epoch 183/200 | Loss: 0.787095 | LR: 0.000007 | Time: 0.7s
+
+  Batch 0/29: Loss = 0.737285
+  Batch 10/29: Loss = 1.016310
+  Batch 20/29: Loss = 0.691730
+
+Epoch 184/200 | Loss: 0.789412 | LR: 0.000007 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.822585
+  Batch 10/29: Loss = 0.937590
+  Batch 20/29: Loss = 0.765639
+
+Epoch 185/200 | Loss: 0.791358 | LR: 0.000006 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.927211
+  Batch 10/29: Loss = 0.604144
+  Batch 20/29: Loss = 0.743521
+
+Epoch 186/200 | Loss: 0.786844 | LR: 0.000005 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.801612
+  Batch 10/29: Loss = 0.822593
+  Batch 20/29: Loss = 1.030998
+
+Epoch 187/200 | Loss: 0.787905 | LR: 0.000004 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.916169
+  Batch 10/29: Loss = 0.663723
+  Batch 20/29: Loss = 0.969934
+
+Epoch 188/200 | Loss: 0.785972 | LR: 0.000004 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.865123
+  Batch 10/29: Loss = 0.878058
+  Batch 20/29: Loss = 0.791175
+
+Epoch 189/200 | Loss: 0.785949 | LR: 0.000003 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.754380
+  Batch 10/29: Loss = 0.757744
+  Batch 20/29: Loss = 0.816152
+
+Epoch 190/200 | Loss: 0.787299 | LR: 0.000003 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.723351
+  Batch 10/29: Loss = 0.838775
+  Batch 20/29: Loss = 0.823849
+
+Epoch 191/200 | Loss: 0.786037 | LR: 0.000002 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.774792
+  Batch 10/29: Loss = 0.736022
+  Batch 20/29: Loss = 0.635669
+
+Epoch 192/200 | Loss: 0.793705 | LR: 0.000002 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.834330
+  Batch 10/29: Loss = 0.867361
+  Batch 20/29: Loss = 0.877260
+
+Epoch 193/200 | Loss: 0.783904 | LR: 0.000001 | Time: 0.6s
+
+  ✓ Saved best model (loss=0.783904)
+  Batch 0/29: Loss = 0.757024
+  Batch 10/29: Loss = 0.988208
+  Batch 20/29: Loss = 0.532519
+
+Epoch 194/200 | Loss: 0.785740 | LR: 0.000001 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.903845
+  Batch 10/29: Loss = 0.772268
+  Batch 20/29: Loss = 0.888362
+
+Epoch 195/200 | Loss: 0.787779 | LR: 0.000001 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.575289
+  Batch 10/29: Loss = 0.599579
+  Batch 20/29: Loss = 0.866426
+
+Epoch 196/200 | Loss: 0.788769 | LR: 0.000000 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.525272
+  Batch 10/29: Loss = 0.684201
+  Batch 20/29: Loss = 0.924842
+
+Epoch 197/200 | Loss: 0.785820 | LR: 0.000000 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.644885
+  Batch 10/29: Loss = 0.731369
+  Batch 20/29: Loss = 0.736677
+
+Epoch 198/200 | Loss: 0.790295 | LR: 0.000000 | Time: 0.6s
+
+  Batch 0/29: Loss = 1.043146
+  Batch 10/29: Loss = 0.934573
+  Batch 20/29: Loss = 0.687221
+
+Epoch 199/200 | Loss: 0.784219 | LR: 0.000000 | Time: 0.6s
+
+  Batch 0/29: Loss = 0.714428
+  Batch 10/29: Loss = 0.710195
+  Batch 20/29: Loss = 0.823472
+
+Epoch 200/200 | Loss: 0.787906 | LR: 0.000000 | Time: 0.6s
+
+
+============================================================
+Training completed!
+Best loss: 0.783904
+============================================================
+
+4. Evaluating...
+Test Loss: 1.750280
+
+5. Visualizing results...
+Saved to checkpoints/fixed_upsampling_mlp/dinov2_vits14/movi_result.png
+Saved to checkpoints/fixed_upsampling_mlp/dinov2_vits14/training_history.png
+
+✅ Training completed!
