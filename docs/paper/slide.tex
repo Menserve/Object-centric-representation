@@ -1,0 +1,149 @@
+\documentclass[dvipdfmx,a4paper,landscape]{jarticle}
+\usepackage[landscape,a4paper,top=7mm,bottom=7mm,left=12mm,right=12mm]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{color}
+\usepackage{amsmath,amssymb}
+\pagestyle{empty}
+
+%% --- カラー定義 ---
+\definecolor{titleblue}{rgb}{0.10,0.22,0.46}
+\definecolor{secblue}{rgb}{0.16,0.36,0.64}
+\definecolor{accentred}{rgb}{0.78,0.10,0.10}
+\definecolor{staryellow}{rgb}{1.0,0.85,0.0}
+\definecolor{lightbg}{rgb}{0.94,0.94,0.97}
+
+%% --- セクションヘッダ ---
+\newcommand{\sechead}[1]{%
+  \colorbox{secblue}{\textcolor{white}{\small\textbf{\,#1\,}}}%
+}
+
+\begin{document}
+
+%% ============================================================
+%% タイトルバー
+%% ============================================================
+\noindent
+\colorbox{titleblue}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\centering\vspace{1.5mm}%
+  \textcolor{white}{\Large\textbf{%
+    DINOSAURによる鏡面反射物体の教師なしセグメンテーション}}\\[1.5mm]
+  \textcolor{white}{\small%
+    --- ViTバックボーンの比較と構造的限界の検証 ---}%
+\vspace{1.5mm}}}
+
+\vspace{0.5mm}
+\noindent\hfill{\small 坂口 健（電気通信大学）\quad 中世 大雄（東京大学）}
+
+\vspace{2mm}
+
+%% ============================================================
+%% Row 1: 背景と目的 ｜ 定量結果
+%% ============================================================
+\noindent
+\begin{minipage}[t]{0.37\linewidth}
+\sechead{1.\ 背景と目的}
+\vspace{2mm}
+
+\small
+\begin{itemize}
+  \setlength{\itemsep}{1.5pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\leftskip}{-4mm}
+  \item \textbf{モデル}：DINOSAUR（凍結ViT＋Slot Attention）
+  \item \textbf{目的}：鏡面反射物体への適用可能性の検証
+  \item \textbf{課題}：バックボーン選択の影響の解明
+  \item \textbf{データ}：MOVi-A（金属20＋混合40＝60件）
+\end{itemize}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.60\linewidth}
+\sechead{2.\ 3種のバックボーン比較と定量結果}
+\vspace{2mm}
+
+\centering\small
+\begin{tabular}{lccc}
+\toprule
+モデル & 損失種別 & FG-ARI\,($\uparrow$) & Metal FG-ARI \\
+\midrule
+\textbf{DINOv2 ViT-S/14} & MSE           & \textbf{0.165} & 0.185 \\
+DINOv1 ViT-S/16          & ch-norm       & 0.153          & 0.154 \\
+CLIP ViT-B/16            & MSE+detach    & 0.041          & 0.048 \\
+\bottomrule
+\end{tabular}
+
+\vspace{2mm}
+\raggedright
+\quad$\Rightarrow$ \textbf{DINOv2が最高精度}（FG-ARI 0.165）\quad
+$\Rightarrow$ DINOv1はスケール差で破綻 $\to$ \textbf{ch-norm損失}で解決（0.153）\quad
+$\Rightarrow$ CLIPは空間弁別能力の不足により0.041
+\end{minipage}
+
+\vspace{3mm}
+
+%% ============================================================
+%% Row 2: 構造的限界の可視化（メイン貢献）
+%% ============================================================
+\noindent
+\sechead{3.\ 構造的限界の可視化（定性分析）%
+\,\textcolor{staryellow}{$\bigstar$\,本研究の中心的貢献}}
+
+\vspace{1.5mm}
+
+%% --- 図1: DINOv2 スロットマスク（横長ストリップ） ---
+\noindent
+\begin{minipage}[t]{0.72\linewidth}
+\centering
+\includegraphics[width=\linewidth]{figures/dinov2_result.png}\\[0.5mm]
+{\scriptsize\textbf{図1}: DINOv2スロットマスク --- 16$\times$16パッチによる境界の\textbf{にじみ}}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.25\linewidth}
+\vspace{2mm}
+
+\small
+\fbox{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
+\textcolor{accentred}{\textbf{限界1}}\\[0.5mm]
+14pxパッチ起因の\\
+\textbf{16$\times$16解像度の壁}\\
+$\to$ CRF・SAM等が必要
+}}
+\end{minipage}
+
+\vspace{2mm}
+
+%% --- 図2: 3種比較 ---
+\noindent
+\begin{minipage}[t]{0.72\linewidth}
+\centering
+\includegraphics[width=\linewidth,height=42mm,keepaspectratio]{figures/comparison_3backbone.png}\\[0.5mm]
+{\scriptsize\textbf{図2}: 3種バックボーン比較（MOVi-A金属物体）--- 金属面での\textbf{スロット混同}}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.25\linewidth}
+\vspace{2mm}
+
+\small
+\fbox{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
+\textcolor{accentred}{\textbf{限界2}}\\[0.5mm]
+BRDF Specular成分が\\
+\textbf{スロット混同}を誘発\\
+$\to$ 視点依存デコーダ必要
+}}
+\end{minipage}
+
+\vspace{3mm}
+
+%% ============================================================
+%% Row 3: まとめ
+%% ============================================================
+\noindent
+\sechead{4.\ まとめと今後の課題}
+\vspace{1.5mm}
+
+\noindent{\small
+\textbf{(1)}\,DINOv2のバックボーンとしての優位性を確認 \hfill
+\textbf{(2)}\,16$\times$16解像度の限界 $\to$ SAM等の高解像度モデルとの統合が必要 \hfill
+\textbf{(3)}\,鏡面反射への対応 $\to$ 3次元反射モデルの導入が必要
+}
+
+\end{document}

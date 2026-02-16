@@ -1,0 +1,80 @@
+[
+  {
+    "name": "DINOv2 (vits14)",
+    "checkpoint_dir": "checkpoints/dinov2_normalized",
+    "result_image": "checkpoints/dinov2_normalized/dinov2_vits14/movi_result.png",
+    "log_file": "logs/dinov2_normalized.log",
+    "backbone": "dinov2_vits14",
+    "feature_dim": 384,
+    "spatial_res": "16\u00d716",
+    "history": {
+      "best_loss": null,
+      "test_loss": null,
+      "epoch": 199,
+      "checkpoint_size_mb": 187.4241600036621
+    },
+    "image_analysis": {
+      "unique_colors": 7395,
+      "color_ratio": 0.005399639001822515,
+      "avg_color_std": 62.571579574501065
+    },
+    "metrics": {
+      "train_loss": null,
+      "test_loss": null,
+      "generalization": null,
+      "visual_quality": 62.571579574501065
+    }
+  },
+  {
+    "name": "DINOv1 (vits16)",
+    "checkpoint_dir": "checkpoints/dinov1_normalized",
+    "result_image": "checkpoints/dinov1_normalized/dino_vits16/movi_result.png",
+    "log_file": "logs/dinov1_normalized.log",
+    "backbone": "dino_vits16",
+    "feature_dim": 384,
+    "spatial_res": "14\u00d714\u219216\u00d716",
+    "history": {
+      "best_loss": null,
+      "test_loss": null,
+      "epoch": 197,
+      "checkpoint_size_mb": 185.92370891571045
+    },
+    "image_analysis": {
+      "unique_colors": 7292,
+      "color_ratio": 0.005324431048179821,
+      "avg_color_std": 62.14196801129818
+    },
+    "metrics": {
+      "train_loss": null,
+      "test_loss": null,
+      "generalization": null,
+      "visual_quality": 62.14196801129818
+    }
+  },
+  {
+    "name": "CLIP (vitb16)",
+    "checkpoint_dir": "checkpoints/clip_normalized",
+    "result_image": "checkpoints/clip_normalized/clip_vitb16/movi_result.png",
+    "log_file": "logs/clip_normalized.log",
+    "backbone": "clip_vitb16",
+    "feature_dim": "768\u2192384",
+    "spatial_res": "14\u00d714\u219216\u00d716",
+    "history": {
+      "best_loss": null,
+      "test_loss": null,
+      "epoch": 196,
+      "checkpoint_size_mb": 677.4805631637573
+    },
+    "image_analysis": {
+      "unique_colors": 7340,
+      "color_ratio": 0.005359479414925931,
+      "avg_color_std": 65.08985318037071
+    },
+    "metrics": {
+      "train_loss": null,
+      "test_loss": null,
+      "generalization": null,
+      "visual_quality": 65.08985318037071
+    }
+  }
+]
