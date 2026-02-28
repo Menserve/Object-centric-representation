@@ -117,8 +117,9 @@ sample['instances']['material_label'][i].numpy()  # 0=metal, 1=rubber
 > 鏡面反射物体は追跡が困難 → 3 backboneで検証 → DINOv2が最良 → 構造的限界を発見
 
 **新ストーリー**（ポスター版）:
-> 事前学習目的の異なるViTは物体中心学習でどう振る舞うか → DINOv2 > DINOv1 >> CLIP
-> → 正しい材質ラベルで再評価し Metal/Rubber の実際の影響を測定
+> 事前学習目的の異なるViTは物体中心学習でどう振る舞うか → DINOv2 ≈ DINOv1 >> CLIP
+> → 平均性能は同等だがシーン難易度で相補的な強み（三分位 win rate で確認）
+> → 正しい材質ラベルで再評価し Metal < Rubber の方向を確認（ただし p=0.12）
 > → 構造的限界（パッチ解像度、スロット混同）+ 工学的知見（正規化、温度、バグ）
 
 **RQの一本化**:
@@ -149,6 +150,7 @@ sample['instances']['material_label'][i].numpy()  # 0=metal, 1=rubber
 - [x] 統計的有意性の検証（Metal vs Rubber ARI の差 → **p=0.121, 有意ではない**）
 - [x] DINOv1 > DINOv2 逆転の原因分析（→ **p=0.531, ノイズ。ただし相補的特性を発見**）
 - [x] Lambert-only対照群の補足分析（→ **n=5/8で有意差なし、参考値のみ**）
+- [x] 統計的アーティファクト修正（Corr(X,Y-X)=-0.661 → **Corr(v2,v1)=0.122に訂正**, NaN感度分析追加, p値バグ修正）
 
 ### Day 3 (3/3 Tue): 追加訓練（必要な場合のみ）
 
@@ -159,9 +161,9 @@ sample['instances']['material_label'][i].numpy()  # 0=metal, 1=rubber
 
 - [ ] `slide.tex` 改訂: 4セクション構成の刷新
   - Sec 1: 背景・RQ一本化
-  - Sec 2: Backbone比較（主結果）+ 正しい材質別ARI
+  - Sec 2: Backbone比較（DINOv2≈DINOv1>>CLIP） + 相補的特性（win rate） + 材質別ARI（方向確認, p=0.12）
   - Sec 3: 構造的限界の可視化（★中心貢献, 維持）
-  - Sec 4: まとめ + 工学的教訓 + 「ラベル修正」の誠実な報告
+  - Sec 4: まとめ + 工学的教訓 + 「ラベル修正→有意でなかったが方向は正」の誠実な報告
 - [ ] 新しい図の生成（必要に応じて）
 - [ ] ポスターPDFビルド確認（platex + dvipdfmx）
 - [ ] 口頭説明の改訂
