@@ -1,0 +1,5625 @@
+{
+  "summary": {
+    "backbone": "dinov2_vits14",
+    "loss_type": "mse",
+    "checkpoint": "../checkpoints/dinov2_K11/dinov2_vits14/best_model.pt",
+    "data_dir": "../data/movi_a_v2",
+    "n_samples": 300,
+    "fg_ari": {
+      "mean": 0.46991244416884115,
+      "std": 0.1942714327319051,
+      "n": 300
+    },
+    "full_ari": {
+      "mean": 0.09660105570367775,
+      "std": 0.06192557838862419,
+      "n": 300
+    },
+    "metal_ari": {
+      "mean": 0.49084293445185445,
+      "std": 0.27736392495306705,
+      "n": 233
+    },
+    "rubber_ari": {
+      "mean": 0.4460771556122812,
+      "std": 0.2781237551407525,
+      "n": 241
+    },
+    "metal_only_fg_ari": {
+      "mean": 0.5150497431165771,
+      "std": 0.3455700538769117,
+      "n": 8
+    },
+    "rubber_only_fg_ari": {
+      "mean": 0.48506753805287844,
+      "std": 0.27799442942429325,
+      "n": 5
+    },
+    "mixed_fg_ari": {
+      "mean": 0.468390235593921,
+      "std": 0.1863134994120176,
+      "n": 287
+    },
+    "mixed_metal_ari": {
+      "mean": 0.4899822479215532,
+      "std": 0.2745878551175302,
+      "n": 225
+    },
+    "mixed_rubber_ari": {
+      "mean": 0.4452510881876923,
+      "std": 0.27806735845531644,
+      "n": 236
+    }
+  },
+  "per_sample": [
+    {
+      "filename": "scene_0000.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 2,
+      "rubber_count": 6,
+      "fg_ari": 0.34467176429393354,
+      "full_ari": 0.16419086091921592,
+      "metal_ari": NaN,
+      "rubber_ari": 0.3513693074593528
+    },
+    {
+      "filename": "scene_0001.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 2,
+      "rubber_count": 3,
+      "fg_ari": 0.7310794380327326,
+      "full_ari": 0.34716154091577844,
+      "metal_ari": 0.0,
+      "rubber_ari": 0.7381956155143339
+    },
+    {
+      "filename": "scene_0002.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 5,
+      "rubber_count": 1,
+      "fg_ari": 0.27034779490856936,
+      "full_ari": 0.21925436268475468,
+      "metal_ari": 0.20150263272908905,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0003.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 2,
+      "rubber_count": 2,
+      "fg_ari": 0.2204724409448819,
+      "full_ari": 0.12069675305862304,
+      "metal_ari": 0.2857142857142857,
+      "rubber_ari": 0.0
+    },
+    {
+      "filename": "scene_0004.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 5,
+      "rubber_count": 3,
+      "fg_ari": 0.6265137712999679,
+      "full_ari": 0.12009057818484603,
+      "metal_ari": 0.4570544655214524,
+      "rubber_ari": 0.7917757651199725
+    },
+    {
+      "filename": "scene_0005.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 2,
+      "rubber_count": 5,
+      "fg_ari": 0.6561647233936988,
+      "full_ari": 0.13426282214507515,
+      "metal_ari": 0.9418711939472227,
+      "rubber_ari": 0.4612689275434864
+    },
+    {
+      "filename": "scene_0006.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 6,
+      "rubber_count": 2,
+      "fg_ari": 0.4329608938547486,
+      "full_ari": 0.011999773903085062,
+      "metal_ari": 0.5068441542132363,
+      "rubber_ari": 0.5333333333333333
+    },
+    {
+      "filename": "scene_0007.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 4,
+      "fg_ari": 0.4262295081967213,
+      "full_ari": 0.1479151344450981,
+      "metal_ari": NaN,
+      "rubber_ari": 0.5238095238095238
+    },
+    {
+      "filename": "scene_0008.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 2,
+      "rubber_count": 2,
+      "fg_ari": 0.7619047619047619,
+      "full_ari": 0.024018424397065807,
+      "metal_ari": NaN,
+      "rubber_ari": 1.0
+    },
+    {
+      "filename": "scene_0009.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 6,
+      "rubber_count": 4,
+      "fg_ari": 0.38285425165227843,
+      "full_ari": 0.11730881272639765,
+      "metal_ari": 0.411252704977158,
+      "rubber_ari": 0.13247290880311702
+    },
+    {
+      "filename": "scene_0010.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 2,
+      "rubber_count": 5,
+      "fg_ari": 0.42239303574736065,
+      "full_ari": 0.15150408433267806,
+      "metal_ari": 0.2857142857142857,
+      "rubber_ari": 0.4750583556669837
+    },
+    {
+      "filename": "scene_0011.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 2,
+      "rubber_count": 8,
+      "fg_ari": 0.42227850120645305,
+      "full_ari": 0.2048379396635277,
+      "metal_ari": 0.3524229074889868,
+      "rubber_ari": 0.44040862656072643
+    },
+    {
+      "filename": "scene_0012.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 7,
+      "fg_ari": 0.5916114790286976,
+      "full_ari": 0.07035730491678499,
+      "metal_ari": 0.5936675461741425,
+      "rubber_ari": 0.4986225895316804
+    },
+    {
+      "filename": "scene_0013.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 5,
+      "rubber_count": 2,
+      "fg_ari": 0.13096630169023069,
+      "full_ari": -0.0026220849648036144,
+      "metal_ari": 0.08424182358771061,
+      "rubber_ari": 1.0
+    },
+    {
+      "filename": "scene_0014.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 5,
+      "fg_ari": 0.7231706191750484,
+      "full_ari": 0.03517314656642481,
+      "metal_ari": 0.34,
+      "rubber_ari": 0.8393267023718439
+    },
+    {
+      "filename": "scene_0015.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 3,
+      "fg_ari": 0.31652839821314616,
+      "full_ari": 0.05099725965632506,
+      "metal_ari": 0.3028169014084507,
+      "rubber_ari": 1.0
+    },
+    {
+      "filename": "scene_0016.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 5,
+      "rubber_count": 5,
+      "fg_ari": 0.4966850340336506,
+      "full_ari": 0.1081851965240486,
+      "metal_ari": 0.42360475754803295,
+      "rubber_ari": 0.5295779622108423
+    },
+    {
+      "filename": "scene_0017.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 6,
+      "rubber_count": 4,
+      "fg_ari": 0.3710421149707962,
+      "full_ari": 0.08819919544087998,
+      "metal_ari": 0.31198635447356177,
+      "rubber_ari": 0.2587446094873023
+    },
+    {
+      "filename": "scene_0018.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 4,
+      "fg_ari": 0.4929910337395872,
+      "full_ari": 0.1973155424170874,
+      "metal_ari": 0.25679558011049725,
+      "rubber_ari": 0.3040337315530569
+    },
+    {
+      "filename": "scene_0019.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 5,
+      "rubber_count": 1,
+      "fg_ari": 0.32266097474208466,
+      "full_ari": 0.07169050456555408,
+      "metal_ari": 0.44342226310947563,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0020.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 5,
+      "rubber_count": 3,
+      "fg_ari": 0.5157699443413729,
+      "full_ari": 0.09190342948411179,
+      "metal_ari": 0.5039070749736009,
+      "rubber_ari": 0.3333333333333333
+    },
+    {
+      "filename": "scene_0021.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 7,
+      "fg_ari": 0.2550079491255962,
+      "full_ari": 0.25960923927687407,
+      "metal_ari": 0.1951219512195122,
+      "rubber_ari": 0.14694866710729235
+    },
+    {
+      "filename": "scene_0022.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 1,
+      "fg_ari": 0.5050063298423294,
+      "full_ari": 0.13349177683245664,
+      "metal_ari": 0.4637329286798179,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0023.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 2,
+      "rubber_count": 1,
+      "fg_ari": 0.3018363939899833,
+      "full_ari": 0.07243597986708433,
+      "metal_ari": 0.18326693227091634,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0024.pt",
+      "scene_type": "rubber_only",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 0,
+      "rubber_count": 3,
+      "fg_ari": 0.015469613259668509,
+      "full_ari": 0.11016098122432362,
+      "metal_ari": NaN,
+      "rubber_ari": 0.015469613259668509
+    },
+    {
+      "filename": "scene_0025.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 6,
+      "rubber_count": 2,
+      "fg_ari": 0.5794060110261426,
+      "full_ari": 0.07058777939184979,
+      "metal_ari": 0.6433510954792474,
+      "rubber_ari": 0.5882352941176471
+    },
+    {
+      "filename": "scene_0026.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 2,
+      "rubber_count": 1,
+      "fg_ari": 0.14692940501243543,
+      "full_ari": 0.07398325628956691,
+      "metal_ari": 1.0,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0027.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 4,
+      "fg_ari": 0.4177643959352653,
+      "full_ari": 0.08629606656108209,
+      "metal_ari": NaN,
+      "rubber_ari": 0.3978201634877384
+    },
+    {
+      "filename": "scene_0028.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 2,
+      "fg_ari": 0.4069529652351738,
+      "full_ari": 0.029797495776672473,
+      "metal_ari": 0.4028268551236749,
+      "rubber_ari": 1.0
+    },
+    {
+      "filename": "scene_0029.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 4,
+      "fg_ari": 0.46764671837018174,
+      "full_ari": 0.12981279670491608,
+      "metal_ari": NaN,
+      "rubber_ari": 0.42424242424242425
+    },
+    {
+      "filename": "scene_0030.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 1,
+      "fg_ari": 0.325626204238921,
+      "full_ari": 0.0498077599270712,
+      "metal_ari": 0.4444444444444444,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0031.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 2,
+      "fg_ari": 0.2260127931769723,
+      "full_ari": 0.05985564658804529,
+      "metal_ari": 0.28835489833641403,
+      "rubber_ari": 0.18791946308724833
+    },
+    {
+      "filename": "scene_0032.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 4,
+      "rubber_count": 6,
+      "fg_ari": 0.4869889428435982,
+      "full_ari": 0.0414619521659365,
+      "metal_ari": 0.2948717948717949,
+      "rubber_ari": 0.5855349542337724
+    },
+    {
+      "filename": "scene_0033.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 3,
+      "fg_ari": 0.3538219070133964,
+      "full_ari": 0.15036294497494515,
+      "metal_ari": NaN,
+      "rubber_ari": 0.3146853146853147
+    },
+    {
+      "filename": "scene_0034.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 5,
+      "rubber_count": 4,
+      "fg_ari": 0.4380651643462035,
+      "full_ari": 0.059218046147955124,
+      "metal_ari": 0.6351931330472103,
+      "rubber_ari": 0.10966057441253264
+    },
+    {
+      "filename": "scene_0035.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 2,
+      "fg_ari": 0.6968772602912041,
+      "full_ari": 0.14319409684186524,
+      "metal_ari": 0.6176634991615427,
+      "rubber_ari": 0.6534653465346535
+    },
+    {
+      "filename": "scene_0036.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 2,
+      "fg_ari": 0.5069486404833837,
+      "full_ari": 0.10771700143439629,
+      "metal_ari": NaN,
+      "rubber_ari": 0.4972375690607735
+    },
+    {
+      "filename": "scene_0037.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 5,
+      "rubber_count": 4,
+      "fg_ari": 0.3472290338401177,
+      "full_ari": 0.1595067727966675,
+      "metal_ari": 0.8429319371727748,
+      "rubber_ari": 0.05527785945310203
+    },
+    {
+      "filename": "scene_0038.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 6,
+      "rubber_count": 3,
+      "fg_ari": 0.519046661893803,
+      "full_ari": 0.12815105526228593,
+      "metal_ari": 0.5409429280397022,
+      "rubber_ari": 0.5281111580804646
+    },
+    {
+      "filename": "scene_0039.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 2,
+      "rubber_count": 7,
+      "fg_ari": 0.8119102537219542,
+      "full_ari": 0.04446631863364383,
+      "metal_ari": 1.0,
+      "rubber_ari": 0.8394495412844036
+    },
+    {
+      "filename": "scene_0040.pt",
+      "scene_type": "metal_only",
+      "materials": [
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 0,
+      "fg_ari": 0.5631768953068592,
+      "full_ari": 0.058997176882913456,
+      "metal_ari": 0.5631768953068592,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0041.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 7,
+      "fg_ari": 0.5851425427824822,
+      "full_ari": 0.2500540566149046,
+      "metal_ari": 0.6329637286224394,
+      "rubber_ari": 0.23026315789473684
+    },
+    {
+      "filename": "scene_0042.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 6,
+      "rubber_count": 3,
+      "fg_ari": 0.6312419974391805,
+      "full_ari": 0.04150678812387997,
+      "metal_ari": 0.5825075398535114,
+      "rubber_ari": 0.9056603773584906
+    },
+    {
+      "filename": "scene_0043.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 6,
+      "rubber_count": 1,
+      "fg_ari": 0.2372448979591837,
+      "full_ari": 0.19169827023674546,
+      "metal_ari": 0.20037278657968313,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0044.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 6,
+      "fg_ari": 0.39339639803529197,
+      "full_ari": 0.10660117017180998,
+      "metal_ari": 0.822429906542056,
+      "rubber_ari": 0.4573643410852713
+    },
+    {
+      "filename": "scene_0045.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 5,
+      "rubber_count": 3,
+      "fg_ari": 0.5784083635587796,
+      "full_ari": 0.08759124742095178,
+      "metal_ari": 0.6776503668555863,
+      "rubber_ari": 0.4162330905306972
+    },
+    {
+      "filename": "scene_0046.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 7,
+      "fg_ari": 0.6738671723338528,
+      "full_ari": 0.15477614386598143,
+      "metal_ari": 0.1951219512195122,
+      "rubber_ari": 0.732872407291012
+    },
+    {
+      "filename": "scene_0047.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 4,
+      "rubber_count": 4,
+      "fg_ari": 0.5119574844995571,
+      "full_ari": 0.021481102271713563,
+      "metal_ari": 0.8148148148148148,
+      "rubber_ari": 0.3815995818086775
+    },
+    {
+      "filename": "scene_0048.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 2,
+      "fg_ari": 0.2879936178699641,
+      "full_ari": 0.1502031004400537,
+      "metal_ari": NaN,
+      "rubber_ari": 0.04402777591232052
+    },
+    {
+      "filename": "scene_0049.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 1,
+      "rubber_count": 2,
+      "fg_ari": 0.31627906976744186,
+      "full_ari": 0.008310524736301703,
+      "metal_ari": NaN,
+      "rubber_ari": 0.782608695652174
+    },
+    {
+      "filename": "scene_0050.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 5,
+      "fg_ari": 0.5508369021822587,
+      "full_ari": 0.07096835815092006,
+      "metal_ari": 0.6515286201348022,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0051.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 4,
+      "fg_ari": 0.6522348718523919,
+      "full_ari": 0.12466121154291904,
+      "metal_ari": NaN,
+      "rubber_ari": 0.2909090909090909
+    },
+    {
+      "filename": "scene_0052.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 4,
+      "fg_ari": 0.46757679180887374,
+      "full_ari": 0.11275856170887917,
+      "metal_ari": 0.034482758620689655,
+      "rubber_ari": 0.4841115765811791
+    },
+    {
+      "filename": "scene_0053.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 7,
+      "rubber_count": 3,
+      "fg_ari": 0.4417927245043196,
+      "full_ari": 0.09884062407671744,
+      "metal_ari": 0.23197492163009403,
+      "rubber_ari": 0.8053097345132744
+    },
+    {
+      "filename": "scene_0054.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 4,
+      "fg_ari": 0.25831512503034715,
+      "full_ari": 0.03288582874541515,
+      "metal_ari": 0.7692307692307693,
+      "rubber_ari": 0.14195583596214512
+    },
+    {
+      "filename": "scene_0055.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 4,
+      "rubber_count": 6,
+      "fg_ari": 0.42461237267631385,
+      "full_ari": 0.032871619970466656,
+      "metal_ari": 0.13736903376018628,
+      "rubber_ari": 0.5182175955312937
+    },
+    {
+      "filename": "scene_0056.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 6,
+      "fg_ari": 0.2544037696724518,
+      "full_ari": 0.2195506237281001,
+      "metal_ari": 0.11544961309259094,
+      "rubber_ari": 0.29814550641940085
+    },
+    {
+      "filename": "scene_0057.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 2,
+      "rubber_count": 1,
+      "fg_ari": 0.6186440677966102,
+      "full_ari": 0.07782207842954962,
+      "metal_ari": 0.38235294117647056,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0058.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 4,
+      "rubber_count": 3,
+      "fg_ari": 0.5762310244141073,
+      "full_ari": 0.017813318451442548,
+      "metal_ari": 0.6467889908256881,
+      "rubber_ari": 0.3123425692695214
+    },
+    {
+      "filename": "scene_0059.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 3,
+      "fg_ari": 0.7469792249695453,
+      "full_ari": 0.09924370003937244,
+      "metal_ari": 0.8801118955641402,
+      "rubber_ari": 0.6153846153846154
+    },
+    {
+      "filename": "scene_0060.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 2,
+      "fg_ari": 0.27866036925719195,
+      "full_ari": 0.05972150362092718,
+      "metal_ari": 1.0,
+      "rubber_ari": 0.010659560293137908
+    },
+    {
+      "filename": "scene_0061.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 1,
+      "fg_ari": 0.6167800453514739,
+      "full_ari": 0.029752671332685138,
+      "metal_ari": 0.6167800453514739,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0062.pt",
+      "scene_type": "metal_only",
+      "materials": [
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 0,
+      "fg_ari": 0.5751633986928104,
+      "full_ari": 0.24478573661183922,
+      "metal_ari": 0.5751633986928104,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0063.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 4,
+      "rubber_count": 4,
+      "fg_ari": 0.2661495904973694,
+      "full_ari": 0.14187550907141233,
+      "metal_ari": 0.11098840419657648,
+      "rubber_ari": 0.5317215051808762
+    },
+    {
+      "filename": "scene_0064.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 2,
+      "rubber_count": 7,
+      "fg_ari": 0.2505903597721906,
+      "full_ari": 0.1641246013290836,
+      "metal_ari": 0.5,
+      "rubber_ari": 0.22807509106192211
+    },
+    {
+      "filename": "scene_0065.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 2,
+      "fg_ari": 0.39325842696629215,
+      "full_ari": 0.12385904983101864,
+      "metal_ari": NaN,
+      "rubber_ari": 0.0
+    },
+    {
+      "filename": "scene_0066.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 2,
+      "fg_ari": 0.10196209961428811,
+      "full_ari": 0.09293350023743463,
+      "metal_ari": NaN,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0067.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 2,
+      "fg_ari": 0.25113464447806355,
+      "full_ari": 0.0908409272648881,
+      "metal_ari": NaN,
+      "rubber_ari": 0.4444444444444444
+    },
+    {
+      "filename": "scene_0068.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 1,
+      "fg_ari": 0.7804507470245632,
+      "full_ari": 0.06693286765298131,
+      "metal_ari": 0.7804507470245632,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0069.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 4,
+      "rubber_count": 4,
+      "fg_ari": 0.5093183558846056,
+      "full_ari": 0.08844665104532153,
+      "metal_ari": 0.17178591134816995,
+      "rubber_ari": 0.6486486486486487
+    },
+    {
+      "filename": "scene_0070.pt",
+      "scene_type": "metal_only",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 6,
+      "rubber_count": 0,
+      "fg_ari": 0.8066825775656324,
+      "full_ari": 0.07625740640635152,
+      "metal_ari": 0.8066825775656324,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0071.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 4,
+      "rubber_count": 4,
+      "fg_ari": 0.4903546981953951,
+      "full_ari": 0.009545533177777774,
+      "metal_ari": 0.4458128078817734,
+      "rubber_ari": 0.4246153846153846
+    },
+    {
+      "filename": "scene_0072.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 1,
+      "fg_ari": 0.3391457366821309,
+      "full_ari": 0.18390552488399076,
+      "metal_ari": 0.7272727272727273,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0073.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 4,
+      "fg_ari": 0.851159793814433,
+      "full_ari": 0.12421777867432612,
+      "metal_ari": NaN,
+      "rubber_ari": 0.86909926001531
+    },
+    {
+      "filename": "scene_0074.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 1,
+      "fg_ari": 0.296875,
+      "full_ari": 0.06630385424324459,
+      "metal_ari": 0.29892141756548535,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0075.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 5,
+      "fg_ari": 0.38190031391164536,
+      "full_ari": 0.01822298446603626,
+      "metal_ari": 0.340160284951024,
+      "rubber_ari": 0.5359116022099447
+    },
+    {
+      "filename": "scene_0076.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 2,
+      "fg_ari": 0.3401035848481771,
+      "full_ari": 0.17564819809793988,
+      "metal_ari": 0.0,
+      "rubber_ari": 0.34165421464357915
+    },
+    {
+      "filename": "scene_0077.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 3,
+      "fg_ari": -0.019417475728155338,
+      "full_ari": 0.07348997989850771,
+      "metal_ari": NaN,
+      "rubber_ari": -0.12903225806451613
+    },
+    {
+      "filename": "scene_0078.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 5,
+      "rubber_count": 5,
+      "fg_ari": 0.5706347510151741,
+      "full_ari": 0.03533236569074205,
+      "metal_ari": 0.1870530673692134,
+      "rubber_ari": 0.7891723060905779
+    },
+    {
+      "filename": "scene_0079.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 1,
+      "fg_ari": 0.6977226629457994,
+      "full_ari": 0.09292766416264281,
+      "metal_ari": 0.721146169086554,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0080.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 5,
+      "rubber_count": 3,
+      "fg_ari": 0.538542029996512,
+      "full_ari": 0.062470888528682954,
+      "metal_ari": 0.3261608154020385,
+      "rubber_ari": 0.0
+    },
+    {
+      "filename": "scene_0081.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 7,
+      "rubber_count": 3,
+      "fg_ari": 0.412451891386166,
+      "full_ari": 0.047123570146960156,
+      "metal_ari": 0.28661265860244883,
+      "rubber_ari": 0.457002457002457
+    },
+    {
+      "filename": "scene_0082.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 5,
+      "fg_ari": 0.3811210668889352,
+      "full_ari": 0.05783293910200197,
+      "metal_ari": 0.3300878651151745,
+      "rubber_ari": 0.5777777777777777
+    },
+    {
+      "filename": "scene_0083.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 1,
+      "rubber_count": 2,
+      "fg_ari": 0.26159678858162355,
+      "full_ari": 0.17310170702944191,
+      "metal_ari": NaN,
+      "rubber_ari": 0.0
+    },
+    {
+      "filename": "scene_0084.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 6,
+      "rubber_count": 1,
+      "fg_ari": 0.4627919608908202,
+      "full_ari": 0.05418417231439885,
+      "metal_ari": 0.42797591477535896,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0085.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 4,
+      "rubber_count": 5,
+      "fg_ari": 0.40716218984871194,
+      "full_ari": 0.04900715395918791,
+      "metal_ari": 0.32873680937837196,
+      "rubber_ari": 0.457347275729224
+    },
+    {
+      "filename": "scene_0086.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 5,
+      "rubber_count": 5,
+      "fg_ari": 0.5583888315110938,
+      "full_ari": 0.02766202703362883,
+      "metal_ari": 0.5911949685534591,
+      "rubber_ari": 0.7466666666666667
+    },
+    {
+      "filename": "scene_0087.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 1,
+      "fg_ari": 0.314965371875941,
+      "full_ari": 0.16220778523269092,
+      "metal_ari": 0.2727272727272727,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0088.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 2,
+      "rubber_count": 2,
+      "fg_ari": 0.5528455284552846,
+      "full_ari": 0.09586443507558202,
+      "metal_ari": 0.5714285714285714,
+      "rubber_ari": 0.0
+    },
+    {
+      "filename": "scene_0089.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 5,
+      "rubber_count": 4,
+      "fg_ari": 0.4468700464417809,
+      "full_ari": 0.11869109020962763,
+      "metal_ari": 0.7025411866049316,
+      "rubber_ari": 0.22750424448217318
+    },
+    {
+      "filename": "scene_0090.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 2,
+      "rubber_count": 3,
+      "fg_ari": 0.7960224375318715,
+      "full_ari": 0.05837079053031282,
+      "metal_ari": 0.3342036553524804,
+      "rubber_ari": 0.9616368286445013
+    },
+    {
+      "filename": "scene_0091.pt",
+      "scene_type": "rubber_only",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 0,
+      "rubber_count": 4,
+      "fg_ari": 0.5034280117531832,
+      "full_ari": 0.05672775413430064,
+      "metal_ari": NaN,
+      "rubber_ari": 0.5034280117531832
+    },
+    {
+      "filename": "scene_0092.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 4,
+      "rubber_count": 5,
+      "fg_ari": 0.7167582684092741,
+      "full_ari": 0.183130944868408,
+      "metal_ari": 0.7369777926998897,
+      "rubber_ari": 0.20454545454545456
+    },
+    {
+      "filename": "scene_0093.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 2,
+      "fg_ari": 0.5352824123679779,
+      "full_ari": 0.12765845056488884,
+      "metal_ari": 0.8045977011494253,
+      "rubber_ari": 1.0
+    },
+    {
+      "filename": "scene_0094.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 4,
+      "fg_ari": 0.4340835014744684,
+      "full_ari": 0.21316560401569748,
+      "metal_ari": 0.6346555323590815,
+      "rubber_ari": 0.46694407221947953
+    },
+    {
+      "filename": "scene_0095.pt",
+      "scene_type": "metal_only",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 0,
+      "fg_ari": 0.858034321372855,
+      "full_ari": 0.0534775891551376,
+      "metal_ari": 0.858034321372855,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0096.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 4,
+      "rubber_count": 3,
+      "fg_ari": 0.6573233320173707,
+      "full_ari": -0.0024414268734118246,
+      "metal_ari": 0.9611844123964406,
+      "rubber_ari": 0.18617021276595744
+    },
+    {
+      "filename": "scene_0097.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 2,
+      "fg_ari": 0.4966442953020134,
+      "full_ari": 0.11591880759344825,
+      "metal_ari": 0.4346978557504873,
+      "rubber_ari": 0.4444444444444444
+    },
+    {
+      "filename": "scene_0098.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 7,
+      "fg_ari": 0.46571033693942715,
+      "full_ari": 0.21271635332736497,
+      "metal_ari": NaN,
+      "rubber_ari": 0.4647058823529412
+    },
+    {
+      "filename": "scene_0099.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 5,
+      "rubber_count": 5,
+      "fg_ari": 0.34452875564954183,
+      "full_ari": 0.20138832310718768,
+      "metal_ari": 0.5463228271251194,
+      "rubber_ari": 0.43271767810026385
+    },
+    {
+      "filename": "scene_0100.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 4,
+      "rubber_count": 5,
+      "fg_ari": 0.6608103262818215,
+      "full_ari": 0.04687662656699212,
+      "metal_ari": 1.0,
+      "rubber_ari": 0.6017989546614805
+    },
+    {
+      "filename": "scene_0101.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 4,
+      "fg_ari": 0.20015455950540958,
+      "full_ari": 0.037685641928163295,
+      "metal_ari": 0.41009463722397477,
+      "rubber_ari": 0.053691275167785234
+    },
+    {
+      "filename": "scene_0102.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 3,
+      "fg_ari": 0.6299810246679317,
+      "full_ari": 0.07975134554679617,
+      "metal_ari": NaN,
+      "rubber_ari": 0.7469879518072289
+    },
+    {
+      "filename": "scene_0103.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 4,
+      "rubber_count": 4,
+      "fg_ari": 0.3559372223867338,
+      "full_ari": 0.014893818716204143,
+      "metal_ari": 0.39787636541160676,
+      "rubber_ari": 0.136986301369863
+    },
+    {
+      "filename": "scene_0104.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 5,
+      "rubber_count": 5,
+      "fg_ari": 0.4273533751029871,
+      "full_ari": 0.09624215372423453,
+      "metal_ari": 0.5899405710972605,
+      "rubber_ari": 0.7083333333333334
+    },
+    {
+      "filename": "scene_0105.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 2,
+      "fg_ari": 0.6798558010153803,
+      "full_ari": 0.10411138472927715,
+      "metal_ari": 0.23636363636363636,
+      "rubber_ari": 0.8025227137906272
+    },
+    {
+      "filename": "scene_0106.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 5,
+      "fg_ari": 0.6292606695147736,
+      "full_ari": 0.14306061312842444,
+      "metal_ari": 0.7762408462164361,
+      "rubber_ari": 0.7892849609786965
+    },
+    {
+      "filename": "scene_0107.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 5,
+      "fg_ari": 0.22174030902683653,
+      "full_ari": 0.1403373892218204,
+      "metal_ari": NaN,
+      "rubber_ari": 0.23576982892690512
+    },
+    {
+      "filename": "scene_0108.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 5,
+      "fg_ari": 0.325,
+      "full_ari": 0.07585022653136066,
+      "metal_ari": NaN,
+      "rubber_ari": 0.36619718309859156
+    },
+    {
+      "filename": "scene_0109.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 3,
+      "fg_ari": 0.7289095981821843,
+      "full_ari": 0.07895679364397085,
+      "metal_ari": 0.7822445561139029,
+      "rubber_ari": 0.2268041237113402
+    },
+    {
+      "filename": "scene_0110.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 2,
+      "rubber_count": 1,
+      "fg_ari": 0.6746987951807228,
+      "full_ari": 0.021349901251314387,
+      "metal_ari": 1.0,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0111.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 6,
+      "rubber_count": 2,
+      "fg_ari": 0.34132182197082467,
+      "full_ari": 0.04660353522547741,
+      "metal_ari": 0.32866094986807387,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0112.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 2,
+      "rubber_count": 2,
+      "fg_ari": 0.29446640316205536,
+      "full_ari": 0.07306387822056852,
+      "metal_ari": 0.8648648648648649,
+      "rubber_ari": -0.08409986859395532
+    },
+    {
+      "filename": "scene_0113.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 6,
+      "rubber_count": 4,
+      "fg_ari": 0.6100917431192661,
+      "full_ari": 0.07341710335400402,
+      "metal_ari": 0.5294424179260031,
+      "rubber_ari": 0.7136829415310428
+    },
+    {
+      "filename": "scene_0114.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 2,
+      "rubber_count": 2,
+      "fg_ari": 0.6271186440677966,
+      "full_ari": 0.016796791569100925,
+      "metal_ari": 1.0,
+      "rubber_ari": 0.3333333333333333
+    },
+    {
+      "filename": "scene_0115.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 6,
+      "fg_ari": 0.45371873985060085,
+      "full_ari": 0.07690171758106228,
+      "metal_ari": NaN,
+      "rubber_ari": 0.5210243124750896
+    },
+    {
+      "filename": "scene_0116.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 4,
+      "fg_ari": 0.8166224041098873,
+      "full_ari": 0.09813016244389844,
+      "metal_ari": 0.9081543395859656,
+      "rubber_ari": 0.03669724770642202
+    },
+    {
+      "filename": "scene_0117.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 5,
+      "rubber_count": 1,
+      "fg_ari": 0.4649245438577625,
+      "full_ari": 0.2318117080559751,
+      "metal_ari": 0.4551000488042948,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0118.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 5,
+      "rubber_count": 5,
+      "fg_ari": 0.45054945054945056,
+      "full_ari": 0.08327959695896142,
+      "metal_ari": 0.5900439238653001,
+      "rubber_ari": 0.598974358974359
+    },
+    {
+      "filename": "scene_0119.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 5,
+      "rubber_count": 1,
+      "fg_ari": 0.28356411800120407,
+      "full_ari": 0.09143259319350991,
+      "metal_ari": 0.25477707006369427,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0120.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 3,
+      "fg_ari": 0.3686036426712923,
+      "full_ari": 0.1315916775144243,
+      "metal_ari": NaN,
+      "rubber_ari": 0.2463768115942029
+    },
+    {
+      "filename": "scene_0121.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 2,
+      "rubber_count": 5,
+      "fg_ari": 0.6303207212533255,
+      "full_ari": 0.04652603924913867,
+      "metal_ari": -0.15384615384615385,
+      "rubber_ari": 0.628459966561397
+    },
+    {
+      "filename": "scene_0122.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 2,
+      "fg_ari": 0.32274826789838335,
+      "full_ari": 0.05701506227997539,
+      "metal_ari": NaN,
+      "rubber_ari": -0.18461538461538463
+    },
+    {
+      "filename": "scene_0123.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 5,
+      "fg_ari": 0.37234116888931446,
+      "full_ari": -0.0018209131108669267,
+      "metal_ari": 0.3430746561886051,
+      "rubber_ari": 0.6189025698228152
+    },
+    {
+      "filename": "scene_0124.pt",
+      "scene_type": "metal_only",
+      "materials": [
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 0,
+      "fg_ari": 0.17330538085255065,
+      "full_ari": 0.01611856310258707,
+      "metal_ari": 0.17330538085255065,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0125.pt",
+      "scene_type": "rubber_only",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 0,
+      "rubber_count": 5,
+      "fg_ari": 0.3931203931203931,
+      "full_ari": 0.0698359898581232,
+      "metal_ari": NaN,
+      "rubber_ari": 0.3931203931203931
+    },
+    {
+      "filename": "scene_0126.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 7,
+      "rubber_count": 2,
+      "fg_ari": 0.46922201138519926,
+      "full_ari": 0.08075295632387082,
+      "metal_ari": 0.5886023294509152,
+      "rubber_ari": 0.8154706430568499
+    },
+    {
+      "filename": "scene_0127.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 3,
+      "fg_ari": 0.4621524633598283,
+      "full_ari": 0.026782190613769147,
+      "metal_ari": 0.6004314749630976,
+      "rubber_ari": 1.0
+    },
+    {
+      "filename": "scene_0128.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 1,
+      "fg_ari": 0.8385222651310619,
+      "full_ari": 0.13209680939408783,
+      "metal_ari": 0.8925504433428751,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0129.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 2,
+      "fg_ari": 0.8166666666666667,
+      "full_ari": 0.131862220513461,
+      "metal_ari": NaN,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0130.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 4,
+      "rubber_count": 4,
+      "fg_ari": 0.8826277745430791,
+      "full_ari": 0.046421713325331244,
+      "metal_ari": 0.870105655686762,
+      "rubber_ari": 0.7074468085106383
+    },
+    {
+      "filename": "scene_0131.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 5,
+      "rubber_count": 4,
+      "fg_ari": 0.49510910458991725,
+      "full_ari": 0.06730738905126034,
+      "metal_ari": 0.5539906103286385,
+      "rubber_ari": 0.5526315789473685
+    },
+    {
+      "filename": "scene_0132.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 5,
+      "rubber_count": 5,
+      "fg_ari": 0.33175111517785655,
+      "full_ari": 0.020524418535471295,
+      "metal_ari": 0.3960491914399148,
+      "rubber_ari": 0.43310590329279147
+    },
+    {
+      "filename": "scene_0133.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 2,
+      "rubber_count": 4,
+      "fg_ari": 0.20147420147420148,
+      "full_ari": 0.029214627888428494,
+      "metal_ari": -0.09090909090909091,
+      "rubber_ari": 0.3283582089552239
+    },
+    {
+      "filename": "scene_0134.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 2,
+      "rubber_count": 4,
+      "fg_ari": 0.39887005649717516,
+      "full_ari": 0.17066545297195665,
+      "metal_ari": 0.5871559633027523,
+      "rubber_ari": 0.41517537580529706
+    },
+    {
+      "filename": "scene_0135.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 1,
+      "rubber_count": 2,
+      "fg_ari": 0.6511627906976745,
+      "full_ari": 0.05016605225290598,
+      "metal_ari": NaN,
+      "rubber_ari": 0.6153846153846154
+    },
+    {
+      "filename": "scene_0136.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 1,
+      "fg_ari": 0.4860943168077388,
+      "full_ari": 0.03250667995746846,
+      "metal_ari": 0.5217391304347826,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0137.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 2,
+      "rubber_count": 4,
+      "fg_ari": 0.8996713371389033,
+      "full_ari": 0.13538857374422933,
+      "metal_ari": 1.0,
+      "rubber_ari": 0.952020202020202
+    },
+    {
+      "filename": "scene_0138.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 5,
+      "fg_ari": 0.5292676286414375,
+      "full_ari": 0.026719538495073372,
+      "metal_ari": 0.0,
+      "rubber_ari": 0.40860215053763443
+    },
+    {
+      "filename": "scene_0139.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 5,
+      "rubber_count": 2,
+      "fg_ari": 0.3308011049723757,
+      "full_ari": -0.005184913612297407,
+      "metal_ari": 0.3632075471698113,
+      "rubber_ari": 0.0
+    },
+    {
+      "filename": "scene_0140.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 5,
+      "rubber_count": 4,
+      "fg_ari": 0.29077862725836073,
+      "full_ari": 0.15259050981378713,
+      "metal_ari": 0.31860025299650563,
+      "rubber_ari": 0.3283582089552239
+    },
+    {
+      "filename": "scene_0141.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 4,
+      "fg_ari": 0.3631123919308357,
+      "full_ari": 0.03975255020584179,
+      "metal_ari": 0.782608695652174,
+      "rubber_ari": 0.3978494623655914
+    },
+    {
+      "filename": "scene_0142.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 4,
+      "fg_ari": 0.6641434365876974,
+      "full_ari": 0.11527529058757341,
+      "metal_ari": 0.430062630480167,
+      "rubber_ari": 0.5981339928057554
+    },
+    {
+      "filename": "scene_0143.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 2,
+      "fg_ari": -0.06060606060606061,
+      "full_ari": 0.045583166693143995,
+      "metal_ari": NaN,
+      "rubber_ari": -0.07142857142857142
+    },
+    {
+      "filename": "scene_0144.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 4,
+      "rubber_count": 6,
+      "fg_ari": 0.5033129120330292,
+      "full_ari": 0.19299770858500861,
+      "metal_ari": 1.0,
+      "rubber_ari": 0.48786276387558813
+    },
+    {
+      "filename": "scene_0145.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 5,
+      "rubber_count": 4,
+      "fg_ari": 0.5697462240282144,
+      "full_ari": 0.18213320399499272,
+      "metal_ari": 0.5693332140853544,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0146.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 6,
+      "fg_ari": 0.400421479615281,
+      "full_ari": 0.21839192216169853,
+      "metal_ari": 0.3695054945054945,
+      "rubber_ari": 0.29708222811671087
+    },
+    {
+      "filename": "scene_0147.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 6,
+      "rubber_count": 3,
+      "fg_ari": 0.4353307623850489,
+      "full_ari": 0.15210993230180794,
+      "metal_ari": 0.5875784497514059,
+      "rubber_ari": 0.10256410256410256
+    },
+    {
+      "filename": "scene_0148.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 2,
+      "rubber_count": 1,
+      "fg_ari": 0.5359116022099447,
+      "full_ari": 0.07289311057105892,
+      "metal_ari": 0.3333333333333333,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0149.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 2,
+      "rubber_count": 4,
+      "fg_ari": 0.2561576354679803,
+      "full_ari": 0.06149519035515025,
+      "metal_ari": NaN,
+      "rubber_ari": 0.439877568867512
+    },
+    {
+      "filename": "scene_0150.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 6,
+      "rubber_count": 3,
+      "fg_ari": 0.556110015086457,
+      "full_ari": 0.05631495335949384,
+      "metal_ari": 0.5887445887445888,
+      "rubber_ari": 0.0
+    },
+    {
+      "filename": "scene_0151.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 6,
+      "rubber_count": 4,
+      "fg_ari": 0.5016462137084705,
+      "full_ari": 0.05557059433670336,
+      "metal_ari": 0.5273113315992806,
+      "rubber_ari": 1.0
+    },
+    {
+      "filename": "scene_0152.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 4,
+      "fg_ari": 0.40640057933877394,
+      "full_ari": 0.13972568947654054,
+      "metal_ari": 0.3831174401647079,
+      "rubber_ari": 0.5994105644978462
+    },
+    {
+      "filename": "scene_0153.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 2,
+      "rubber_count": 2,
+      "fg_ari": 0.7475982532751092,
+      "full_ari": 0.013879306195903347,
+      "metal_ari": NaN,
+      "rubber_ari": 0.13793103448275862
+    },
+    {
+      "filename": "scene_0154.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 2,
+      "rubber_count": 4,
+      "fg_ari": 0.22323462414578588,
+      "full_ari": 0.13003800088387563,
+      "metal_ari": 1.0,
+      "rubber_ari": 0.0
+    },
+    {
+      "filename": "scene_0155.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 1,
+      "fg_ari": 0.7008023935808514,
+      "full_ari": 0.2016928086859667,
+      "metal_ari": 0.6975105683419446,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0156.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 2,
+      "rubber_count": 2,
+      "fg_ari": 0.15789473684210525,
+      "full_ari": 0.051379258850671336,
+      "metal_ari": 1.0,
+      "rubber_ari": 0.03669724770642202
+    },
+    {
+      "filename": "scene_0157.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 2,
+      "rubber_count": 2,
+      "fg_ari": 0.7263157894736842,
+      "full_ari": 0.13013782639548457,
+      "metal_ari": 0.5714285714285714,
+      "rubber_ari": 1.0
+    },
+    {
+      "filename": "scene_0158.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 6,
+      "fg_ari": 0.2196994397842132,
+      "full_ari": 0.13433987567313133,
+      "metal_ari": NaN,
+      "rubber_ari": 0.2998833138856476
+    },
+    {
+      "filename": "scene_0159.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 4,
+      "fg_ari": 0.16559323104123255,
+      "full_ari": 0.25794936316127653,
+      "metal_ari": 0.10526315789473684,
+      "rubber_ari": 0.1930085533655634
+    },
+    {
+      "filename": "scene_0160.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 2,
+      "rubber_count": 6,
+      "fg_ari": 0.31221001586493846,
+      "full_ari": 0.05712522802581836,
+      "metal_ari": NaN,
+      "rubber_ari": 0.17152421076931956
+    },
+    {
+      "filename": "scene_0161.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 6,
+      "rubber_count": 3,
+      "fg_ari": 0.8787180545068153,
+      "full_ari": 0.10978347193531036,
+      "metal_ari": 0.38254080908445703,
+      "rubber_ari": 0.9372909698996655
+    },
+    {
+      "filename": "scene_0162.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 7,
+      "rubber_count": 2,
+      "fg_ari": 0.6283185840707964,
+      "full_ari": 0.0059693564760692095,
+      "metal_ari": 0.8895184135977338,
+      "rubber_ari": 0.56
+    },
+    {
+      "filename": "scene_0163.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 1,
+      "fg_ari": 0.8007329363261567,
+      "full_ari": 0.06835965040114071,
+      "metal_ari": 0.847870182555781,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0164.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 2,
+      "rubber_count": 4,
+      "fg_ari": 0.45454545454545453,
+      "full_ari": 0.07152133787788856,
+      "metal_ari": NaN,
+      "rubber_ari": 0.42105263157894735
+    },
+    {
+      "filename": "scene_0165.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 5,
+      "fg_ari": 0.6167051832287884,
+      "full_ari": 0.1049350723657384,
+      "metal_ari": NaN,
+      "rubber_ari": 0.7624190064794817
+    },
+    {
+      "filename": "scene_0166.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 5,
+      "rubber_count": 5,
+      "fg_ari": 0.7088607594936709,
+      "full_ari": 0.06518343470584492,
+      "metal_ari": 0.6728971962616822,
+      "rubber_ari": 0.68
+    },
+    {
+      "filename": "scene_0167.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 5,
+      "fg_ari": 0.24324324324324326,
+      "full_ari": 0.0599982888895555,
+      "metal_ari": NaN,
+      "rubber_ari": 0.14285714285714285
+    },
+    {
+      "filename": "scene_0168.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 2,
+      "rubber_count": 2,
+      "fg_ari": 0.413059427732942,
+      "full_ari": 0.0343384672171571,
+      "metal_ari": 0.2972972972972973,
+      "rubber_ari": 0.022222222222222223
+    },
+    {
+      "filename": "scene_0169.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 2,
+      "rubber_count": 3,
+      "fg_ari": 0.5254365983295368,
+      "full_ari": 0.07581238683805663,
+      "metal_ari": NaN,
+      "rubber_ari": 0.35020519835841313
+    },
+    {
+      "filename": "scene_0170.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 2,
+      "rubber_count": 2,
+      "fg_ari": 0.41935483870967744,
+      "full_ari": 0.022687172822455016,
+      "metal_ari": 1.0,
+      "rubber_ari": 0.4117647058823529
+    },
+    {
+      "filename": "scene_0171.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 2,
+      "fg_ari": 0.7246722288438617,
+      "full_ari": 0.16769448971707543,
+      "metal_ari": 0.6571603177836627,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0172.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 8,
+      "rubber_count": 2,
+      "fg_ari": 0.42491268917345754,
+      "full_ari": 0.08757179771101947,
+      "metal_ari": 0.41940490104036937,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0173.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 5,
+      "fg_ari": 0.3602251407129456,
+      "full_ari": 0.042157754337309,
+      "metal_ari": 0.3446601941747573,
+      "rubber_ari": 0.49056603773584906
+    },
+    {
+      "filename": "scene_0174.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 5,
+      "rubber_count": 2,
+      "fg_ari": 0.21274533559486308,
+      "full_ari": 0.0900102060545627,
+      "metal_ari": 0.2893401015228426,
+      "rubber_ari": 0.5714285714285714
+    },
+    {
+      "filename": "scene_0175.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 7,
+      "fg_ari": 0.5342318059299191,
+      "full_ari": 0.002151579597962871,
+      "metal_ari": -0.07142857142857142,
+      "rubber_ari": 0.5110385789930799
+    },
+    {
+      "filename": "scene_0176.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 3,
+      "fg_ari": 0.5552486187845304,
+      "full_ari": 0.06548981045855536,
+      "metal_ari": 0.7852760736196319,
+      "rubber_ari": 0.25
+    },
+    {
+      "filename": "scene_0177.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 6,
+      "rubber_count": 2,
+      "fg_ari": 0.39663500359696385,
+      "full_ari": 0.1240208633052377,
+      "metal_ari": 0.4224941416164865,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0178.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 3,
+      "fg_ari": 0.20689495282034637,
+      "full_ari": 0.18563189088813037,
+      "metal_ari": 0.40860215053763443,
+      "rubber_ari": 0.503338898163606
+    },
+    {
+      "filename": "scene_0179.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 2,
+      "fg_ari": 0.6742382271468144,
+      "full_ari": 0.07134570450204063,
+      "metal_ari": 0.5833333333333334,
+      "rubber_ari": 0.38275251033668045
+    },
+    {
+      "filename": "scene_0180.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 2,
+      "fg_ari": 0.59352805011969,
+      "full_ari": 0.1894250334572121,
+      "metal_ari": 0.5246675779793712,
+      "rubber_ari": 0.41509433962264153
+    },
+    {
+      "filename": "scene_0181.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 2,
+      "rubber_count": 2,
+      "fg_ari": 0.8253812975232335,
+      "full_ari": 0.09926765597733038,
+      "metal_ari": 1.0,
+      "rubber_ari": 0.09259259259259259
+    },
+    {
+      "filename": "scene_0182.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 1,
+      "fg_ari": 0.0963855421686747,
+      "full_ari": 0.03138592847475519,
+      "metal_ari": NaN,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0183.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 2,
+      "fg_ari": 0.4486829648605001,
+      "full_ari": 0.17408455881898394,
+      "metal_ari": 0.6375838926174496,
+      "rubber_ari": 1.0
+    },
+    {
+      "filename": "scene_0184.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 4,
+      "fg_ari": 0.4577510411846367,
+      "full_ari": 0.07726155425043178,
+      "metal_ari": 0.36585365853658536,
+      "rubber_ari": 0.676923076923077
+    },
+    {
+      "filename": "scene_0185.pt",
+      "scene_type": "metal_only",
+      "materials": [
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 0,
+      "fg_ari": 1.0,
+      "full_ari": 0.1837206462731323,
+      "metal_ari": 1.0,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0186.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 4,
+      "fg_ari": 0.39623055007670394,
+      "full_ari": 0.028593151502319405,
+      "metal_ari": 0.23948584958845417,
+      "rubber_ari": 0.19820048156127235
+    },
+    {
+      "filename": "scene_0187.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 3,
+      "fg_ari": 0.498567335243553,
+      "full_ari": 0.16458063928042083,
+      "metal_ari": NaN,
+      "rubber_ari": 0.5108695652173914
+    },
+    {
+      "filename": "scene_0188.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 3,
+      "fg_ari": 0.46357615894039733,
+      "full_ari": 0.05324582774390293,
+      "metal_ari": 0.0,
+      "rubber_ari": 1.0
+    },
+    {
+      "filename": "scene_0189.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 5,
+      "rubber_count": 4,
+      "fg_ari": 0.3522138013562026,
+      "full_ari": 0.07470741399797713,
+      "metal_ari": 0.39458086367485184,
+      "rubber_ari": 0.18902439024390244
+    },
+    {
+      "filename": "scene_0190.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 4,
+      "rubber_count": 2,
+      "fg_ari": 0.3856056173200702,
+      "full_ari": 0.09471041596566675,
+      "metal_ari": 0.30973451327433627,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0191.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 4,
+      "rubber_count": 6,
+      "fg_ari": 0.2707395498392283,
+      "full_ari": 0.01768035962630797,
+      "metal_ari": 0.5150862068965517,
+      "rubber_ari": 0.07852675469075747
+    },
+    {
+      "filename": "scene_0192.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 6,
+      "rubber_count": 4,
+      "fg_ari": 0.298940138114406,
+      "full_ari": 0.16255677498586718,
+      "metal_ari": 0.4598111763204899,
+      "rubber_ari": 0.3422133552399953
+    },
+    {
+      "filename": "scene_0193.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 2,
+      "rubber_count": 1,
+      "fg_ari": 0.20555555555555555,
+      "full_ari": 0.1742556553065918,
+      "metal_ari": 0.13793103448275862,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0194.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 2,
+      "rubber_count": 1,
+      "fg_ari": 0.7998289136013687,
+      "full_ari": 0.026991269214254706,
+      "metal_ari": 0.5555555555555556,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0195.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 3,
+      "fg_ari": 0.4303336789318889,
+      "full_ari": 0.05386866044612123,
+      "metal_ari": 0.8656716417910447,
+      "rubber_ari": 0.31881005660128997
+    },
+    {
+      "filename": "scene_0196.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 7,
+      "fg_ari": 0.25507222631823273,
+      "full_ari": 0.14399591090346664,
+      "metal_ari": 0.2669983416252073,
+      "rubber_ari": 0.42838776034970427
+    },
+    {
+      "filename": "scene_0197.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 2,
+      "fg_ari": 0.43478260869565216,
+      "full_ari": 0.033474905368302804,
+      "metal_ari": NaN,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0198.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 2,
+      "fg_ari": 0.8009032743695897,
+      "full_ari": 0.14838077426430366,
+      "metal_ari": NaN,
+      "rubber_ari": 1.0
+    },
+    {
+      "filename": "scene_0199.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 5,
+      "rubber_count": 1,
+      "fg_ari": 0.5524956970740104,
+      "full_ari": 0.11383728105098105,
+      "metal_ari": 0.6895527314738406,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0200.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 7,
+      "fg_ari": 0.671804958375263,
+      "full_ari": 0.08072640817306478,
+      "metal_ari": NaN,
+      "rubber_ari": 0.693059268135312
+    },
+    {
+      "filename": "scene_0201.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 2,
+      "fg_ari": 0.42105263157894735,
+      "full_ari": 0.0929040535086324,
+      "metal_ari": NaN,
+      "rubber_ari": 0.32
+    },
+    {
+      "filename": "scene_0202.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 4,
+      "fg_ari": 0.48756508950220606,
+      "full_ari": 0.025893586336115992,
+      "metal_ari": 0.4515669515669516,
+      "rubber_ari": 0.4645628556647698
+    },
+    {
+      "filename": "scene_0203.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 2,
+      "rubber_count": 2,
+      "fg_ari": 0.36942675159235666,
+      "full_ari": 0.07639705720123914,
+      "metal_ari": 0.0,
+      "rubber_ari": 0.205607476635514
+    },
+    {
+      "filename": "scene_0204.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 5,
+      "fg_ari": 0.45711940910956095,
+      "full_ari": 0.11835128621317201,
+      "metal_ari": 0.37915742793791574,
+      "rubber_ari": 0.40056495918503526
+    },
+    {
+      "filename": "scene_0205.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 7,
+      "rubber_count": 2,
+      "fg_ari": 0.3572912339011217,
+      "full_ari": 0.09349554750392212,
+      "metal_ari": 0.3845122360040228,
+      "rubber_ari": 0.17204301075268819
+    },
+    {
+      "filename": "scene_0206.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 5,
+      "fg_ari": 0.4131486513354099,
+      "full_ari": 0.1303466886065224,
+      "metal_ari": 0.21428571428571427,
+      "rubber_ari": 0.6302179534540081
+    },
+    {
+      "filename": "scene_0207.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 3,
+      "fg_ari": 0.5454545454545454,
+      "full_ari": 0.14470731080686144,
+      "metal_ari": NaN,
+      "rubber_ari": 0.4853218421761379
+    },
+    {
+      "filename": "scene_0208.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 7,
+      "fg_ari": 0.6348889443473921,
+      "full_ari": 0.10068732155542091,
+      "metal_ari": NaN,
+      "rubber_ari": 0.4727484698338677
+    },
+    {
+      "filename": "scene_0209.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 1,
+      "rubber_count": 3,
+      "fg_ari": 0.30973451327433627,
+      "full_ari": 0.011101636484756431,
+      "metal_ari": NaN,
+      "rubber_ari": 0.19481981981981983
+    },
+    {
+      "filename": "scene_0210.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 4,
+      "rubber_count": 3,
+      "fg_ari": 0.44806307642930243,
+      "full_ari": 0.17523499551615251,
+      "metal_ari": 0.41420118343195267,
+      "rubber_ari": 0.2674591381872214
+    },
+    {
+      "filename": "scene_0211.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 2,
+      "rubber_count": 3,
+      "fg_ari": 0.5438089902167823,
+      "full_ari": 0.07242564409502923,
+      "metal_ari": NaN,
+      "rubber_ari": 0.4152206161382689
+    },
+    {
+      "filename": "scene_0212.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 4,
+      "fg_ari": 0.3952569169960474,
+      "full_ari": 0.07554651761666664,
+      "metal_ari": 0.68,
+      "rubber_ari": 0.09433962264150944
+    },
+    {
+      "filename": "scene_0213.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 2,
+      "rubber_count": 1,
+      "fg_ari": 0.1723312589755864,
+      "full_ari": 0.17743245233377006,
+      "metal_ari": NaN,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0214.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 3,
+      "fg_ari": 0.3284834918858422,
+      "full_ari": 0.020467895038907585,
+      "metal_ari": 0.32139201637666326,
+      "rubber_ari": 1.0
+    },
+    {
+      "filename": "scene_0215.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 2,
+      "rubber_count": 1,
+      "fg_ari": 1.0,
+      "full_ari": 0.05887491831873737,
+      "metal_ari": 1.0,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0216.pt",
+      "scene_type": "rubber_only",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 0,
+      "rubber_count": 3,
+      "fg_ari": 0.6875,
+      "full_ari": 0.035367502630266494,
+      "metal_ari": NaN,
+      "rubber_ari": 0.6875
+    },
+    {
+      "filename": "scene_0217.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 4,
+      "rubber_count": 4,
+      "fg_ari": 0.354926277288833,
+      "full_ari": 0.2790474436682352,
+      "metal_ari": 0.3195036835982939,
+      "rubber_ari": 0.3871297242083759
+    },
+    {
+      "filename": "scene_0218.pt",
+      "scene_type": "rubber_only",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 0,
+      "rubber_count": 4,
+      "fg_ari": 0.8258196721311475,
+      "full_ari": 0.08876368240504871,
+      "metal_ari": NaN,
+      "rubber_ari": 0.8258196721311475
+    },
+    {
+      "filename": "scene_0219.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 2,
+      "rubber_count": 2,
+      "fg_ari": 0.865979381443299,
+      "full_ari": 0.06743941916682976,
+      "metal_ari": 0.7692307692307693,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0220.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 5,
+      "rubber_count": 3,
+      "fg_ari": 0.35377906976744183,
+      "full_ari": 0.03834568631877743,
+      "metal_ari": 0.4418604651162791,
+      "rubber_ari": 0.3181818181818182
+    },
+    {
+      "filename": "scene_0221.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 2,
+      "rubber_count": 4,
+      "fg_ari": 0.49787285766378997,
+      "full_ari": 0.12256569965590905,
+      "metal_ari": NaN,
+      "rubber_ari": 0.4863013698630137
+    },
+    {
+      "filename": "scene_0222.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 4,
+      "fg_ari": 0.6199954305374494,
+      "full_ari": 0.1601538575778422,
+      "metal_ari": NaN,
+      "rubber_ari": 0.4552024460298342
+    },
+    {
+      "filename": "scene_0223.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 4,
+      "fg_ari": 0.5484091686623332,
+      "full_ari": 0.14971894087023022,
+      "metal_ari": 0.5234726688102894,
+      "rubber_ari": 0.5736434108527132
+    },
+    {
+      "filename": "scene_0224.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 3,
+      "fg_ari": 0.8136645962732919,
+      "full_ari": 0.04431258909388007,
+      "metal_ari": NaN,
+      "rubber_ari": 0.9345887016848364
+    },
+    {
+      "filename": "scene_0225.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 5,
+      "rubber_count": 2,
+      "fg_ari": 0.2039797088247766,
+      "full_ari": 0.0882144932892403,
+      "metal_ari": 0.6320180383314543,
+      "rubber_ari": 0.0
+    },
+    {
+      "filename": "scene_0226.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 2,
+      "rubber_count": 1,
+      "fg_ari": 0.8127822160472387,
+      "full_ari": 0.02536382547945071,
+      "metal_ari": 0.10256410256410256,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0227.pt",
+      "scene_type": "metal_only",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 0,
+      "fg_ari": 0.10526315789473684,
+      "full_ari": 0.1603101553058538,
+      "metal_ari": 0.10526315789473684,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0228.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 5,
+      "rubber_count": 4,
+      "fg_ari": 0.6012269938650306,
+      "full_ari": 0.08703741166327994,
+      "metal_ari": 0.18393782383419688,
+      "rubber_ari": 0.7913669064748201
+    },
+    {
+      "filename": "scene_0229.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 5,
+      "fg_ari": 0.7142688571016507,
+      "full_ari": 0.16070703325909544,
+      "metal_ari": 0.09144542772861357,
+      "rubber_ari": 0.8651540628480335
+    },
+    {
+      "filename": "scene_0230.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 6,
+      "rubber_count": 1,
+      "fg_ari": 0.5593036564062406,
+      "full_ari": 0.1476668259578406,
+      "metal_ari": 0.6309148264984227,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0231.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 4,
+      "rubber_count": 3,
+      "fg_ari": 0.22203152522469627,
+      "full_ari": 0.14553836729960534,
+      "metal_ari": 0.3445136895175408,
+      "rubber_ari": 0.0
+    },
+    {
+      "filename": "scene_0232.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 4,
+      "rubber_count": 4,
+      "fg_ari": 0.5125279847885423,
+      "full_ari": 0.02601902714270238,
+      "metal_ari": 0.28148635317329823,
+      "rubber_ari": 0.7184115523465704
+    },
+    {
+      "filename": "scene_0233.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 5,
+      "rubber_count": 5,
+      "fg_ari": 0.5657894736842105,
+      "full_ari": 0.05817799245581453,
+      "metal_ari": 0.7407407407407407,
+      "rubber_ari": 0.5149700598802395
+    },
+    {
+      "filename": "scene_0234.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 3,
+      "fg_ari": 0.5597379392495533,
+      "full_ari": 0.1666975235149455,
+      "metal_ari": 0.3138634764250528,
+      "rubber_ari": 0.6181818181818182
+    },
+    {
+      "filename": "scene_0235.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 2,
+      "rubber_count": 5,
+      "fg_ari": 0.5533167188079962,
+      "full_ari": 0.13179519741934287,
+      "metal_ari": 1.0,
+      "rubber_ari": 0.529688756173194
+    },
+    {
+      "filename": "scene_0236.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 2,
+      "rubber_count": 4,
+      "fg_ari": 0.12121212121212122,
+      "full_ari": 0.037805002886770724,
+      "metal_ari": 1.0,
+      "rubber_ari": 0.14634146341463414
+    },
+    {
+      "filename": "scene_0237.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 1,
+      "rubber_count": 4,
+      "fg_ari": 0.6181818181818182,
+      "full_ari": 0.02282235505895138,
+      "metal_ari": NaN,
+      "rubber_ari": 0.5945945945945946
+    },
+    {
+      "filename": "scene_0238.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 5,
+      "rubber_count": 1,
+      "fg_ari": 0.44924406047516197,
+      "full_ari": 0.08884847683525934,
+      "metal_ari": 0.27586206896551724,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0239.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 4,
+      "rubber_count": 6,
+      "fg_ari": 0.3119681503424593,
+      "full_ari": 0.09020065920352142,
+      "metal_ari": 0.24009352695052916,
+      "rubber_ari": 0.387630128597673
+    },
+    {
+      "filename": "scene_0240.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 1,
+      "fg_ari": 1.0,
+      "full_ari": 0.05582736757059232,
+      "metal_ari": 1.0,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0241.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 4,
+      "fg_ari": 0.504352314586706,
+      "full_ari": 0.02731813886796504,
+      "metal_ari": 0.22939068100358423,
+      "rubber_ari": 0.17541229385307347
+    },
+    {
+      "filename": "scene_0242.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 2,
+      "rubber_count": 2,
+      "fg_ari": 0.7408305547135495,
+      "full_ari": 0.13260920173046117,
+      "metal_ari": 0.7135969141755063,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0243.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 6,
+      "fg_ari": 0.6030974544855424,
+      "full_ari": 0.05007961134925605,
+      "metal_ari": NaN,
+      "rubber_ari": 0.6499670815437188
+    },
+    {
+      "filename": "scene_0244.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 2,
+      "rubber_count": 1,
+      "fg_ari": 0.2908458864426419,
+      "full_ari": 0.16306509655866813,
+      "metal_ari": 0.5882352941176471,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0245.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 4,
+      "rubber_count": 4,
+      "fg_ari": 0.5073679437769213,
+      "full_ari": 0.23407948142301363,
+      "metal_ari": 0.5777490297542044,
+      "rubber_ari": 0.9029535864978903
+    },
+    {
+      "filename": "scene_0246.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 5,
+      "fg_ari": 0.3990784765827222,
+      "full_ari": 0.08231506066512129,
+      "metal_ari": 0.4,
+      "rubber_ari": 0.3159013911915231
+    },
+    {
+      "filename": "scene_0247.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 4,
+      "rubber_count": 4,
+      "fg_ari": 0.2960156296252442,
+      "full_ari": 0.02086065718906635,
+      "metal_ari": 0.39767868051313376,
+      "rubber_ari": 0.4230769230769231
+    },
+    {
+      "filename": "scene_0248.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 2,
+      "fg_ari": 0.3548387096774194,
+      "full_ari": 0.04774739580246109,
+      "metal_ari": NaN,
+      "rubber_ari": 0.2222222222222222
+    },
+    {
+      "filename": "scene_0249.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 5,
+      "rubber_count": 2,
+      "fg_ari": 0.4117647058823529,
+      "full_ari": 0.13591452687715833,
+      "metal_ari": 0.11679884643114635,
+      "rubber_ari": 0.351888343121894
+    },
+    {
+      "filename": "scene_0250.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 5,
+      "fg_ari": 0.40651856348769705,
+      "full_ari": 0.11321079554026811,
+      "metal_ari": 0.5214814814814814,
+      "rubber_ari": 0.45927903871829107
+    },
+    {
+      "filename": "scene_0251.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 5,
+      "fg_ari": 0.34953538241601145,
+      "full_ari": 0.1250426032137227,
+      "metal_ari": 0.2556179775280899,
+      "rubber_ari": 0.4098360655737705
+    },
+    {
+      "filename": "scene_0252.pt",
+      "scene_type": "metal_only",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 0,
+      "fg_ari": 0.03877221324717286,
+      "full_ari": 0.2220093762086952,
+      "metal_ari": 0.03877221324717286,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0253.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 2,
+      "fg_ari": 0.5091616312351689,
+      "full_ari": 0.13551801982688735,
+      "metal_ari": 0.44102241776660384,
+      "rubber_ari": 0.37209302325581395
+    },
+    {
+      "filename": "scene_0254.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 5,
+      "fg_ari": 0.38733509234828495,
+      "full_ari": 0.10273608239507297,
+      "metal_ari": -0.19469026548672566,
+      "rubber_ari": 0.39331452138050793
+    },
+    {
+      "filename": "scene_0255.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 2,
+      "rubber_count": 6,
+      "fg_ari": 0.516675546369451,
+      "full_ari": 0.07299055986006917,
+      "metal_ari": 0.5172413793103449,
+      "rubber_ari": 0.46327089033887603
+    },
+    {
+      "filename": "scene_0256.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 2,
+      "fg_ari": 0.38551514180419805,
+      "full_ari": 0.09573568640997678,
+      "metal_ari": 0.2703016241299304,
+      "rubber_ari": 0.8888888888888888
+    },
+    {
+      "filename": "scene_0257.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 5,
+      "rubber_count": 1,
+      "fg_ari": 0.5997659449970744,
+      "full_ari": 0.14464621631607782,
+      "metal_ari": 0.5997659449970744,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0258.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 2,
+      "rubber_count": 2,
+      "fg_ari": 0.6456692913385826,
+      "full_ari": 0.09690039982049435,
+      "metal_ari": 1.0,
+      "rubber_ari": 0.34782608695652173
+    },
+    {
+      "filename": "scene_0259.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 7,
+      "rubber_count": 3,
+      "fg_ari": 0.28363318522834874,
+      "full_ari": 0.12242977588977492,
+      "metal_ari": 0.22385287440665919,
+      "rubber_ari": 0.3595505617977528
+    },
+    {
+      "filename": "scene_0260.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 4,
+      "fg_ari": 0.3344181642049351,
+      "full_ari": 0.08327961967794892,
+      "metal_ari": 0.17533468559837728,
+      "rubber_ari": 0.7908745247148289
+    },
+    {
+      "filename": "scene_0261.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 6,
+      "rubber_count": 4,
+      "fg_ari": 0.3751100051588626,
+      "full_ari": 0.21374476821586982,
+      "metal_ari": 0.3202868240215118,
+      "rubber_ari": 0.5442700621853717
+    },
+    {
+      "filename": "scene_0262.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 5,
+      "fg_ari": 0.3504613638433675,
+      "full_ari": 0.1397302359899703,
+      "metal_ari": 0.07421013960323292,
+      "rubber_ari": 0.28206583427922816
+    },
+    {
+      "filename": "scene_0263.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 1,
+      "rubber_count": 6,
+      "fg_ari": 0.4679755391052462,
+      "full_ari": 0.04464089959704483,
+      "metal_ari": NaN,
+      "rubber_ari": 0.5265713514971675
+    },
+    {
+      "filename": "scene_0264.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 4,
+      "fg_ari": 0.2301710730948678,
+      "full_ari": 0.061550416081635265,
+      "metal_ari": NaN,
+      "rubber_ari": 0.7741935483870968
+    },
+    {
+      "filename": "scene_0265.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 3,
+      "fg_ari": 0.4712317666126418,
+      "full_ari": 0.19534655957529576,
+      "metal_ari": NaN,
+      "rubber_ari": 0.5290858725761773
+    },
+    {
+      "filename": "scene_0266.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 4,
+      "fg_ari": 0.3896992818671454,
+      "full_ari": 0.1740560103876231,
+      "metal_ari": 0.3697478991596639,
+      "rubber_ari": 0.4005180210463742
+    },
+    {
+      "filename": "scene_0267.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 3,
+      "fg_ari": 0.43946704439821166,
+      "full_ari": 0.10492953199012593,
+      "metal_ari": 0.46,
+      "rubber_ari": 0.4865771812080537
+    },
+    {
+      "filename": "scene_0268.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 2,
+      "rubber_count": 3,
+      "fg_ari": 0.6438505260611924,
+      "full_ari": 0.05510056539353398,
+      "metal_ari": 0.9646302250803859,
+      "rubber_ari": 0.2
+    },
+    {
+      "filename": "scene_0269.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 3,
+      "rubber_count": 6,
+      "fg_ari": 0.3353513235009983,
+      "full_ari": 0.23843627500169942,
+      "metal_ari": 0.7533380182712579,
+      "rubber_ari": 0.2330123423301234
+    },
+    {
+      "filename": "scene_0270.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 5,
+      "rubber_count": 5,
+      "fg_ari": 0.4656203288490284,
+      "full_ari": 0.07347800594958137,
+      "metal_ari": 0.5585659231577718,
+      "rubber_ari": 0.5603878930355569
+    },
+    {
+      "filename": "scene_0271.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 5,
+      "rubber_count": 5,
+      "fg_ari": 0.21246707638279191,
+      "full_ari": 0.06309565935323624,
+      "metal_ari": 0.6590909090909091,
+      "rubber_ari": 0.16206987128972944
+    },
+    {
+      "filename": "scene_0272.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 6,
+      "rubber_count": 2,
+      "fg_ari": 0.35603180089872105,
+      "full_ari": 0.024233573462942606,
+      "metal_ari": 0.26380368098159507,
+      "rubber_ari": 0.5512239347234814
+    },
+    {
+      "filename": "scene_0273.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 2,
+      "rubber_count": 6,
+      "fg_ari": 0.3926505614154474,
+      "full_ari": 0.06634820887917223,
+      "metal_ari": NaN,
+      "rubber_ari": 0.3717001055966209
+    },
+    {
+      "filename": "scene_0274.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 5,
+      "rubber_count": 2,
+      "fg_ari": 0.5888726207906296,
+      "full_ari": 0.07543959168444386,
+      "metal_ari": 0.6955489614243323,
+      "rubber_ari": 0.4948453608247423
+    },
+    {
+      "filename": "scene_0275.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 5,
+      "rubber_count": 4,
+      "fg_ari": 0.32010195901083316,
+      "full_ari": 0.06089680969469563,
+      "metal_ari": 0.25556117290192115,
+      "rubber_ari": 0.21052631578947367
+    },
+    {
+      "filename": "scene_0276.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 6,
+      "fg_ari": 0.39865734352470583,
+      "full_ari": 0.16754968476314921,
+      "metal_ari": 0.8517846339987901,
+      "rubber_ari": 0.3304557317807669
+    },
+    {
+      "filename": "scene_0277.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 6,
+      "rubber_count": 4,
+      "fg_ari": 0.2952202436738519,
+      "full_ari": 0.19139311871974826,
+      "metal_ari": 0.2294646807255567,
+      "rubber_ari": 0.31160896130346233
+    },
+    {
+      "filename": "scene_0278.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 2,
+      "fg_ari": 0.4444444444444444,
+      "full_ari": 0.008918095900022655,
+      "metal_ari": NaN,
+      "rubber_ari": 0.0
+    },
+    {
+      "filename": "scene_0279.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 2,
+      "rubber_count": 4,
+      "fg_ari": 0.21348805679932925,
+      "full_ari": 0.15216434140286317,
+      "metal_ari": NaN,
+      "rubber_ari": 0.21348805679932925
+    },
+    {
+      "filename": "scene_0280.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 5,
+      "fg_ari": 0.34542546055008,
+      "full_ari": 0.08690731207012516,
+      "metal_ari": 0.7815650504080653,
+      "rubber_ari": 0.41922451040906794
+    },
+    {
+      "filename": "scene_0281.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 1,
+      "fg_ari": 0.24321172746959854,
+      "full_ari": 0.03715566818996889,
+      "metal_ari": 0.19116465863453816,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0282.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 2,
+      "fg_ari": 0.5256215119228818,
+      "full_ari": 0.08769541788800957,
+      "metal_ari": 0.14282600799128223,
+      "rubber_ari": 0.0
+    },
+    {
+      "filename": "scene_0283.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 4,
+      "rubber_count": 3,
+      "fg_ari": 0.7352285395763657,
+      "full_ari": 0.09876039707761106,
+      "metal_ari": 0.5824680028978507,
+      "rubber_ari": 1.0
+    },
+    {
+      "filename": "scene_0284.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 7,
+      "rubber_count": 3,
+      "fg_ari": 0.6221662468513854,
+      "full_ari": 0.11960363884303452,
+      "metal_ari": 0.6817842478536768,
+      "rubber_ari": -0.07142857142857142
+    },
+    {
+      "filename": "scene_0285.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 2,
+      "fg_ari": 0.35414352366140855,
+      "full_ari": 0.03345568913188836,
+      "metal_ari": 0.20958083832335328,
+      "rubber_ari": 0.4444444444444444
+    },
+    {
+      "filename": "scene_0286.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 1,
+      "rubber_count": 2,
+      "fg_ari": 0.31516936671575846,
+      "full_ari": 0.05515470691513059,
+      "metal_ari": NaN,
+      "rubber_ari": 0.43711340206185567
+    },
+    {
+      "filename": "scene_0287.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 4,
+      "rubber_count": 1,
+      "fg_ari": 0.3225806451612903,
+      "full_ari": 0.0012045591617913414,
+      "metal_ari": -0.15384615384615385,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0288.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 2,
+      "rubber_count": 3,
+      "fg_ari": 0.6242380546634332,
+      "full_ari": 0.025415646451615013,
+      "metal_ari": 0.547945205479452,
+      "rubber_ari": 0.4357172385283175
+    },
+    {
+      "filename": "scene_0289.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 3,
+      "fg_ari": 0.14107883817427386,
+      "full_ari": 0.008521660960861021,
+      "metal_ari": NaN,
+      "rubber_ari": 1.0
+    },
+    {
+      "filename": "scene_0290.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 5,
+      "fg_ari": 0.370242214532872,
+      "full_ari": 0.04661624854449461,
+      "metal_ari": NaN,
+      "rubber_ari": 0.3063063063063063
+    },
+    {
+      "filename": "scene_0291.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 4,
+      "rubber_count": 6,
+      "fg_ari": 0.2626798341867837,
+      "full_ari": 0.2107905252926959,
+      "metal_ari": 0.584316289116903,
+      "rubber_ari": 0.16176183979731046
+    },
+    {
+      "filename": "scene_0292.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 4,
+      "fg_ari": 0.5989227079278683,
+      "full_ari": 0.1752320537645906,
+      "metal_ari": 0.8468271334792122,
+      "rubber_ari": 0.5718303257558003
+    },
+    {
+      "filename": "scene_0293.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 3,
+      "fg_ari": 0.5039381683014296,
+      "full_ari": 0.04799342883009091,
+      "metal_ari": NaN,
+      "rubber_ari": 0.5304954390985512
+    },
+    {
+      "filename": "scene_0294.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal"
+      ],
+      "metal_count": 6,
+      "rubber_count": 3,
+      "fg_ari": 0.5592592592592592,
+      "full_ari": 0.09277590561648565,
+      "metal_ari": 0.545,
+      "rubber_ari": 0.5714285714285714
+    },
+    {
+      "filename": "scene_0295.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 1,
+      "rubber_count": 2,
+      "fg_ari": 0.8361640972040763,
+      "full_ari": 0.05189489286183959,
+      "metal_ari": NaN,
+      "rubber_ari": 1.0
+    },
+    {
+      "filename": "scene_0296.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "rubber",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 3,
+      "rubber_count": 1,
+      "fg_ari": 0.9618320610687023,
+      "full_ari": 0.11163236999225636,
+      "metal_ari": 0.6823529411764706,
+      "rubber_ari": NaN
+    },
+    {
+      "filename": "scene_0297.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber"
+      ],
+      "metal_count": 5,
+      "rubber_count": 2,
+      "fg_ari": 0.6554517405667063,
+      "full_ari": 0.15519344536893745,
+      "metal_ari": 0.6892498066511987,
+      "rubber_ari": 0.04833836858006042
+    },
+    {
+      "filename": "scene_0298.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "rubber",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 7,
+      "rubber_count": 3,
+      "fg_ari": 0.27966912538085187,
+      "full_ari": -0.00965802993109792,
+      "metal_ari": 0.3423712102538822,
+      "rubber_ari": 0.5067169455573887
+    },
+    {
+      "filename": "scene_0299.pt",
+      "scene_type": "mixed",
+      "materials": [
+        "metal",
+        "metal",
+        "rubber",
+        "metal",
+        "metal",
+        "metal",
+        "metal"
+      ],
+      "metal_count": 6,
+      "rubber_count": 1,
+      "fg_ari": 0.6139954853273137,
+      "full_ari": 0.06360858706211853,
+      "metal_ari": 0.5733840304182509,
+      "rubber_ari": NaN
+    }
+  ]
+}
