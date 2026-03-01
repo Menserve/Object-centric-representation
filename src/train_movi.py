@@ -477,6 +477,10 @@ def main():
     parser.add_argument('--loss_type', type=str, default='mse',
                         choices=['mse', 'cosine', 'channel_norm'],
                         help='Loss function type: mse (default), cosine (scale-invariant), channel_norm (LayerNorm + MSE)')
+    parser.add_argument('--image_size', type=int, default=224,
+                        help='Input image size (224=16x16 patches, 448=32x32 patches for DINOv2)')
+    parser.add_argument('--num_workers', type=int, default=4,
+                        help='DataLoader num_workers (0=main process)')
     
     args = parser.parse_args()
     
@@ -494,17 +498,20 @@ def main():
     USE_STOP_GRADIENT = args.use_stop_gradient
     LOSS_TYPE = args.loss_type
     BACKBONE = args.backbone
+    IMAGE_SIZE = args.image_size
+    NUM_WORKERS = args.num_workers
     
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"Device: {device}")
     print(f"Backbone: {BACKBONE}")
+    print(f"Image size: {IMAGE_SIZE}×{IMAGE_SIZE}")
     
     # データセット
     print("\n1. Loading MOVi-A dataset...")
     dataset = MoviDataset(
         data_dir=DATA_DIR,
         split='all',
-        target_size=(224, 224),
+        target_size=(IMAGE_SIZE, IMAGE_SIZE),
         max_frames=MAX_FRAMES
     )
     
@@ -520,16 +527,16 @@ def main():
         batch_size=BATCH_SIZE,
         shuffle=True,
         collate_fn=collate_fn,
-        num_workers=8,
+        num_workers=NUM_WORKERS,
         pin_memory=True,
-        persistent_workers=True
+        persistent_workers=(NUM_WORKERS > 0)
     )
     test_loader = DataLoader(
         test_dataset,
         batch_size=1,
         shuffle=False,
         collate_fn=collate_fn,
-        num_workers=4,
+        num_workers=min(NUM_WORKERS, 4),
         pin_memory=True
     )
     
@@ -538,7 +545,7 @@ def main():
     
     # モデル作成
     print(f"\n2. Creating SAVi-DINOSAUR model with {BACKBONE}...")
-    model = SAViDinosaur(num_slots=NUM_SLOTS, backbone=BACKBONE, mask_temperature=MASK_TEMPERATURE)
+    model = SAViDinosaur(num_slots=NUM_SLOTS, backbone=BACKBONE, mask_temperature=MASK_TEMPERATURE, image_size=IMAGE_SIZE)
     print(f"Mask temperature (τ): {MASK_TEMPERATURE}")
     if REFRESH_INTERVAL > 0:
         print(f"Slot refresh interval: {REFRESH_INTERVAL} frames")

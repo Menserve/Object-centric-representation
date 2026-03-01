@@ -124,9 +124,9 @@ def compute_per_object_material_ari(
 
 
 def load_model(checkpoint_path: str, backbone: str, mask_temperature: float = 0.5,
-               num_slots: int = 7, device: str = 'cuda') -> SAViDinosaur:
+               num_slots: int = 7, device: str = 'cuda', image_size: int = 224) -> SAViDinosaur:
     """Load model from checkpoint."""
-    print(f"Loading model: {backbone} from {checkpoint_path}")
+    print(f"Loading model: {backbone} from {checkpoint_path} (image_size={image_size})")
 
     state_dict = torch.load(checkpoint_path, map_location='cpu', weights_only=False)
     if 'model_state_dict' in state_dict:
@@ -142,7 +142,8 @@ def load_model(checkpoint_path: str, backbone: str, mask_temperature: float = 0.
     model = SAViDinosaur(
         num_slots=num_slots,
         backbone=backbone,
-        mask_temperature=mask_temperature
+        mask_temperature=mask_temperature,
+        image_size=image_size
     )
     model.load_state_dict(state_dict, strict=False)
     model = model.to(device)
@@ -188,11 +189,12 @@ def evaluate_v2(
     max_frames: int = 1,
     loss_type: str = 'mse',
     device: str = 'cuda',
+    image_size: int = 224,
 ) -> dict:
     """
     Evaluate checkpoint on v2 data with per-object material ARI.
     """
-    model = load_model(checkpoint_path, backbone, mask_temperature, num_slots, device)
+    model = load_model(checkpoint_path, backbone, mask_temperature, num_slots, device, image_size=image_size)
 
     # Find all scene files
     files = sorted([f for f in os.listdir(data_dir) if f.endswith('.pt') and f.startswith('scene_')])
@@ -204,7 +206,7 @@ def evaluate_v2(
         for i, fname in enumerate(files):
             sample = load_sample(
                 os.path.join(data_dir, fname),
-                target_size=(224, 224),
+                target_size=(image_size, image_size),
                 max_frames=max_frames
             )
             video = sample['video'].unsqueeze(0).to(device)  # (1, T, 3, H, W)
@@ -321,6 +323,8 @@ def main():
                         choices=['mse', 'cosine', 'channel_norm'])
     parser.add_argument('--output', type=str, default=None,
                         help='Output JSON path (default: auto-generated)')
+    parser.add_argument('--image_size', type=int, default=224,
+                        help='Input image size (224 or 448)')
     args = parser.parse_args()
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -334,6 +338,7 @@ def main():
         max_frames=args.max_frames,
         loss_type=args.loss_type,
         device=device,
+        image_size=args.image_size,
     )
 
     # Save results

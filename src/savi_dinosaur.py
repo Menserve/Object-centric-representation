@@ -39,33 +39,42 @@ class FeatureExtractor(nn.Module):
     複数のViT backboneに対応する特徴抽出器
     
     サポートするbackbone:
-    - dinov2_vits14: DINOv2 ViT-S/14 (384dim, 16×16 patches)
-    - dino_vits16: DINOv1 ViT-S/16 (384dim, 14×14 patches)
-    - clip_vitb16: CLIP ViT-B/16 (768dim, 14×14 patches)
+    - dinov2_vits14: DINOv2 ViT-S/14 (384dim, patch_size=14)
+    - dino_vits16: DINOv1 ViT-S/16 (384dim, patch_size=16)
+    - clip_vitb16: CLIP ViT-B/16 (768dim, patch_size=16)
     
-    出力は全て統一: (B, 384, 16, 16) に正規化
+    image_size によって空間解像度が変化:
+    - 224: DINOv2→16×16, DINOv1/CLIP→14×14
+    - 448: DINOv2→32×32, DINOv1/CLIP→28×28
     """
     
-    def __init__(self, backbone: str = 'dinov2_vits14'):
+    def __init__(self, backbone: str = 'dinov2_vits14', image_size: int = 224):
         super().__init__()
         self.backbone_name = backbone
         self.target_feat_dim = 384
-        self.target_spatial_size = 16
+        self.image_size = image_size
         
-        print(f"Loading {backbone} model...")
+        # Patch size per backbone
+        patch_sizes = {'dinov2_vits14': 14, 'dino_vits16': 16, 'clip_vitb16': 16}
+        self.patch_size = patch_sizes.get(backbone, 14)
+        
+        # Compute spatial resolution dynamically from image_size
+        self.target_spatial_size = image_size // self.patch_size
+        
+        print(f"Loading {backbone} model (image_size={image_size}, spatial={self.target_spatial_size}×{self.target_spatial_size})...")
         
         if backbone == 'dinov2_vits14':
             # DINOv2 ViT-S/14
             self.model = torch.hub.load('facebookresearch/dinov2', 'dinov2_vits14')
             self.feat_dim = 384
-            self.spatial_size = 16  # 224/14 = 16
+            self.spatial_size = image_size // 14
             self.projection = None  # 次元変換不要
             
         elif backbone == 'dino_vits16':
             # DINOv1 ViT-S/16
             self.model = torch.hub.load('facebookresearch/dino:main', 'dino_vits16')
             self.feat_dim = 384
-            self.spatial_size = 14  # 224/16 = 14
+            self.spatial_size = image_size // 16
             self.projection = None  # 次元変換不要
             
         elif backbone == 'clip_vitb16':
@@ -75,7 +84,7 @@ class FeatureExtractor(nn.Module):
                 'ViT-B-16', pretrained='openai'
             )
             self.feat_dim = 768
-            self.spatial_size = 14  # 224/16 = 14
+            self.spatial_size = image_size // 16
             # 768 → 384 への projection
             self.projection = nn.Conv2d(768, 384, 1)
             
@@ -87,7 +96,7 @@ class FeatureExtractor(nn.Module):
             param.requires_grad = False
         self.model.eval()
         
-        # 空間解像度を16×16に統一するためのアップサンプリング（DINOv1, CLIP用）
+        # 空間解像度を統一するためのアップサンプリング（DINOv1, CLIP用）
         if self.spatial_size != self.target_spatial_size:
             self.upsample = nn.Upsample(
                 size=(self.target_spatial_size, self.target_spatial_size),
@@ -420,15 +429,21 @@ class SAViDinosaur(nn.Module):
     2. 動画モード: forward_video() を使用（フレーム間でスロットを引き継ぐ）
     """
     
-    def __init__(self, num_slots: int = 5, feat_dim: int = 384, backbone: str = 'dinov2_vits14', slot_dim: int = 64, mask_temperature: float = 0.5):
+    def __init__(self, num_slots: int = 5, feat_dim: int = 384, backbone: str = 'dinov2_vits14', slot_dim: int = 64, mask_temperature: float = 0.5, image_size: int = 224):
         super().__init__()
         self.num_slots = num_slots
         self.feat_dim = feat_dim  # DINOv2の出力次元（384）
         self.slot_dim = slot_dim  # Slot Attentionの次元（64）
         self.backbone = backbone
+        self.image_size = image_size
+        
+        # Compute spatial resolution from image_size and patch_size
+        patch_sizes = {'dinov2_vits14': 14, 'dino_vits16': 16, 'clip_vitb16': 16}
+        patch_size = patch_sizes.get(backbone, 14)
+        self.spatial_resolution = image_size // patch_size
         
         # Components
-        self.feature_extractor = FeatureExtractor(backbone=backbone)
+        self.feature_extractor = FeatureExtractor(backbone=backbone, image_size=image_size)
         
         # ★ Fix 1: Two-layer MLP for feature projection (following DINOSAUR reference)
         # DummyPositionEmbed (pass-through) + two-layer MLP with ReLU
@@ -462,7 +477,7 @@ class SAViDinosaur(nn.Module):
             nn.ReLU(inplace=True),
             nn.Linear(slot_dim * 2, feat_dim)   # 128 → 384
         )
-        self.decoder = FeatureDecoder(feat_dim, resolution=(16, 16), mask_temperature=mask_temperature)
+        self.decoder = FeatureDecoder(feat_dim, resolution=(self.spatial_resolution, self.spatial_resolution), mask_temperature=mask_temperature)
     
     def encode(self, img: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
         """画像をDINO特徴量に変換し、Slot Attention用に低次元化"""
