@@ -157,22 +157,29 @@ sample['instances']['material_label'][i].numpy()  # 0=metal, 1=rubber
 - [x] 300サンプルでDINOv2再訓練（batch_size=16, 200ep, RTX 5090で~2分）→ 60サンプルとの比較
 - [x] 結果に基づく方針決定（ポスターに載せる数値の確定）→ §9 参照
 
-### Day 4-5 (3/4-5 Wed-Thu): ポスター再構成
+### Day 4 (3/4 Wed): K=11実験と失敗要因分析 ✅
 
-- [ ] `slide.tex` 改訂: 4セクション構成の刷新
-  - Sec 1: 背景・RQ一本化
-  - Sec 2: Backbone比較（DINOv2≈DINOv1>>CLIP） + 相補的特性（win rate） + 材質別ARI（方向確認, p=0.12）
-  - Sec 3: 構造的限界の可視化（★中心貢献, 維持）
-  - Sec 4: まとめ + 工学的教訓 + 「ラベル修正→有意でなかったが方向は正」の誠実な報告
-- [ ] 新しい図の生成（必要に応じて）
-- [ ] ポスターPDFビルド確認（platex + dvipdfmx）
-- [ ] 口頭説明の改訂
+- [x] K=5ボトルネック発見 → K=11で3バックボーン再訓練（200ep, batch=32）
+- [x] DINOv2 K=11: FG-ARI 0.470（+0.302）大幅改善、DINOv1/CLIPは失敗
+- [x] 失敗要因分析: 特徴量空間構造・投影・マスク品質・再構成の4段階検証
+- [x] Goldilocks特性の発見: DINOv2の特徴量がSlot Attentionに「ちょうどいい」
+- [x] `notebooks/day4_failure_analysis.ipynb` 作成（検証過程の全可視化）
+- [x] `docs/FAILURE_ANALYSIS_K11.md` 作成（日本語で分析プロセスを記述）
+
+### Day 5 (3/5 Thu): ポスター再構成 ✅
+
+- [x] `slide.tex` 改訂: 4セクション構成
+  - Sec 1: 背景・RQ一本化（事前学習目的が物体中心学習に与える影響）
+  - Sec 2: K=5 vs K=11定量結果（DINOv2のみK=11で大幅改善）+ 材質別ARI
+  - Sec 3: 失敗要因分析 + Goldilocks特性（★中心貢献）
+  - Sec 4: まとめ + 工学的教訓
+- [x] 新しい図6枚生成（K=5 vs K=11棒グラフ、3backbone mask比較、feature分析、 Goldilocks図、材質ARI、DINOv2 K=11マスク）
+- [x] ポスターPDFビルド確認（platex + dvipdfmx → 1ページA4横）
+- [x] 想定Q&A集の作成（`docs/paper/QA_PREPARATION.md`, 10問）
 
 ### Day 6-7 (3/6-7 Fri-Sat): 品質確保
 
-- [ ] 想定Q&A集の作成
-  - 「なぜ材質ラベルがランダムだったのか」への回答
-  - 「Lambert対照群の結果は？」への回答
+- [ ] 口頭説明の改訂
   - 「FG-ARI 0.165は低くないか？」への回答
 - [ ] 印刷・リハーサル
 - [ ] git commit & push（全変更を記録）

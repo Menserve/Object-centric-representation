@@ -7,8 +7,8 @@
 \usepackage{color}
 
 \title{
-\jtitle{DINOSAURによる鏡面反射物体の教師なしセグメンテーション\\---ViTバックボーンの比較と構造的限界の検証---}
-\etitle{Unsupervised Segmentation of Specular Objects via DINOSAUR: A Comparative Study of ViT Backbones and Structural Limitations}
+\jtitle{DINOSAURによる教師なし物体セグメンテーション（第2報）\\---スロット数増加実験とバックボーン特徴量のGoldilocks特性---}
+\etitle{Unsupervised Object Segmentation via DINOSAUR (Part 2): Slot Number Scaling and the Goldilocks Property of Backbone Features}
 }
 
 \author{%
@@ -16,7 +16,7 @@
 \ename{Ken Sakaguchi\first}
 \and
 \jname{中世 大雄\second}
-\ename{Hirooki Nakase} % メンバーの氏名（ローマ字）
+\ename{Hirooki Nakase}
 }
 
 \affiliate{
@@ -28,22 +28,21 @@
 }
 
 \begin{abstract}
-特徴再構成型の物体中心学習モデルDINOSAURは，
-凍結ViTバックボーンの特徴空間を活用することで
-教師なし物体セグメンテーションの精度を向上させた．
-しかし，鏡面反射（金属光沢）物体への適用可能性や，
-バックボーン選択がもたらす影響は十分に検証されていない．
-本研究では，DINOSAURアーキテクチャに
+第1報では，特徴再構成型の物体中心学習モデルDINOSAURに
 3種のViTバックボーン（DINOv2, DINOv1, CLIP）を適用し，
-MOVi-Aの金属物体サブセット（60サンプル）を用いて
-定量的・定性的に評価した．
-実験の結果，DINOv2が最も高いFG-ARI（0.165）を達成したが，
-16$\times$16パッチ解像度によるマスク境界のにじみや，
-鏡面反射によるスロット混同など，
-現行アーキテクチャの構造的限界が明らかになった．
-また，バックボーン間の特徴量スケール差が
-損失関数の設計に深刻な影響を与えることを示し，
-チャンネル正規化損失による対処法を提案した．
+60サンプルでバックボーン性能序列を検証した．
+しかし，(1)~材質ラベルの生成にバグがあり正しい評価ができていなかった，
+(2)~スロット数$K{=}5$がボトルネックとなり
+バックボーン間の真の性能差を覆い隠していた，
+という2つの重大な問題が判明した．
+本第2報では，正しい材質ラベルで再構成したMOVi-A 300サンプルにおいて，
+$K{=}11$でのスロット数増加実験を実施した．
+その結果，DINOv2のみがFG-ARIを0.168から0.470へ大幅に改善し，
+DINOv1（0.176$\to$0.131）とCLIP（0.047$\to$0.110）は改善しないか悪化した．
+この劇的な差異を特徴量の空間構造，投影後の情報保持，
+マスク品質，再構成品質の4段階で分析し，
+DINOv2が「空間的多様性」「情報のコンパクトさ」「特徴スケール」の
+3軸で適切な中間値を持つ\textbf{Goldilocks特性}を有することを明らかにした．
 \end{abstract}
 
 \begin{document}
@@ -53,71 +52,60 @@ MOVi-Aの金属物体サブセット（60サンプル）を用いて
 \section{はじめに}
 %% ============================================================
 
-物体中心学習（Object-Centric Learning, OCL）は，
-教師なしで画像中の物体を個別のスロットに分離・表現する枠組みであり，
-Slot Attention\cite{locatello2020}の提案以降，活発に研究されている．
-初期のSlot Attentionはピクセル空間での再構成を目的関数としていたが，
-この手法は色やテクスチャの変化に脆弱である．
-DINOSAUR\cite{seitzer2023}は，事前学習済みViTの凍結された特徴空間を
-再構成ターゲットとすることでこの限界を克服し，
-実画像への適用を可能にした．
+物体中心学習（Object-Centric Learning）は，
+画像や動画をピクセルではなく物体単位で表現する枠組みであり，
+Slot Attention~\cite{locatello2020}を起点に急速に発展している．
+DINOSAUR~\cite{seitzer2023}は凍結ViTバックボーンの
+特徴空間における再構成損失でSlot Attentionを訓練する手法であり，
+教師なし物体セグメンテーションにおいて高い性能を達成した．
 
-しかし，DINOSAURが対象としてきたシーンは
-主にLambert反射を仮定できる拡散反射物体であり，
-鏡面反射（金属光沢）物体に対する適用可能性は十分に検証されていない．
-金属物体は視点・照明に応じて外観が劇的に変化し，
-物体表面に周囲環境が映り込むため，
-特徴ベースのセグメンテーションにとって本質的に困難な対象である．
+我々は第1報~\cite{sakaguchi2026a}において，
+DINOv2, DINOv1, CLIPの3種のViTバックボーンをDINOSAURに適用し，
+MOVi-A~\cite{greff2022}の金属物体で比較した．
+しかし，論文投稿後に以下の2つの問題が判明した．
 
-さらに，DINOSAURの既存研究はDINOv2バックボーンを標準的に採用しており，
-異なるViTバックボーンを用いた場合に生じる
-特徴空間の幾何学的差異とその影響は体系的に分析されていない\cite{luddecke2025}．
+\textbf{問題1: 材質ラベルのバグ}．
+データ前処理スクリプトにおいて，MOVi-Aの正式な材質ラベル
+（\texttt{instances/material\_label}）を取得せず，
+確率30\%でランダムに``metal''ラベルを付与していた．
+このため第1報の材質別分析（Metal vs Non-metal）は無効であった．
 
-本研究では以下の3つの問いに取り組む：
-\begin{enumerate}
-\item DINOSAURは鏡面反射物体をどの程度分離できるか
-\item バックボーンの選択（DINOv2, DINOv1, CLIP）は性能にどう影響するか
-\item 現行アーキテクチャの構造的限界はどこにあるか
-\end{enumerate}
+\textbf{問題2: スロット数$K{=}5$がボトルネック}．
+MOVi-Aの物体数は3--10個と多様であるが，第1報で設定した$K{=}5$は
+大半のシーンで物体数に対して不足していた．
+この制約によりバックボーン間の真の性能差が
+表面化しなかった可能性がある（DINOv2: 0.168, DINOv1: 0.176）．
 
-本研究の貢献は新規手法の提案ではなく，
-既存の最先端モデルを困難な対象に適用した際の
-構造的限界を定量的・定性的に明らかにすることにある．
+本第2報では，これらの問題を修正した上で，
+スロット数$K{=}11$への増加実験を実施し，
+バックボーンの事前学習目的がSlot Attentionの
+スケーリング挙動に与える影響を分析する．
+研究の問いを以下に再定義する：
+
+\vspace{0.3em}
+\noindent\textbf{RQ}: ViTバックボーンの事前学習目的の違いは，
+スロット数増加時の物体中心学習の性能にどのような差をもたらすか？
+\vspace{0.3em}
 
 %% ============================================================
 \section{関連研究}
 %% ============================================================
 
-\subsection{物体中心学習の発展}
+\textbf{Slot Attention}~\cite{locatello2020}は，
+画像特徴を$K$個のスロットに競合的に割り当てる
+注意機構であり，物体中心学習の基盤モジュールである．
+SAVi~\cite{kipf2022}はこれを時系列に拡張し，
+DINOSAUR~\cite{seitzer2023}は凍結ViTバックボーンの
+特徴空間における再構成を導入することで
+教師なし物体発見の精度を大幅に向上させた．
+VideoSAUR~\cite{zadaianchuk2023}はDINOSAURを動画に拡張した手法である．
 
-Slot Attention\cite{locatello2020}は，
-入力特徴から$K$個のスロットへの競合的バインディングにより
-教師なしの物体分離を実現した．
-SAVi\cite{kipf2022}はGRUベースのSlot Predictorを導入し，
-動画における時間的一貫性を確保した．
-SAVi++\cite{elsayed2022}はさらに深度情報と
-Transformerベースの予測器を採用し，
-より複雑なシーンへの対応を図っている．
-
-\subsection{特徴再構成型アプローチ}
-
-DINOSAUR\cite{seitzer2023}は，ピクセル再構成に代えて
-凍結DINOv2\cite{oquab2024}の特徴マップを再構成ターゲットとし，
-実画像でのロバストな物体発見を実現した．
-VideoSAUR\cite{zadaianchuk2023}はその動画拡張であり，
-optical flowベースの対応損失を併用する．
-いずれの手法もDINOv2が標準バックボーンとして採用されている．
-
-\subsection{バックボーンの空間弁別能力}
-
-L\"{u}ddecke \& Ecker\cite{luddecke2025}は，
-密な予測タスクに対するバックボーンの適性を体系的に評価し，
-DINOv2がインスタンス認識において他のバックボーンを凌駕することを示した．
-CLIPはグローバルな対照学習で訓練されるため，
-空間的弁別能力がDINOv2の約1/10に留まる\cite{yang2024}．
-DINOv2にはRegister Tokensに関連する
-高ノルムアーティファクトの問題が指摘されているが\cite{darcet2024}，
-物体中心学習には最も適したバックボーンとされている．
+バックボーン選択の影響に関して，
+L\"{u}ddecke \& Ecker~\cite{luddecke2025}は
+Dense Attentive Probingにより各ViTの密予測能力を体系的に評価し，
+DINOv2がDINOv1やCLIPより優位であることを示した．
+しかし，Slot Attentionにおけるスロット数への依存性は検証されていない．
+本研究はこのギャップを埋めるものである．
 
 %% ============================================================
 \section{手法}
@@ -125,360 +113,484 @@ DINOv2にはRegister Tokensに関連する
 
 \subsection{モデル構成}
 
-本研究のモデルは，DINOSAUR\cite{seitzer2023}をSAVi\cite{kipf2022}の
-動画拡張フレームワークに統合したものである（図\ref{fig:architecture}）．
-構成は以下の4段階からなる：
-(1)~凍結ViTバックボーンからの特徴抽出（$F \in \mathbb{R}^{B \times 384 \times 16 \times 16}$），
-(2)~2層MLP（LayerNorm--Linear--ReLU--Linear, 384$\to$64次元）による射影，
-(3)~Slot Attention（$K$=5, 64次元, 3回反復），
-(4)~Broadcast Decoderによる特徴再構成．
+DINOSAURアーキテクチャに基づくSAVi-DINOSAURモデルを使用する．
+凍結ViTバックボーンで入力画像（224$\times$224）から
+パッチ特徴を抽出し，2層MLP（$d_\mathrm{in}$$\to$$d_\mathrm{in}$$\to$64）で
+64次元に射影した後，Slot Attention（3イテレーション）で
+$K$個のスロットに分割する．
+Spatial Broadcast Decoderが各スロットから
+特徴マップを再構成し，
+ターゲット特徴との再構成損失で訓練する．
 
-デコーダの出力マスクは温度$\tau$付きSoftmaxで正規化される：
-\begin{equation}
-\alpha_k = \text{Softmax}(m_k / \tau), \quad
-\hat{F} = \sum_{k=1}^{K} \alpha_k \cdot \hat{F}_k
-\end{equation}
+3種のバックボーンの仕様を表\ref{tab:backbone_spec}に示す．
 
-\begin{figure}[t]
+\begin{table}[t]
 \centering
-\fbox{\parbox{0.9\linewidth}{\centering\small
-入力画像 $\to$ 凍結ViT $\to$ 2層MLP射影 $\to$ Slot Attention ($K$=5) \\
-$\downarrow$ \\
-Broadcast Decoder $\to$ マスク($\tau$=0.5) + 特徴再構成 \\
-$\downarrow$ \\
-再構成損失 $L = \|F_{\text{target}} - \hat{F}\|^2$
-}}
-\caption{SAVi-DINOSAURの構成．凍結ViTで抽出した特徴を2層MLPで射影し，Slot Attentionでスロットに分解する．デコーダは各スロットから特徴とマスクを生成し，温度付きSoftmaxで統合する．}
-\label{fig:architecture}
-\end{figure}
+\caption{バックボーン仕様．CLIPは768次元を384次元に射影後，共通の64次元MLPに入力する．}
+\label{tab:backbone_spec}
+\small
+\begin{tabular}{lccc}
+\toprule
+ & DINOv2 & DINOv1 & CLIP \\
+\midrule
+モデル & ViT-S/14 & ViT-S/16 & ViT-B/16 \\
+特徴次元 & 384 & 384 & 768$\to$384 \\
+パッチサイズ & 14 & 16 & 16 \\
+損失関数 & MSE & ch-norm & MSE+det. \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{損失関数}
 
-バックボーン間の特徴量スケール差に対処するため，
-標準的なMSE損失に加え，チャンネル正規化損失を導入した．
-各空間位置の特徴ベクトルにLayerNormを適用してからMSEを計算する：
-\begin{equation}
-L_{\text{cn}} = \frac{1}{HW}\sum_i \|\text{LN}(\hat{y}_i) - \text{LN}(y_i)\|^2
-\end{equation}
-これにより，特徴の方向情報を保存しつつスケール差を吸収できる．
-コサイン類似度損失\cite{luddecke2025}と類似するが，
-空間構造をより直接的に保存する点が異なる．
+DINOv2は標準的なMSE損失を使用する．
+DINOv1は特徴量のスケールが大きく（ノルム81, DINOv2の1.8倍），
+標準MSEでは訓練が発散するため，
+チャンネルごとに正規化してからMSEを計算する
+\textbf{チャンネル正規化損失}（ch-norm）を使用する．
+CLIPは768次元を384次元に変換する学習可能な射影層を含むため，
+MSE損失の勾配が再構成ターゲット自体を崩壊させる
+勾配漏洩が発生する．\texttt{.detach()}により
+ターゲット側の勾配を遮断して対処する．
+さらに，スロット崩壊を緩和するため，
+多様化損失（$\lambda_\mathrm{div}{=}0.01$）を全モデルに追加する．
 
 \subsection{実験設定}
 
-\textbf{データセット}：
-MOVi-A\cite{greff2022}のサブセット（60サンプル：金属物体20 + 混合40），
-各24フレーム$\times$224$\times$224ピクセル．
+\textbf{データ}：
+MOVi-A~\cite{greff2022}の300サンプルを使用する．
+第1報の60サンプルから5倍に拡大し，
+正しい材質ラベル（TFDSの\texttt{instances/material\_label}）を
+per-objectで取得した．
+各サンプルは128$\times$128の動画から最初のフレームを取得し，
+224$\times$224にリサイズして使用する．
 
-\textbf{バックボーン}：
-DINOv2 ViT-S/14（384次元），DINOv1 ViT-S/16（384次元），
-CLIP ViT-B/16（768$\to$384次元に射影）．
-いずれもバックボーンは凍結し，射影以降のみ学習する．
-
-\textbf{訓練}：
-バッチサイズ2，学習率0.0004（5エポックウォームアップ + コサイン減衰），
-Adam最適化，200エポック（CLIPのみ50エポック）．
+\textbf{訓練条件}：
+全モデル共通で，バッチサイズ32，学習率0.001
+（warmup 5エポック＋コサイン減衰），200エポック訓練する．
+スロット数は$K{=}5$（第1報条件）と$K{=}11$（本実験）の
+2条件を比較する．
+$K{=}11$はMOVi-Aの最大物体数10に背景スロット1個を加えた設定である．
+スロット次元は64，デコーダ隠れ層は128とする．
+GPUはNVIDIA RTX 5090を1枚使用し，
+各モデルの訓練は約5分で完了する．
 
 \textbf{評価指標}：
-FG-ARI（Foreground Adjusted Rand Index），
-Full-ARI，
-Mask Similarity（スロット間コサイン類似度; 低いほど分化が進む）．
+Foreground Adjusted Rand Index（FG-ARI）を主指標とし，
+材質別ARI（Metal ARI, Rubber ARI）で材質の影響を評価する．
+300サンプル全体で評価した平均値を報告する．
 
-\textbf{ハードウェア}：
-Intel Core Ultra 285K, NVIDIA RTX 5090 (32GB), 128GB RAM．
+%% ============================================================
+\section{第1報からの修正事項}
+\label{sec:corrections}
+%% ============================================================
+
+本第2報では，第1報に対して以下の修正を行った．
+第1報のレビューア指摘とその対応を表\ref{tab:corrections}に整理する．
+
+\begin{table}[t]
+\centering
+\caption{第1報からの修正事項．}
+\label{tab:corrections}
+\small
+\begin{tabular}{p{3.2cm}p{4.2cm}}
+\toprule
+指摘・反省点 & 対応 \\
+\midrule
+材質ラベルがランダム & 正式ラベルで300サンプル再構成 \\
+Lambert対照群なし & per-object Material ARIで分析 \\
+2つのRQが分離 & 1つに統合（§1参照） \\
+$K{=}5$がボトルネック & $K{=}11$実験追加 \\
+60サンプルで統計不安定 & 300サンプルに拡大 \\
+図のフォントが小さい & ポスター用に図を再作成 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+材質ラベルの修正により，第1報で報告した材質別差
+（DINOv2: Metal 0.185 vs Non-metal 0.146, 差+0.039）は
+正しいラベルでの再評価結果に置き換わる（§\ref{sec:k5_results}参照）．
 
 %% ============================================================
 \section{実験結果}
 %% ============================================================
 
-\subsection{バックボーン間の分離性能}
+\subsection{$K{=}5$でのバックボーン比較（再現実験）}
+\label{sec:k5_results}
 
-表\ref{tab:backbone}に3種のバックボーンの比較結果を示す．
-DINOv2が最も高いFG-ARI（0.165）を達成し，
-チャンネル正規化損失を適用したDINOv1（0.153）が続いた．
-CLIPはバグ修正（\ref{sec:clip_bug}節）後も0.041にとどまった．
-
-DINOv1は標準MSE損失では訓練損失4.692で発散したため，
-チャンネル正規化損失を適用した．
-特徴ベクトルの標準偏差はDINOv1: 4.0，DINOv2: 2.4であり，
-チャンネル正規化損失適用後の訓練損失は0.163まで低下した．
-
-表\ref{tab:metal}に材質別FG-ARIを示す．
-DINOv1のMetal/Non-metal差（0.002）は
-DINOv2（0.039）よりはるかに小さい．
+正しい材質ラベル・300サンプルでの$K{=}5$の結果を
+表\ref{tab:k5}に示す．
+全体のFG-ARIはDINOv1（0.176）$>$ DINOv2（0.168）$>$ CLIP（0.047）
+であり，DINOv1がDINOv2を僅差で上回った．
+これは第1報と同傾向であるが，
+$K{=}5$という制約下ではバックボーン間の差が小さいことを示している．
 
 \begin{table}[t]
 \centering
-\caption{バックボーン比較．DINOv1は標準MSEでは発散するため，チャンネル正規化損失を使用した．CLIPは射影バグ修正後の結果．}
-\label{tab:backbone}
+\caption{$K{=}5$でのバックボーン比較（300サンプル，正しい材質ラベル）．}
+\label{tab:k5}
 \small
 \begin{tabular}{lccc}
 \toprule
-モデル & 損失種別 & FG-ARI($\uparrow$) & Full-ARI($\uparrow$) \\
+モデル & FG-ARI & Metal ARI & Rubber ARI \\
 \midrule
-DINOv2 ViT-S/14 & MSE & \textbf{0.165} & \textbf{0.073} \\
-DINOv1 ViT-S/16 & ch-norm & 0.153 & 0.047 \\
-CLIP ViT-B/16 & MSE+det. & 0.041 & $-$0.026 \\
+DINOv2 (MSE) & 0.168 & 0.185 & 0.218 \\
+DINOv1 (ch-norm) & \textbf{0.176} & \textbf{0.214} & \textbf{0.222} \\
+CLIP (MSE+det.) & 0.047 & 0.071 & 0.068 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
+\subsection{$K{=}11$でのスロット数増加実験}
+
+表\ref{tab:k11}に$K{=}11$の結果を示す．
+DINOv2のFG-ARIは0.168から\textbf{0.470}へ大幅に改善し，
+第1報での最良値の2.8倍に達した．
+一方，DINOv1は0.176から0.131に\textbf{悪化}し，
+CLIPは0.047から0.110への微改善にとどまった．
+
 \begin{table}[t]
 \centering
-\caption{材質別FG-ARI．DINOv1はMetal/Non-metal差が最小であり，材質によらない均一な分離を示す．}
-\label{tab:metal}
+\caption{$K{=}11$でのバックボーン比較．DINOv2のみが大幅改善を達成．}
+\label{tab:k11}
 \small
 \begin{tabular}{lccc}
 \toprule
-モデル & Metal & Non-metal & 差 \\
+モデル & FG-ARI & Metal ARI & Rubber ARI \\
 \midrule
-DINOv2 & 0.185 & 0.146 & +0.039 \\
-DINOv1 (ch-norm) & 0.154 & 0.152 & +0.002 \\
-CLIP (det.) & 0.048 & 0.034 & +0.014 \\
+DINOv2 (MSE) & \textbf{0.470} & \textbf{0.491} & \textbf{0.446} \\
+DINOv1 (ch-norm) & 0.131 & 0.139 & 0.140 \\
+CLIP (MSE+det.) & 0.110 & 0.141 & 0.144 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\subsection{温度スケーリングによるマスク分化}
+$K{=}5$と$K{=}11$の変化をまとめると（表\ref{tab:k5vsk11}），
+DINOv2は$+0.302$の改善，DINOv1は$-0.045$の悪化，
+CLIPは$+0.063$の微改善であり，
+スロット数増加に対するスケーリング挙動が
+バックボーンごとに質的に異なることが確認された．
 
-デコーダのマスクLogitsの標準偏差は0.031であり，
-Softmax出力はほぼ一様分布（$\approx 1/K = 0.2$）であった．
-温度$\tau$によるスケーリングの結果を表\ref{tab:temperature}に示す．
-$\tau$=0.5で最良のMask Similarity（0.558, 23\%改善）を達成した．
-$\tau$=0.3では性能が悪化した．
+図\ref{fig:k5vsk11}にDINOv2の$K{=}5$と$K{=}11$における
+スロットマスクを並べて示す．
+$K{=}5$では全スロットのマスクがほぼ均一で
+物体境界が不明瞭であるのに対し，
+$K{=}11$ではスロットが個別の物体や
+背景領域に対応する分化を示している．
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/paper_k5_vs_k11_slots.png}
+\caption{DINOv2のスロットマスク比較．各行は左から入力画像，スロットセグメンテーション（argmax），個別スロットのheatmapを示す．$K{=}5$ではマスクが均一で物体分離が不成立だが，$K{=}11$ではスロットが個別の物体・背景に対応する分化を達成している．}
+\label{fig:k5vsk11}
+\end{figure}
 
 \begin{table}[t]
 \centering
-\caption{温度$\tau$によるスロットマスクの分化度合い．$\tau$=0.5でMask Similarityが最も改善されるが，$\tau$=0.3では過剰な先鋭化により逆効果となる．}
-\label{tab:temperature}
-\begin{tabular}{ccc}
+\caption{$K{=}5 \to K{=}11$における変化量．}
+\label{tab:k5vsk11}
+\small
+\begin{tabular}{lccc}
 \toprule
-$\tau$ & Mask Sim.($\downarrow$) & 改善率 \\
+モデル & $K{=}5$ & $K{=}11$ & $\Delta$ \\
 \midrule
-1.0（デフォルト） & 0.723 & --- \\
-0.7 & 0.642 & 11\% \\
-0.5 & 0.558 & 23\% \\
-0.3 & 0.621 & 14\% \\
+DINOv2 & 0.168 & \textbf{0.470} & $+0.302$ \\
+DINOv1 & 0.176 & 0.131 & $-0.045$ \\
+CLIP & 0.047 & 0.110 & $+0.063$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\subsection{射影層構成とスロット崩壊}
+\subsection{材質別分析}
 
-特徴射影にSingle Linear層（384$\to$64）を用いた場合，
-射影後の特徴分散が0.001まで圧縮され，
-全5スロットのマスクが同一に崩壊した（スロット崩壊）．
-2層MLP構成では分散は0.15（150倍）に改善され，
-Mask Similarityも0.866から0.723へ低下した（表\ref{tab:projection}）．
+図\ref{fig:dinov2_k11}にDINOv2 $K{=}11$の
+複数シーンにおけるスロットマスクを示す．
+物体数が異なるシーンにおいても，
+各スロットが個別の物体や背景領域を
+担当する分化が確認でき，
+第1報で未解決であった「スロットが真に分化しているか」
+という問いに対して肯定的な結果を得た．
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/paper_dinov2_k11_slots.png}
+\caption{DINOv2 $K{=}11$のスロットマスク可視化（3シーン）．各行は左から入力画像，スロットセグメンテーション（argmax着色），面積上位6スロットのheatmapを示す．スロットが個々の物体や背景に対応し，分化が成立している．}
+\label{fig:dinov2_k11}
+\end{figure}
+
+DINOv2 $K{=}11$のper-object Material ARIでは，
+Metal ARI（0.491）がRubber ARI（0.446）をやや上回ったが，
+Welchのt検定で$p{=}0.12$であり
+統計的に有意な差は確認されなかった．
+第1報で仮説として提示した「鏡面反射が分離を困難にする」
+効果は，$K{=}11$では顕著には現れなかった．
+これはスロット数の十分な確保により，
+鏡面反射によるスロット混同が部分的に緩和されたためと考えられる．
+
+%% ============================================================
+\section{失敗要因分析：なぜDINOv2だけが改善するか}
+\label{sec:failure_analysis}
+%% ============================================================
+
+同一のアーキテクチャでバックボーンのみが異なるにもかかわらず，
+$K{=}11$でのスケーリング挙動が劇的に分かれた原因を，
+特徴量の空間構造から段階的に分析する．
+
+図\ref{fig:3backbone}に同一シーンにおける
+3バックボーンのスロットマスクを並べて示す．
+DINOv2は各スロットが物体や背景に明確に対応しているのに対し，
+DINOv1は1つの支配的スロットが大半を占有（スロット崩壊），
+CLIPは全スロットがほぼ均一で空間的分離が不成立である．
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/paper_3backbone_k11_comparison.png}
+\caption{$K{=}11$における3バックボーンのスロットマスク比較（同一シーン）．DINOv2（上段）は物体ごとにスロットが分化．DINOv1（中段）は1スロットが支配的でスロット崩壊が発生．CLIP（下段）は全マスクが均一で空間弁別が不成立．}
+\label{fig:3backbone}
+\end{figure}
+
+\subsection{Step 1: バックボーン特徴量の空間構造}
+
+各バックボーンが出力する特徴量の空間的多様性を定量化した
+（表\ref{tab:feature_analysis}）．
+CLIPは全パッチ間のコサイン類似度が0.92とほぼ均一であり，
+画像全体のカテゴリ情報に特化して
+空間的位置情報をほとんど持たない．
+DINOv1は空間的に最も多様（cos = 0.34）だが，
+情報がPCA 45次元に分散している．
+DINOv2はcos = 0.52で中間的な多様性を持ち，
+PCA 20次元にコンパクトに情報が集約されている．
 
 \begin{table}[t]
 \centering
-\caption{射影層構成の影響．Single Linearでは特徴分散がほぼ消失し，スロット崩壊が発生する．}
-\label{tab:projection}
-\begin{tabular}{lcc}
+\caption{バックボーン特徴量の空間構造（20シーン平均）．}
+\label{tab:feature_analysis}
+\small
+\begin{tabular}{lccc}
 \toprule
-射影層 & 特徴分散 & Mask Sim.($\downarrow$) \\
+指標 & DINOv2 & DINOv1 & CLIP \\
 \midrule
-Single Linear (384$\to$64) & 0.001 & 0.866 \\
-2層 MLP (384$\to$384$\to$64) & 0.15 & 0.723 \\
+コサイン類似度 & 0.52 & 0.34 & 0.92 \\
+空間分散 & 2.69 & 11.88 & 0.04 \\
+PCA 90\%次元数 & 20 & 45 & 3 \\
+ノルム & 46 & 81 & 13 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\subsection{CLIP射影層における勾配漏洩}
-\label{sec:clip_bug}
+\subsection{Step 2: 投影層での情報保持}
 
-CLIPバックボーンでは768次元を384次元に変換する
-学習可能な射影層が必要となる．
-この射影出力がそのまま再構成ターゲットに使用されるため，
-MSE損失の勾配がターゲット自体を崩壊させる問題が発生した
-（修正前損失: $-$0.005）．
-\texttt{target\_feat.detach()}の適用により
-勾配漏洩を遮断し，訓練損失は0.036に改善した．
-なお，CLIPの空間弁別能力（Spatial std: 0.17）は
-DINOv2の約1/10であり，FG-ARIは0.041にとどまった．
+Slot Attentionは64次元で動作するため，
+384次元のバックボーン特徴を2層MLPで圧縮する．
+この投影前後でのコサイン類似度の変化を
+表\ref{tab:projection_analysis}に示す．
 
-%% ============================================================
-\section{定性分析：構造的限界の可視化}
-%% ============================================================
+DINOv2とDINOv1では投影により空間的多様性が増幅される
+（cos 0.51$\to$0.31, 0.34$\to$0.19）．
+しかしCLIPでは0.93$\to$0.99とさらに均一化が悪化する．
+CLIPの投影層は元の特徴量が均一すぎて
+学習信号が弱く，LayerNorm重みの標準偏差が0.002と
+ほぼ初期値のまま未学習である．
 
-定量指標だけでは捉えきれない
-DINOSAURの構造的限界を，出力マスクの可視化により分析する．
-本節が本研究の中心的な貢献である．
-
-\subsection{パッチ解像度によるマスク境界のにじみ}
-
-図\ref{fig:dinov2_result}にDINOv2（最良モデル）の
-スロットマスク出力を示す．
-DINOv2 ViT-S/14は224$\times$224の入力を
-14$\times$14のパッチに分割するため，
-マスクの実効解像度は16$\times$16ピクセルである．
-Ground Truthのピクセル単位の物体輪郭に対し，
-出力マスクではパッチ境界にスナップされた粗い領域となり，
-境界が「にじむ」現象が確認できる．
-また，16$\times$16マスクを224$\times$224にBilinear補間で
-アップサンプリングする過程で，物体の鋭い輪郭が失われている．
-
-\begin{figure}[t]
+\begin{table}[t]
 \centering
-\includegraphics[width=\linewidth]{figures/dinov2_result.png}
-\caption{DINOv2によるスロットマスクの出力例．物体の大まかな位置は捉えているが，マスク境界は16$\times$16パッチ単位でしか区切れず，GTの鮮明な輪郭に対してにじみが顕著である．}
-\label{fig:dinov2_result}
-\end{figure}
+\caption{投影前後のコサイン類似度とLayerNorm学習度．}
+\label{tab:projection_analysis}
+\small
+\begin{tabular}{lccc}
+\toprule
+ & DINOv2 & DINOv1 & CLIP \\
+\midrule
+投影前 cos & 0.51 & 0.34 & 0.93 \\
+投影後 cos & 0.31 & 0.19 & 0.99 \\
+変化 & $\downarrow$改善 & $\downarrow$改善 & $\uparrow$\textbf{悪化} \\
+LN重み std & 0.034 & 0.042 & 0.002 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\subsection{鏡面反射によるスロット混同のメカニズム}
+\subsection{Step 3: マスク品質}
 
-図\ref{fig:comparison}に3種バックボーンの出力を並べて示す．
-DINOv2は物体の概形を捉えているが，
-金属物体の表面ではスロット割り当てに混乱が観察される．
-具体的には，(1)~ハイライト領域が背景と同じスロットに
-割り当てられる\textbf{過少分割}と，
-(2)~同一物体がハイライトの有無で
-複数スロットに分割される\textbf{過剰分割}の2種類が確認された．
-DINOv1も類似の傾向を示し，CLIPでは分離自体が不成立であった．
+Slot Attentionが出力するマスクの品質を直接評価した
+（表\ref{tab:mask_quality}）．
+DINOv2は全11スロットがアクティブに機能し，
+トップスロットの占有率が30\%と
+適度に分散した割り当てを実現している．
+DINOv1では平均6.6スロットのみがアクティブで，
+トップスロットが52\%を占有する
+\textbf{スロット崩壊}が発生している．
+CLIPはエントロピーが0.88と最大に近く，
+全マスクがほぼ均一で空間的な位置区別ができていない．
 
-\begin{figure}[t]
+\begin{table}[t]
 \centering
-\includegraphics[width=\linewidth]{figures/comparison_3backbone.png}
-\caption{3種バックボーンのスロットマスク比較（MOVi-A金属物体）．DINOv2（上段）は物体構造を概ね捉えるが，金属反射面でスロットの混同が見られる．DINOv1（中段, ch-norm損失）も類似の傾向を示す．CLIP（下段）は空間弁別能力の不足により分離がほぼ不成立である．各行は左から入力フレーム，GT，スロット1--5のマスクを示す．}
-\label{fig:comparison}
-\end{figure}
+\caption{$K{=}11$でのマスク品質（50シーン平均）．}
+\label{tab:mask_quality}
+\small
+\begin{tabular}{lccc}
+\toprule
+指標 & DINOv2 & DINOv1 & CLIP \\
+\midrule
+活性スロット数 & 11.0 & 6.6 & 9.6 \\
+トップ占有率 & 30\% & 52\% & 18\% \\
+エントロピー/最大 & 0.60 & 0.47 & 0.88 \\
+ジニ係数 & 0.33 & 0.65 & 0.36 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\subsection{スロットマスクの分化状況の分析}
+\subsection{Step 4: 再構成品質の判定}
 
-図\ref{fig:mask_detail}にDINOv2モデルのスロットマスクの詳細を示す．
-上段は各スロットのマスクを入力画像に重畳したオーバーレイ，
-下段はマスク値そのものを可視化している．
-各スロットの平均マスク値（$\mu$）と標準偏差（$\sigma$）が
-極めて近い値を示しており，
-スロット間の分化が不十分であることが確認できる．
+モデルが空間構造を真に学習しているかを判定するため，
+全位置に特徴量平均をコピーする自明な戦略
+（Trivial Mean-Fill）との比率を計算した
+（表\ref{tab:reconstruction}）．
+比率が1.0未満であれば空間構造を学習している．
 
-\begin{figure}[t]
+DINOv2は0.34であり，Mean-Fillの34\%まで再構成誤差を削減し，
+空間構造を忠実に復元している．
+DINOv1は1.09であり，200エポック訓練しても
+Mean-Fill以上の空間情報を学習できていない．
+CLIPは2.16であり，学習がMean-Fillより逆効果である．
+CLIPのTrivial MSEは0.04と極小であり，
+特徴量がほぼ一定のためエポック4で自明解に収束する．
+
+\begin{table}[t]
 \centering
-\includegraphics[width=\linewidth]{figures/masks_detailed.png}
-\caption{DINOv2のスロットマスク詳細（MOVi-A金属物体）．上段：各スロットマスクの入力画像への重畳．下段：マスク値の可視化と統計（$\mu$, $\sigma$）．全スロットのマスク値がほぼ均一であり，スロット間の分化が不十分であることを示す．}
-\label{fig:mask_detail}
-\end{figure}
+\caption{再構成品質のMean-Fill基準判定（20シーン平均）．}
+\label{tab:reconstruction}
+\small
+\begin{tabular}{lccc}
+\toprule
+ & DINOv2 & DINOv1 & CLIP \\
+\midrule
+再構成 MSE & 0.92 & 12.84 & 0.08 \\
+Mean-Fill MSE & 2.69 & 11.88 & 0.04 \\
+\textbf{Ratio} & \textbf{0.34} & 1.09 & 2.16 \\
+判定 & 学習済 & 未学習 & 逆効果 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 %% ============================================================
 \section{考察}
 %% ============================================================
 
-\subsection{バックボーン性能差の解釈}
+\subsection{Goldilocks特性}
 
-DINOv2 $>$ DINOv1 $>$ CLIPという序列は
-先行研究\cite{luddecke2025}の予測と整合的である．
-DINOv1がチャンネル正規化損失により
-DINOv2に肉薄するFG-ARI（0.153）を達成した事実は，
-特徴量スケール差がMSEの二乗特性で増幅されることが
-性能差の主因であったことを示す．
-また，DINOv1の材質間差（0.002）がDINOv2（0.039）より
-はるかに小さい点は注目に値する．
-DINOv1の空間弁別能力（Spatial/Channel比: 0.740 vs DINOv2: 0.599）が
-材質に依存しない均一な分離に寄与していると考えられる．
-
-\subsection{設計要素の知見}
-
-表\ref{tab:novelty}に各検証項目と先行研究との関係を整理する．
-2層MLP射影の必要性はDINOSAUR\cite{seitzer2023}の実装に暗黙的に含まれるが，
-Single Linearとの定量的比較（分散150倍差）は報告されておらず，
-実装時に見落としやすい重要な設計要素である．
-温度$\tau$=0.5の選定も，Logits標準偏差（0.031）の実測に基づく知見である．
-CLIP射影の勾配漏洩は，学習可能な射影層の出力を
-そのまま再構成ターゲットに使用する際に，
-MSE損失の勾配がターゲット自体をゼロに崩壊させる構造的問題であり，
-DINOv1/v2ではバックボーン凍結により顕在化しない．
-これらはいずれも既存文献で明示的に報告されていない．
+4段階の分析結果を総合すると，
+DINOv2がSlot Attentionにとって
+3つの軸で``ちょうどいい''特性を持つことが明らかになった
+（表\ref{tab:goldilocks}）．
+``Goldilocks''とは童話「3匹のくま」に由来する比喩であり，
+熱すぎず冷たすぎない``ちょうどいい粥''を選ぶ少女の話に基づく．
 
 \begin{table}[t]
 \centering
-\caption{各検証項目の位置づけ．}
-\label{tab:novelty}
+\caption{Goldilocks特性の3軸．DINOv2は全軸で中間値を持つ．}
+\label{tab:goldilocks}
 \small
-\begin{tabular}{p{3.3cm}p{4.0cm}}
+\begin{tabular}{p{2.2cm}ccc}
 \toprule
-検証項目 & 先行研究との関係 \\
+ & DINOv2 & DINOv1 & CLIP \\
 \midrule
-2層MLP射影の必要性 & 暗黙の実装詳細\cite{seitzer2023}．定量比較は本研究 \\
-温度$\tau$=0.5 & 一般的手法．Logits統計に基づく選定は本研究 \\
-CLIP勾配漏洩 & 既存報告なし \\
-ch-norm損失によるDINOv1改善 & 既存報告なし \\
+空間多様性 & 適度 & 過剰 & 不足 \\
+(cos sim) & (0.52) & (0.34) & (0.92) \\
+\midrule
+情報コンパクト性 & 適度 & 過分散 & 過集中 \\
+(PCA次元) & (20) & (45) & (3) \\
+\midrule
+特徴スケール & 適度 & 過大 & 過小 \\
+(ノルム) & (46) & (81) & (13) \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\subsection{構造的限界の考察}
+\textbf{CLIPの失敗メカニズム}：
+CLIPはCLSトークンによる画像全体のカテゴリ符号化に特化しており，
+パッチ特徴の空間弁別能力が著しく低い（cos = 0.92）．
+投影層もほぼ未学習のまま自明解に収束する．
 
-§5で観察された2つの構造的限界について考察する．
+\textbf{DINOv1の失敗メカニズム}：
+DINOv1の特徴量は空間的に豊かだが，
+PCA 45次元に情報が分散しているため，
+384$\to$64の投影で情報が大幅に失われる．
+$K{=}5$では必要な情報量が少なく問題が顕在化しなかったが，
+$K{=}11$では不足する情報でスロットを区別できず，
+1スロットが全体の52\%を占有するスロット崩壊が発生する．
+
+\textbf{DINOv2の成功要因}：
+DINOv2はPCA 20次元に情報が集約されているため
+64次元スロットに十分収まり，
+かつ適度な空間多様性（cos = 0.52）により
+投影層が多様性を増幅できる．
+全11スロットが機能分化し，FG-ARI 0.470を達成する．
+
+\subsection{第1報の知見の再評価}
+
+第1報で報告した構造的限界は，
+$K{=}11$の結果を踏まえて以下のように更新される．
 
 \textbf{パッチ解像度の壁}：
-16$\times$16のマスク解像度はViTのパッチ分割に起因する本質的制約であり，
-Bilinear補間によるアップサンプリングでは物体の鋭い輪郭を回復できない．
-CRF（Conditional Random Field）等の後処理やSAM\cite{kirillov2023}との
-統合が必要である．
+16$\times$16パッチによるマスク境界のにじみは
+$K{=}11$でも解消されず，ViTアーキテクチャの
+本質的制約であることが確認された．
 
 \textbf{鏡面反射によるスロット混同}：
-Slot Attentionは各パッチの特徴とスロットの内積で
-排他的割り当てを決定するため，
-物体表面の特徴が空間的に一貫している（Lambert反射的な拡散反射）
-場合には有効に機能する．
-しかし金属物体ではBRDFのSpecular成分が視点依存の
-鋭いハイライトを生じさせ，
-同一物体上で全く異なる特徴ベクトルが生成される．
-このLambert反射の暗黙的前提がスロット混同の根本原因であり，
-View-Dependent Decoder\cite{smith2024}のような
-反射モデルの明示的導入が必要と考えられる．
+$K{=}11$ではMetal ARIとRubber ARIの差が
+統計的に有意でなく（$p{=}0.12$），
+スロット数の確保が鏡面反射の影響を部分的に緩和する
+可能性が示唆された．
 
-\textbf{マスクLogitsの分散の小ささ}：
-Logitsの標準偏差が0.031と極めて小さく，
-Softmax後のマスクが一様分布に近い状態にある．
-温度$\tau$=0.5は部分的に緩和するが，
-Logitsの分散自体を拡大するには
-より深いデコーダ構成やTransformer Decoder\cite{elsayed2022}の採用が考えられる．
+\textbf{設計要素の知見}：
+2層MLP射影の必要性，ch-norm損失，CLIP勾配漏洩の対処法は
+$K{=}11$でも同様に有効であった．
+加えて，DINOv1ではch-norm損失で訓練安定性は確保できたものの，
+投影段階での情報損失によりマスク品質が改善しないという
+新たな限界が判明した．
 
-\subsection{限界}
+\subsection{限界と今後の課題}
 
-\textbf{データ規模}：60サンプルでの実験であり，結果の一般化には留意が必要である（DINOv2 FG-ARI標準偏差: $\pm$0.186）．
-\textbf{解像度制約}：16$\times$16パッチに起因するマスクのにじみは，
-現行ViTアーキテクチャの本質的制約であり，
-後処理なしでは高精度なセグメンテーションは困難である．
-\textbf{反射モデルの欠如}：Lambert反射を暗黙に仮定する
-特徴再構成損失は，鏡面反射物体でスロット混同を引き起こす．
+\textbf{データ規模}：MOVi-A 300サンプルでの実験であり，
+実世界画像での検証は今後の課題である．
+Goldilocks特性がアーキテクチャ起因であれば
+データセットに依存しない一般性を持つ可能性があるが，
+実世界画像では特徴量の性質が変わりうる．
+
+\textbf{DINOv1の救済}：
+投影層の次元を64より大きく設定するか，
+投影前にPCAで主要次元を選択する前処理が
+有効である可能性がある．
+
+\textbf{性能の上限}：
+DINOv2のFG-ARI 0.470はDINOSAUR原論文~\cite{seitzer2023}の
+MOVi-C（0.59--0.64）と比較して低い．
+モデルの大規模化（slot\_dim=128, hidden=256）で
+改善の余地がある．
 
 %% ============================================================
 \section{まとめ}
 %% ============================================================
 
-本研究では，DINOSAURアーキテクチャを3種のViTバックボーンで
-鏡面反射物体に適用し，その性能と構造的限界を検証した．
-以下に主要な知見を整理する．
+本第2報では，第1報の反省点を修正した上で
+$K{=}11$のスロット数増加実験を実施し，以下を明らかにした．
 
-\vspace{0.5em}
-\noindent\textbf{(1)\hspace{0.3em}何を検証したか}：
-DINOv2, DINOv1, CLIPの3種のViTバックボーンを用いた
-DINOSAURの鏡面反射物体（MOVi-A金属サブセット, 60サンプル）への
-適用可能性を，FG-ARIと出力マスクの可視化により
-定量的・定性的に評価した．
+\vspace{0.3em}
+\noindent\textbf{(1) スケーリング分岐}：
+DINOv2のFG-ARIは$K{=}5$の0.168から$K{=}11$の0.470へ
+2.8倍に改善したが，DINOv1は悪化（$-0.045$），
+CLIPは微改善（$+0.063$）にとどまった．
 
-\vspace{0.5em}
-\noindent\textbf{(2)\hspace{0.3em}何が分かったか}：
-DINOv2が最も高いFG-ARI（0.165）を達成し，
-物体中心学習のバックボーンとしての優位性を確認した．
-一方，バックボーン間の特徴量スケール差が損失関数を通じて
-学習の安定性に深刻な影響を与えることも明らかになった．
-チャンネル正規化損失の導入により
-DINOv1のFG-ARIはDINOv2に肉薄する0.153に到達した．
+\vspace{0.3em}
+\noindent\textbf{(2) Goldilocks特性}：
+この差異の原因を4段階で分析し，
+DINOv2が空間的多様性，情報コンパクトさ，特徴スケールの
+3軸で適切な中間値を持つGoldilocks特性を有することを特定した．
 
-\vspace{0.5em}
-\noindent\textbf{(3)\hspace{0.3em}今後の課題}：
-本研究で明らかになった構造的限界は大きく2点に集約される．
-第一に，\textbf{16$\times$16パッチ解像度の壁}であり，
-CRF後処理やSAM\cite{kirillov2023}等の高解像度モデルとの統合が必要である．
-第二に，\textbf{鏡面反射への対応}であり，
-Lambert反射を暗黙に前提とする現行の特徴再構成損失では金属物体の
-スロット混同を解消できず，
-View-Dependent Decoder\cite{smith2024}や
-3次元反射モデルの導入が求められる．
+\vspace{0.3em}
+\noindent\textbf{(3) 工学的教訓}：
+材質ラベルバグとスロット数ボトルネックは，
+実験設計で最初に確認すべき基本的な要因である．
 
 %% ============================================================
 %% 参考文献
@@ -495,55 +607,43 @@ Kipf,~T., Elsayed,~G.~F., Mahendran,~A., et al.:
 Conditional Object-Centric Learning from Video,
 in \textit{Proc. ICLR 2022} (2022).
 
-\bibitem[Elsayed 22]{elsayed2022}
-Elsayed,~G.~F., Mahendran,~A., van Steenkiste,~S., et al.:
-SAVi++: Towards End-to-End Object-Centric Learning from Real-World Videos,
-in \textit{Proc. NeurIPS 2022} (2022).
-
 \bibitem[Seitzer 23]{seitzer2023}
 Seitzer,~M., Horn,~M., Zadaianchuk,~A., et al.:
 Bridging the Gap to Real-World Object-Centric Learning,
 in \textit{Proc. ICLR 2023} (2023).
+
+\bibitem[Zadaianchuk 23]{zadaianchuk2023}
+Zadaianchuk,~A., Seitzer,~M., Martius,~G.:
+Object-Centric Learning for Real-World Videos
+by Predicting Temporal Feature Similarities,
+in \textit{Proc. NeurIPS 2023} (2023).
 
 \bibitem[Oquab 24]{oquab2024}
 Oquab,~M., Darcet,~T., Moutakanni,~T., et al.:
 DINOv2: Learning Robust Visual Features without Supervision,
 \textit{TMLR} (2024).
 
-\bibitem[Darcet 24]{darcet2024}
-Darcet,~T., Oquab,~M., Mairal,~J., Bojanowski,~P.:
-Vision Transformers Need Registers,
-in \textit{Proc. ICLR 2024} (2024).
-
 \bibitem[L\"{u}ddecke 25]{luddecke2025}
 L\"{u}ddecke,~T. and Ecker,~A.~S.:
-Characterizing Vision Backbones for Dense Prediction with Dense Attentive Probing,
+Characterizing Vision Backbones for Dense Prediction
+with Dense Attentive Probing,
 \textit{TMLR} (2025).
-
-\bibitem[Yang 24]{yang2024}
-Yang,~J., Luo,~K.~Z., Li,~J., et al.:
-Denoising Vision Transformers,
-in \textit{Proc. ECCV 2024} (2024).
 
 \bibitem[Greff 22]{greff2022}
 Greff,~K., Belletti,~F., Beyer,~L., et al.:
 Kubric: A Scalable Dataset Generator,
 in \textit{Proc. CVPR 2022} (2022).
 
-\bibitem[Zadaianchuk 23]{zadaianchuk2023}
-Zadaianchuk,~A., Seitzer,~M., Martius,~G.:
-Object-Centric Learning for Real-World Videos by Predicting Temporal Feature Similarities,
-in \textit{Proc. NeurIPS 2023} (2023).
-
-\bibitem[Smith 24]{smith2024}
-Smith,~C., et al.:
-Unsupervised Object-Centric Fields,
-\textit{arXiv preprint} (2024).
-
 \bibitem[Kirillov 23]{kirillov2023}
 Kirillov,~A., Mintun,~E., Ravi,~N., et al.:
 Segment Anything,
 in \textit{Proc. ICCV 2023} (2023).
+
+\bibitem[Sakaguchi 26a]{sakaguchi2026a}
+坂口~健, 中世~大雄:
+DINOSAURによる鏡面反射物体の教師なしセグメンテーション
+---ViTバックボーンの比較と構造的限界の検証---,
+第40回人工知能学会全国大会 (2026).
 
 \end{thebibliography}
 

@@ -1,5 +1,5 @@
 \documentclass[dvipdfmx,a4paper,landscape]{jarticle}
-\usepackage[landscape,a4paper,top=7mm,bottom=7mm,left=12mm,right=12mm]{geometry}
+\usepackage[landscape,a4paper,top=5mm,bottom=5mm,left=10mm,right=10mm]{geometry}
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{color}
@@ -11,139 +11,141 @@
 \definecolor{secblue}{rgb}{0.16,0.36,0.64}
 \definecolor{accentred}{rgb}{0.78,0.10,0.10}
 \definecolor{staryellow}{rgb}{1.0,0.85,0.0}
-\definecolor{lightbg}{rgb}{0.94,0.94,0.97}
+\definecolor{darkgreen}{rgb}{0.0,0.50,0.0}
 
-%% --- セクションヘッダ ---
 \newcommand{\sechead}[1]{%
-  \colorbox{secblue}{\textcolor{white}{\small\textbf{\,#1\,}}}%
+  \colorbox{secblue}{\textcolor{white}{\scriptsize\textbf{\,#1\,}}}%
 }
 
 \begin{document}
 
 %% ============================================================
-%% タイトルバー
+%% タイトル
 %% ============================================================
 \noindent
-\colorbox{titleblue}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\centering\vspace{1.5mm}%
-  \textcolor{white}{\Large\textbf{%
-    DINOSAURによる鏡面反射物体の教師なしセグメンテーション}}\\[1.5mm]
-  \textcolor{white}{\small%
-    --- ViTバックボーンの比較と構造的限界の検証 ---}%
-\vspace{1.5mm}}}
+\colorbox{titleblue}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\centering\vspace{1mm}%
+  \textcolor{white}{\large\textbf{%
+    事前学習目的の異なるViT特徴量が物体中心学習に与える影響}}\\[1mm]
+  \textcolor{white}{\scriptsize%
+    --- DINOSAUR＋3種バックボーン（DINOv2/DINOv1/CLIP）の比較と失敗要因分析 ---}%
+\vspace{1mm}}}
 
 \vspace{0.5mm}
-\noindent\hfill{\small 坂口 健（電気通信大学）\quad 中世 大雄（東京大学）}
-
-\vspace{2mm}
-
-%% ============================================================
-%% Row 1: 背景と目的 ｜ 定量結果
-%% ============================================================
-\noindent
-\begin{minipage}[t]{0.37\linewidth}
-\sechead{1.\ 背景と目的}
-\vspace{2mm}
-
-\small
-\begin{itemize}
-  \setlength{\itemsep}{1.5pt}
-  \setlength{\parskip}{0pt}
-  \setlength{\leftskip}{-4mm}
-  \item \textbf{モデル}：DINOSAUR（凍結ViT＋Slot Attention）
-  \item \textbf{目的}：鏡面反射物体への適用可能性の検証
-  \item \textbf{課題}：バックボーン選択の影響の解明
-  \item \textbf{データ}：MOVi-A（金属20＋混合40＝60件）
-\end{itemize}
-\end{minipage}
-\hfill
-\begin{minipage}[t]{0.60\linewidth}
-\sechead{2.\ 3種のバックボーン比較と定量結果}
-\vspace{2mm}
-
-\centering\small
-\begin{tabular}{lccc}
-\toprule
-モデル & 損失種別 & FG-ARI\,($\uparrow$) & Metal FG-ARI \\
-\midrule
-\textbf{DINOv2 ViT-S/14} & MSE           & \textbf{0.165} & 0.185 \\
-DINOv1 ViT-S/16          & ch-norm       & 0.153          & 0.154 \\
-CLIP ViT-B/16            & MSE+detach    & 0.041          & 0.048 \\
-\bottomrule
-\end{tabular}
-
-\vspace{2mm}
-\raggedright
-\quad$\Rightarrow$ \textbf{DINOv2が最高精度}（FG-ARI 0.165）\quad
-$\Rightarrow$ DINOv1はスケール差で破綻 $\to$ \textbf{ch-norm損失}で解決（0.153）\quad
-$\Rightarrow$ CLIPは空間弁別能力の不足により0.041
-\end{minipage}
-
-\vspace{3mm}
-
-%% ============================================================
-%% Row 2: 構造的限界の可視化（メイン貢献）
-%% ============================================================
-\noindent
-\sechead{3.\ 構造的限界の可視化（定性分析）%
-\,\textcolor{staryellow}{$\bigstar$\,本研究の中心的貢献}}
+\noindent\hfill{\scriptsize 坂口 健（電気通信大学）\quad 中世 大雄（東京大学）}
 
 \vspace{1.5mm}
 
-%% --- 図1: DINOv2 スロットマスク（横長ストリップ） ---
+%% ============================================================
+%% Row 1: 背景 | 定量結果
+%% ============================================================
 \noindent
-\begin{minipage}[t]{0.72\linewidth}
-\centering
-\includegraphics[width=\linewidth]{figures/dinov2_result.png}\\[0.5mm]
-{\scriptsize\textbf{図1}: DINOv2スロットマスク --- 16$\times$16パッチによる境界の\textbf{にじみ}}
+\begin{minipage}[t]{0.32\linewidth}
+\sechead{1.\ 背景と研究課題}
+\vspace{1mm}
+
+\scriptsize
+\textbf{モデル}：DINOSAUR（凍結ViT＋Slot Attention）\\
+\textbf{RQ}：\textit{事前学習目的が異なるViT特徴量は物体中心学習でどう振る舞うか？}\\[1mm]
+\textbf{データ}：MOVi-A 300シーン（24フレーム，128$\times$128$\to$224$\times$224）\\
+\textbf{評価}：FG-ARI（前景物体の分離精度，$\uparrow$）\\
+\textbf{構成}：凍結ViT＋2層MLP(384$\to$64)＋Slot Attention＋Spatial Broadcast Decoder
+
+\vspace{1mm}
+\begin{tabular}{lcc}
+\toprule
+{\scriptsize バックボーン} & {\scriptsize 事前学習} & {\scriptsize 特徴次元} \\
+\midrule
+{\scriptsize DINOv2 ViT-S/14} & {\scriptsize 自己蒸留v2} & {\scriptsize 384} \\
+{\scriptsize DINOv1 ViT-S/16} & {\scriptsize 自己蒸留v1} & {\scriptsize 384} \\
+{\scriptsize CLIP ViT-B/16} & {\scriptsize 画像-テキスト} & {\scriptsize 768$\to$384} \\
+\bottomrule
+\end{tabular}
 \end{minipage}
 \hfill
-\begin{minipage}[t]{0.25\linewidth}
+\begin{minipage}[t]{0.65\linewidth}
+\sechead{2.\ 定量結果：スロット数Kの効果%
+\,\textcolor{staryellow}{$\bigstar$}}
+\vspace{1mm}
+
+\centering\scriptsize
+\begin{tabular}{lcccccc}
+\toprule
+ & & \multicolumn{2}{c}{K=5（物体数以下）} & \multicolumn{2}{c}{K=11（物体数以上）} & \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}
+バックボーン & 損失 & FG-ARI & Metal ARI & FG-ARI & Metal ARI & $\Delta$ \\
+\midrule
+\textbf{DINOv2 ViT-S/14} & MSE & 0.168 & 0.185 & \textcolor{darkgreen}{\textbf{0.470}} & \textcolor{darkgreen}{0.491} & \textcolor{darkgreen}{+0.302} \\
+DINOv1 ViT-S/16 & ch-norm & 0.176 & 0.214 & 0.131 & 0.139 & \textcolor{accentred}{$-$0.045} \\
+CLIP ViT-B/16 & MSE+dtch & 0.047 & 0.071 & 0.110 & 0.141 & +0.063 \\
+\bottomrule
+\end{tabular}
+
+\vspace{1mm}
+\raggedright\scriptsize
+$\Rightarrow$ K=5:\ DINOv2$\approx$DINOv1$\gg$CLIP\qquad
+$\Rightarrow$ K=11:\ \textcolor{darkgreen}{\textbf{DINOv2のみ大幅改善}}（0.168$\to$\textbf{0.470}），DINOv1は悪化，CLIPは微改善\\
+$\Rightarrow$ 材質：Metal ARI $>$ Rubber（DINOv2 K=11で0.491 vs 0.446，$p{=}0.12$\,---\,統計的に有意ではないが方向は一致）
+\end{minipage}
+
 \vspace{2mm}
 
-\small
-\fbox{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
-\textcolor{accentred}{\textbf{限界1}}\\[0.5mm]
-14pxパッチ起因の\\
-\textbf{16$\times$16解像度の壁}\\
-$\to$ CRF・SAM等が必要
+%% ============================================================
+%% Row 2: 失敗要因分析 (メイン貢献)
+%% ============================================================
+\noindent
+\sechead{3.\ 失敗要因分析：なぜDINOv2だけがK=11で成功するのか%
+\,\textcolor{staryellow}{$\bigstar$\,中心的貢献}}
+
+\vspace{1mm}
+
+\noindent
+\begin{minipage}[t]{0.52\linewidth}
+\centering
+\includegraphics[width=\linewidth,height=32mm,keepaspectratio]{figures/poster_3backbone_k11_masks.png}\\[-0.5mm]
+{\tiny\textbf{図1}: K=11スロットマスク比較 --- DINOv2は物体ごとに分離，DINOv1は1スロット支配（52\%），CLIPは均一}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.46\linewidth}
+\scriptsize
+\textbf{``Goldilocks特性''}：DINOv2が``ちょうどいい''理由
+
+\vspace{1mm}
+\centering
+\begin{tabular}{lccc}
+\toprule
+ & {\scriptsize CLIP } & {\scriptsize \textbf{DINOv2}} & {\scriptsize DINOv1} \\
+ & {\tiny (均一すぎ)} & {\tiny (適度)} & {\tiny (複雑すぎ)} \\
+\midrule
+{\scriptsize cos類似度} & 0.92 & \textbf{0.52} & 0.34 \\
+{\scriptsize PCA次元} & 3 & \textbf{20} & 45 \\
+{\scriptsize 活動スロット} & 9.6 & \textbf{11.0} & 6.6 \\
+{\scriptsize 再構成/Mean比} & 2.16{\scriptsize\textcolor{accentred}{$\times$}} & \textbf{0.34}{\scriptsize\textcolor{darkgreen}{\checkmark}} & 1.09{\scriptsize$\triangle$} \\
+\bottomrule
+\end{tabular}
+
+\vspace{1mm}
+\raggedright
+\fbox{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\tiny
+\textcolor{accentred}{\textbf{CLIP失敗}}: 空間均一$\to$投影で悪化(cos 0.92$\to$0.99)$\to$全マスク均一$\to$ep4で自明解\\
+\textcolor{accentred}{\textbf{DINOv1失敗}}: 45次元必要$\to$384$\to$64投影で喪失$\to$1スロット支配$\to$再構成$\approx$平均充填\\
+\textcolor{darkgreen}{\textbf{DINOv2成功}}: 20次元にコンパクト$\to$投影後も多様性維持$\to$全11スロット活動$\to$FG-ARI 0.470
 }}
 \end{minipage}
 
 \vspace{2mm}
-
-%% --- 図2: 3種比較 ---
-\noindent
-\begin{minipage}[t]{0.72\linewidth}
-\centering
-\includegraphics[width=\linewidth,height=42mm,keepaspectratio]{figures/comparison_3backbone.png}\\[0.5mm]
-{\scriptsize\textbf{図2}: 3種バックボーン比較（MOVi-A金属物体）--- 金属面での\textbf{スロット混同}}
-\end{minipage}
-\hfill
-\begin{minipage}[t]{0.25\linewidth}
-\vspace{2mm}
-
-\small
-\fbox{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
-\textcolor{accentred}{\textbf{限界2}}\\[0.5mm]
-BRDF Specular成分が\\
-\textbf{スロット混同}を誘発\\
-$\to$ 視点依存デコーダ必要
-}}
-\end{minipage}
-
-\vspace{3mm}
 
 %% ============================================================
 %% Row 3: まとめ
 %% ============================================================
 \noindent
-\sechead{4.\ まとめと今後の課題}
-\vspace{1.5mm}
+\sechead{4.\ まとめと工学的教訓}
+\vspace{1mm}
 
-\noindent{\small
-\textbf{(1)}\,DINOv2のバックボーンとしての優位性を確認 \hfill
-\textbf{(2)}\,16$\times$16解像度の限界 $\to$ SAM等の高解像度モデルとの統合が必要 \hfill
-\textbf{(3)}\,鏡面反射への対応 $\to$ 3次元反射モデルの導入が必要
+\noindent{\scriptsize
+\textbf{(1)}\,DINOv2は``Goldilocks特性''によりSlot Attentionと最適な相性 $\to$ K=11でFG-ARI\,\textbf{0.470}\hfill
+\textbf{(2)}\,スロット数はバックボーン特性に強く依存（DINOv2のみK=11が有効）\\[0.5mm]
+\textbf{(3)}\,工学的知見：2層MLP射影，ch-norm損失（DINOv1），勾配detach（CLIP），温度$\tau{=}0.5$\hfill
+\textbf{(4)}\,16$\times$16パッチ解像度の壁 $\to$ SAM等との統合が今後の課題
 }
 
 \end{document}
