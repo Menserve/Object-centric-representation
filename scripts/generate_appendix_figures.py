@@ -122,16 +122,16 @@ def figure_a_random20():
 
         # Col 0: input
         axes[row, 0].imshow(img_np)
-        axes[row, 0].set_ylabel(f'{sid}', fontsize=7, rotation=0, labelpad=18)
+        axes[row, 0].set_ylabel(f'{sid}', fontsize=10, rotation=0, labelpad=20)
         if row == 0:
-            axes[row, 0].set_title('Input', fontsize=8)
+            axes[row, 0].set_title('Input', fontsize=12)
         axes[row, 0].axis('off')
 
         # Col 1: slot segmentation
         seg_ov = make_seg_overlay(img_np, masks_np)
         axes[row, 1].imshow(seg_ov)
         if row == 0:
-            axes[row, 1].set_title('Seg.', fontsize=8)
+            axes[row, 1].set_title('Seg.', fontsize=12)
         axes[row, 1].axis('off')
 
         # Cols 2-5: top-4 slots (heatmap)
@@ -142,11 +142,11 @@ def figure_a_random20():
             blend = np.clip(0.4 * img_np + 0.6 * hm, 0, 1)
             axes[row, 2 + j].imshow(blend)
             if row == 0:
-                axes[row, 2 + j].set_title(f'Slot', fontsize=8)
+                axes[row, 2 + j].set_title(f'Slot', fontsize=11)
             axes[row, 2 + j].axis('off')
 
     fig.suptitle('Appendix A: DINOv2 K=11 — Random 20 Scenes (seed=42)',
-                 fontsize=11, y=1.0)
+                 fontsize=14, y=1.0)
     out_path = OUT_DIR / 'appendix_a_random20.png'
     fig.savefig(out_path, dpi=150, bbox_inches='tight')
     plt.close(fig)
@@ -178,16 +178,16 @@ def figure_b_softmask_entropy():
 
         # Col 0: Input
         axes[row, 0].imshow(img_np)
-        axes[row, 0].set_ylabel(f'Scene {sid}', fontsize=9)
+        axes[row, 0].set_ylabel(f'Scene {sid}', fontsize=11)
         if row == 0:
-            axes[row, 0].set_title('Input', fontsize=9)
+            axes[row, 0].set_title('Input', fontsize=12)
         axes[row, 0].axis('off')
 
         # Col 1: Hard segmentation (argmax)
         seg_ov = make_seg_overlay(img_np, masks_np)
         axes[row, 1].imshow(seg_ov)
         if row == 0:
-            axes[row, 1].set_title('Hard Seg.', fontsize=9)
+            axes[row, 1].set_title('Hard Seg.', fontsize=12)
         axes[row, 1].axis('off')
 
         # Col 2: Entropy map
@@ -195,7 +195,7 @@ def figure_b_softmask_entropy():
         max_ent = np.log(masks_np.shape[0])  # max entropy = ln(K)
         im = axes[row, 2].imshow(ent, cmap='inferno', vmin=0, vmax=max_ent)
         if row == 0:
-            axes[row, 2].set_title('Entropy', fontsize=9)
+            axes[row, 2].set_title('Entropy', fontsize=12)
         axes[row, 2].axis('off')
 
         # Cols 3-6: Individual soft masks (continuous heatmap, no argmax)
@@ -205,7 +205,7 @@ def figure_b_softmask_entropy():
             # Pure soft mask: show attention weight directly
             axes[row, 3 + j].imshow(mask_k, cmap='viridis', vmin=0, vmax=1)
             if row == 0:
-                axes[row, 3 + j].set_title(f'Soft Slot {slot_idx}', fontsize=8)
+                axes[row, 3 + j].set_title(f'Soft Slot {slot_idx}', fontsize=11)
             axes[row, 3 + j].axis('off')
 
     # Colorbar for entropy
@@ -213,7 +213,7 @@ def figure_b_softmask_entropy():
     fig.colorbar(im, cax=cbar_ax, orientation='horizontal', label='Entropy')
 
     fig.suptitle('Appendix B: Soft Masks & Per-pixel Entropy (DINOv2 K=11)',
-                 fontsize=11, y=1.0)
+                 fontsize=14, y=1.0)
     out_path = OUT_DIR / 'appendix_b_softmask_entropy.png'
     fig.savefig(out_path, dpi=150, bbox_inches='tight')
     plt.close(fig)
@@ -255,18 +255,18 @@ def figure_c_3backbone_random5():
             # Col 0: Input
             axes[row, 0].imshow(img_np)
             if s_idx == 0:
-                axes[row, 0].set_ylabel(bname, fontsize=9, fontweight='bold')
+                axes[row, 0].set_ylabel(bname, fontsize=11, fontweight='bold')
             else:
-                axes[row, 0].set_ylabel(f'  #{sid}', fontsize=7)
+                axes[row, 0].set_ylabel(f'  #{sid}', fontsize=9)
             if row == 0:
-                axes[row, 0].set_title('Input', fontsize=9)
+                axes[row, 0].set_title('Input', fontsize=12)
             axes[row, 0].axis('off')
 
             # Col 1: Hard segmentation
             seg_ov = make_seg_overlay(img_np, masks_np)
             axes[row, 1].imshow(seg_ov)
             if row == 0:
-                axes[row, 1].set_title('Slot Seg.', fontsize=9)
+                axes[row, 1].set_title('Slot Seg.', fontsize=12)
             axes[row, 1].axis('off')
 
             # Col 2: Entropy
@@ -274,7 +274,7 @@ def figure_c_3backbone_random5():
             max_ent = np.log(11)
             axes[row, 2].imshow(ent, cmap='inferno', vmin=0, vmax=max_ent)
             if row == 0:
-                axes[row, 2].set_title('Entropy', fontsize=9)
+                axes[row, 2].set_title('Entropy', fontsize=12)
             axes[row, 2].axis('off')
 
         # Draw separator line after each backbone group
@@ -287,7 +287,7 @@ def figure_c_3backbone_random5():
                     transform=fig.transFigure, color='gray', linewidth=1.5))
 
     fig.suptitle('Appendix C: 3-Backbone × 5 Random Scenes (K=11, seed=42)',
-                 fontsize=11, y=1.0)
+                 fontsize=14, y=1.0)
     out_path = OUT_DIR / 'appendix_c_3backbone_random5.png'
     fig.savefig(out_path, dpi=150, bbox_inches='tight')
     plt.close(fig)

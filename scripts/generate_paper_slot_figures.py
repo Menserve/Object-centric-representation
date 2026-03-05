@@ -173,14 +173,14 @@ def figure1_dinov2_multiscene():
         
         # Col 0: 入力画像
         axes[row, 0].imshow(img_np)
-        axes[row, 0].set_title('Input' if row == 0 else '', fontsize=11)
-        axes[row, 0].set_ylabel(f'Scene {sid}', fontsize=11)
+        axes[row, 0].set_title('Input' if row == 0 else '', fontsize=14)
+        axes[row, 0].set_ylabel(f'Scene {sid}', fontsize=13)
         axes[row, 0].axis('off')
         
         # Col 1: GT + slot segmentation overlay
         seg_overlay = make_segmentation_overlay(img_np, masks_np)
         axes[row, 1].imshow(seg_overlay)
-        axes[row, 1].set_title('Slot Seg.' if row == 0 else '', fontsize=11)
+        axes[row, 1].set_title('Slot Seg.' if row == 0 else '', fontsize=14)
         axes[row, 1].axis('off')
         
         # Cols 2-: 個別スロットマスク（面積上位）
@@ -193,10 +193,10 @@ def figure1_dinov2_multiscene():
             blend = np.clip(blend, 0, 1)
             axes[row, 2 + j].imshow(blend)
             if row == 0:
-                axes[row, 2 + j].set_title(f'Slot {slot_idx}', fontsize=11)
+                axes[row, 2 + j].set_title(f'Slot {slot_idx}', fontsize=13)
             axes[row, 2 + j].axis('off')
     
-    fig.suptitle('DINOv2 K=11: Slot Mask Visualization (FG-ARI = 0.470)', fontsize=14, y=0.98)
+    fig.suptitle('DINOv2 K=11: Slot Mask Visualization (FG-ARI = 0.470)', fontsize=16, y=0.98)
     fig.savefig(OUT_DIR / 'paper_dinov2_k11_slots.png', dpi=180, bbox_inches='tight')
     plt.close(fig)
     print(f"  → {OUT_DIR / 'paper_dinov2_k11_slots.png'}")
@@ -231,14 +231,14 @@ def figure2_3backbone_comparison():
         
         # Col 0: 入力 (only show once semantically, but fill all rows)
         axes[row, 0].imshow(img_np)
-        axes[row, 0].set_title('Input' if row == 0 else '', fontsize=11)
-        axes[row, 0].set_ylabel(name, fontsize=10, fontweight='bold')
+        axes[row, 0].set_title('Input' if row == 0 else '', fontsize=14)
+        axes[row, 0].set_ylabel(name, fontsize=13, fontweight='bold')
         axes[row, 0].axis('off')
         
         # Col 1: slot segmentation
         seg_overlay = make_segmentation_overlay(img_np, masks_np)
         axes[row, 1].imshow(seg_overlay)
-        axes[row, 1].set_title('Slot Seg.' if row == 0 else '', fontsize=11)
+        axes[row, 1].set_title('Slot Seg.' if row == 0 else '', fontsize=14)
         axes[row, 1].axis('off')
         
         # Cols 2-: 個別スロット
@@ -250,10 +250,10 @@ def figure2_3backbone_comparison():
             blend = np.clip(blend, 0, 1)
             axes[row, 2 + j].imshow(blend)
             if row == 0:
-                axes[row, 2 + j].set_title(f'Slot {slot_idx}', fontsize=11)
+                axes[row, 2 + j].set_title(f'Slot {slot_idx}', fontsize=13)
             axes[row, 2 + j].axis('off')
     
-    fig.suptitle(f'3-Backbone Comparison at K=11 (Scene {scene_id})', fontsize=14, y=0.98)
+    fig.suptitle(f'3-Backbone Comparison at K=11 (Scene {scene_id})', fontsize=16, y=0.98)
     fig.savefig(OUT_DIR / 'paper_3backbone_k11_comparison.png', dpi=180, bbox_inches='tight')
     plt.close(fig)
     print(f"  → {OUT_DIR / 'paper_3backbone_k11_comparison.png'}")
@@ -294,16 +294,16 @@ def figure3_k5_vs_k11():
             
             # Col 0: Input
             axes[row, 0].imshow(img_np)
-            axes[row, 0].set_ylabel(label, fontsize=9, fontweight='bold')
+            axes[row, 0].set_ylabel(label, fontsize=12, fontweight='bold')
             if row == 0:
-                axes[row, 0].set_title('Input', fontsize=10)
+                axes[row, 0].set_title('Input', fontsize=14)
             axes[row, 0].axis('off')
             
             # Col 1: Slot segmentation
             seg_overlay = make_segmentation_overlay(img_np, masks_np)
             axes[row, 1].imshow(seg_overlay)
             if row == 0:
-                axes[row, 1].set_title('Slot Seg.', fontsize=10)
+                axes[row, 1].set_title('Slot Seg.', fontsize=14)
             axes[row, 1].axis('off')
             
             # Cols 2-7: Top-6 slots (or all 5 for K=5)
@@ -318,16 +318,16 @@ def figure3_k5_vs_k11():
                     blend = np.clip(blend, 0, 1)
                     axes[row, 2 + j].imshow(blend)
                     if row == 0:
-                        axes[row, 2 + j].set_title(f'Slot {slot_idx}', fontsize=10)
+                        axes[row, 2 + j].set_title(f'Slot {slot_idx}', fontsize=13)
                 else:
                     axes[row, 2 + j].axis('off')
                 axes[row, 2 + j].axis('off')
     
     # シーン区切り線をテキストで
-    fig.text(0.01, 0.75, f'Scene {scene_ids[0]}', fontsize=12, rotation=90, va='center', fontweight='bold')
-    fig.text(0.01, 0.30, f'Scene {scene_ids[1]}', fontsize=12, rotation=90, va='center', fontweight='bold')
+    fig.text(0.01, 0.75, f'Scene {scene_ids[0]}', fontsize=14, rotation=90, va='center', fontweight='bold')
+    fig.text(0.01, 0.30, f'Scene {scene_ids[1]}', fontsize=14, rotation=90, va='center', fontweight='bold')
     
-    fig.suptitle('DINOv2: K=5 vs K=11 Slot Differentiation', fontsize=14, y=0.98)
+    fig.suptitle('DINOv2: K=5 vs K=11 Slot Differentiation', fontsize=16, y=0.98)
     fig.savefig(OUT_DIR / 'paper_k5_vs_k11_slots.png', dpi=180, bbox_inches='tight')
     plt.close(fig)
     print(f"  → {OUT_DIR / 'paper_k5_vs_k11_slots.png'}")
