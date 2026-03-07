@@ -1,3 +1,5 @@
+> **[ARCHIVED]** Phase 1 完了レポート。Phase 3 までの全結果は RESEARCH_LOG.md を参照。
+
 # Phase 1 実装完了レポート
 
 **日付**: 2026年2月15日  

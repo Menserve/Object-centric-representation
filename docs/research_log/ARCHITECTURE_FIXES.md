@@ -1,3 +1,5 @@
+> **[ARCHIVED]** 初期アーキテクチャ修正記録 (2025-02)。最終アーキテクチャは RESEARCH_LOG.md を参照。
+
 # Architecture Fix Report
 **Date**: 2025-02-01  
 **Problem**: Slot Attention produces flat colored patches instead of object segmentation  

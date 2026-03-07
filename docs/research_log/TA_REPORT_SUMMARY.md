@@ -1,3 +1,5 @@
+> **[ARCHIVED]** Phase 2 TA報告。最終結果は RESEARCH_LOG.md および docs/paper/paper.tex を参照。
+
 # TA報告：金属光沢物体の物体中心学習
 
 **提出日**: 2026-02-15  

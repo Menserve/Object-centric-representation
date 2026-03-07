@@ -1,3 +1,5 @@
+> **[ARCHIVED]** Phase 2 計画文書。Phase 2-3 は 2026-03-07 に完了。最終結果は RESEARCH_LOG.md を参照。
+
 # Opus 4.6 コードレビュー & Phase 2 実験計画
 
 **作成日**: 2026-02-15  

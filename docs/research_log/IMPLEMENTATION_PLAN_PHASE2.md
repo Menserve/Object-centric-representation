@@ -1,3 +1,5 @@
+> **[ARCHIVED]** Phase 2 は 2026-02-15 に完了。最終結果は RESEARCH_LOG.md を参照。
+
 # Phase 2 実装プラン：複数ViT Backbone比較実験
 
 **作成日**: 2026年2月15日  

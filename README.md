@@ -10,53 +10,57 @@
 
 *Impact of Multiple ViT Pre-training Objectives on Specular Object Decomposition in Object-Centric Learning*
 
-### Phase 2 拡張（2026年2月15日）
+### 研究完了（2026年3月7日）
 
-TAフィードバックに基づき、複数のViT backboneを比較する実験を追加実装：
-- **DINOv2 ViT-S/14**: 密な自己蒸留学習（baseline）
-- **DINOv1 ViT-S/16**: 初代DINO自己蒸留学習
-- **CLIP ViT-B/16**: 言語-画像対照学習
+3バックボーン (DINOv2 / DINOv1 / CLIP) × スロット数 K∈{3,5,7,9,11,13} の網羅的評価を MOVi-A 300シーンで実施。
+論文 (9ページ)、A1ポスター、発表スライドを完成。
 
-詳細プランは [docs/IMPLEMENTATION_PLAN_PHASE2.md](docs/IMPLEMENTATION_PLAN_PHASE2.md) 参照。
+詳細は [docs/research_log/RESEARCH_LOG.md](docs/research_log/RESEARCH_LOG.md) 参照。
 
 ## 概要 / Abstract
 
 ### 日本語
 
-物体中心表現学習は、画像や動画に映る物体を個別のスロットとして教師なしで分離する手法である。本研究では、鏡面反射（specular reflection）を持つ物体が時間的な追跡においてマット物体より不安定になるかを検証した。
+物体中心表現学習は、画像や動画に映る物体を個別のスロットとして教師なしで分離する手法である。本研究では、凍結ViT特徴量とSlot Attentionを組み合わせた**SAVi-DINOSAUR**を用いて、鏡面反射（specular reflection）を持つ金属物体の教師なしセグメンテーションにおける構造的限界を検証した。
 
-SAVi（Slot Attention for Video）とDINOSAUR（DINOv2特徴ベース）を組み合わせた**SAVi-DINOSAUR**を実装し、MOVi-Aデータセット上でMetal物体とRubber物体の時間的一貫性を比較した。学習では、スロット崩壊を防ぐために**多様性損失（Diversity Loss）**を導入した。
+MOVi-Aデータセット300シーンを対象に、3種のViTバックボーン（DINOv2・DINOv1・CLIP）×スロット数K∈{3,5,7,9,11,13}の計18モデルを学習し、FG-ARI・mBOで定量評価した。
 
-実験の結果、Metal物体とMixed（Metal+Rubber）で時間的一貫性（IoU）に大きな差は見られなかった（0.66 vs 0.67）。ただし、Metalでは若干の不安定さ（+3%のスロット割り当て変化）が観察された。これは、DINOv2の事前学習特徴量が鏡面反射の見えの変化を吸収していることを示唆する。
+主要な知見:
+- **DINOv2がK=9で最高性能**（FG-ARI 52.1%）、DINOv1（24.1%）・CLIP（14.6%）を大幅に上回る
+- **Goldilocks特性**: K=9付近でFG-ARIが最大化後に飽和（過少・過多でともに低下）
+- エントロピー分析で余剰スロットが崩壊の定量的指標となることを確認
+- 時系列追跡（40シーン×24フレーム）でDINOv2スロットが10フレーム以上物体IDを保持
 
 ### English
 
-Object-centric representation learning aims to decompose visual scenes into individual object representations (slots) without supervision. This study investigates whether specular (reflective) objects are harder to track temporally compared to matte objects.
+Object-centric representation learning decomposes visual scenes into individual object slots without supervision. This study investigates structural limitations in unsupervised segmentation of specular metallic objects using **SAVi-DINOSAUR** (frozen ViT features + Slot Attention).
 
-We implemented **SAVi-DINOSAUR**, combining SAVi (Slot Attention for Video) with DINOSAUR (DINOv2 feature-based approach), and compared temporal consistency between Metal and Rubber objects on the MOVi-A dataset. We introduced **Diversity Loss** to prevent slot collapse during training.
+We trained 18 models across 3 ViT backbones (DINOv2/DINOv1/CLIP) × K∈{3,5,7,9,11,13} slots on 300 MOVi-A scenes, evaluating with FG-ARI and mBO.
 
-Our experiments show no significant difference in temporal consistency (IoU) between Metal and Mixed objects (0.66 vs 0.67). However, Metal showed slightly higher instability (+3% slot assignment changes). This suggests that DINOv2's pre-trained features absorb appearance variations caused by specular reflections.
+Key findings:
+- **DINOv2 at K=9 achieves best performance** (FG-ARI 52.1%), significantly outperforming DINOv1 (24.1%) and CLIP (14.6%)
+- **Goldilocks property**: FG-ARI peaks near K=9 and saturates (both under- and over-slotting degrade performance)
+- Entropy analysis reveals surplus slots as a quantitative indicator of slot collapse
+- Temporal tracking (40 scenes × 24 frames) shows DINOv2 slots maintain object ID for 10+ frames
 
 ## 主要な結果 / Key Results
 
-### Metal vs Mixed 時間的一貫性比較
+### K スイープ定量評価（300シーン、3バックボーン）
 
-| 指標 | Metal | Mixed | 差 | 解釈 |
-|------|-------|-------|-----|------|
-| Mean IoU ↑ | 0.660 | 0.670 | -0.010 | ほぼ同等 |
-| Stability ↓ | 0.058 | 0.045 | +0.013 | Metalがやや不安定 |
-| Change Rate ↓ | 0.147 | 0.117 | +0.030 | Metalで割り当て変化多い |
+| Backbone | K=3 | K=5 | K=7 | K=9 | K=11 | K=13 |
+|----------|-----|-----|-----|-----|------|------|
+| **FG-ARI (%)** | | | | | | |
+| DINOv2 | 28.4 | 41.2 | 47.6 | **52.1** | 51.8 | 50.3 |
+| DINOv1 | 12.1 | 18.4 | 22.3 | 24.1 | 23.8 | 23.2 |
+| CLIP | 8.3 | 11.2 | 13.4 | 14.6 | 14.1 | 13.8 |
+| **mBO (%)** | | | | | | |
+| DINOv2 | 31.2 | 38.4 | 42.1 | **44.8** | 44.2 | 43.1 |
+| DINOv1 | 18.3 | 22.1 | 25.4 | 26.8 | 26.2 | 25.7 |
+| CLIP | 14.2 | 17.8 | 19.4 | 20.3 | 19.9 | 19.4 |
 
-### マスク品質（多様性損失追加後）
-
-| Slot | Coverage |
-|------|----------|
-| 0 | 32.0% |
-| 1 | 20.3% |
-| 2 | 23.9% |
-| 3 | 9.1% |
-| 4 | 14.6% |
-| **合計** | **99.9%** |
+- DINOv2 が全設定で DINOv1・CLIP を大幅に上回る（FG-ARI 約2倍）
+- K=9 が全バックボーンで最適（Goldilocks 特性）
+- バックボーン間のギャップは素材・K によらず一貫
 
 ## プロジェクト構成 / Project Structure
 
@@ -84,18 +88,30 @@ Our experiments show no significant difference in temporal consistency (IoU) bet
 │   ├── debug_features.py               # 特徴量デバッグ
 │   ├── test_architecture.py            # 等々
 │   └── README.md
+├── scripts/                            # 図表生成・スイープ実行スクリプト
+│   ├── run_k_sweep.sh                  # K sweep 一括実行
+│   ├── run_tau_sweep.sh                # τ sweep 一括実行
+│   ├── evaluate_sweeps.py              # sweep 結果評価
+│   ├── temporal_analysis.py            # 時系列追跡分析
+│   ├── generate_architecture_fig.py    # アーキテクチャ図生成
+│   └── generate_paper_slot_figures.py  # 論文用スロット可視化図
 ├── notebooks/
+│   ├── day2_analysis.ipynb             # 統計的検証
+│   ├── day3_retrain_analysis.ipynb     # 300サンプル再学習分析
+│   ├── day4_failure_analysis.ipynb     # 3バックボーン失敗解析
+│   ├── day4_resolution_experiment.ipynb # 解像度448 vs 224
+│   ├── day6_sweep_experiments.ipynb    # K sweep / τ sweep
+│   ├── day7_analysis_report.ipynb      # エントロピー・時系列・最終分析
 │   └── phase1_exploration/             # Phase 1探索ノートブック
-│       ├── ex_comparison.ipynb
-│       └── ex_movi_explore.ipynb
 ├── docs/
 │   ├── paper/                          # 論文ソース（LaTeX）
-│   │   ├── paper.tex                   # 最終論文
+│   │   ├── paper.tex                   # 最終論文（9ページ、jsai-acl）
+│   │   ├── poster.tex                  # A1ポスター（594×841mm）
 │   │   ├── slide.tex                   # プレゼンテーション
 │   │   ├── script.md                   # 発表原稿
 │   │   └── figures/                    # 論文図版
 │   └── research_log/                   # 研究記録
-│       ├── RESEARCH_LOG.md             # 研究活動記録
+│       ├── RESEARCH_LOG.md             # 研究活動記録（2025-11〜2026-03）
 │       ├── METHODS.md                  # 手法詳細
 │       └── log_analysis_handoff.md     # ログ分析文書
 ├── checkpoints/                        # 学習済みモデル（git管理外, 12GB）
@@ -105,10 +121,11 @@ Our experiments show no significant difference in temporal consistency (IoU) bet
 └── LICENSE                             # ライセンス
 ```
 
-**ディレクトリ整理方針（2026-02-16）:**
+**ディレクトリ整理方針:**
 - **論文直結の実験** (`experiments/main/`) と **補助実験** (`experiments/sub/`) を明確に分離
 - **開発過程のデバッグスクリプト** は `debug/` に集約
 - **論文ソース** (`docs/paper/`) と **研究記録** (`docs/research_log/`) を分離
+- **図表生成・sweep実行** は `scripts/` に集約
 - 詳細は [docs/research_log/log_analysis_handoff.md](docs/research_log/log_analysis_handoff.md) 参照
 
 ## セットアップ / Setup
@@ -147,19 +164,11 @@ python src/train_movi.py --backbone clip_vitb16 --save_dir checkpoints/clip_vitb
 
 **複数Backboneの一括学習**:
 \`\`\`bash
-cd src
+# K sweep 一括実行
+bash scripts/run_k_sweep.sh
 
-# 順次実行（1台のマシンで全て）
-./run_phase2_training.sh sequential
-
-# 並列実行（メイン機: DINOv2 + DINOv1）
-./run_phase2_training.sh parallel
-
-# サブ機用（CLIP単独）
-./run_phase2_training.sh clip
-
-# デバッグモード（10エポックでテスト）
-./run_phase2_training.sh debug
+# τ sweep 一括実行
+bash scripts/run_tau_sweep.sh
 \`\`\`
 
 詳細オプション:
@@ -187,7 +196,7 @@ ViT Feature Extractor [凍結] → 特徴量 (B, T, 384, 16, 16)
 │   ├─ DINOv1 ViT-S/16 (self-distillation)
 │   └─ CLIP ViT-B/16 (language-aligned)
     ↓
-Slot Attention (K=5 slots, 5 iterations)
+Slot Attention (K slots, 5 iterations; K=9 optimal, tested K∈{3,5,7,9,11,13})
     ↓
 Slot Predictor [次フレーム予測]
     ↓

@@ -1,3 +1,5 @@
+> **[ARCHIVED]** Phase 2 の正規化実験記録。最終的な300サンプルK sweep結果は RESEARCH_LOG.md を参照。
+
 # ViT Backbone Comparison Report: Feature Normalization Fix
 
 ## Executive Summary

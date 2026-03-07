@@ -1,3 +1,5 @@
+> **[ARCHIVED]** Phase 2 の50エポック比較結果。最終的な300サンプル K∈{3-13} sweep結果は RESEARCH_LOG.md を参照。
+
 # Final Backbone Comparison Report
 
 **Date**: 2026-02-15 21:35 JST  
