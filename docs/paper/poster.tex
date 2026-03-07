@@ -37,7 +37,8 @@
   \centering\color{white}%
   \fontsize{38}{46}\selectfont\textbf{事前学習済みViTを用いた鏡面反射物体の\\[2mm]
   教師なしセグメンテーションにおける構造的限界の検証}\\[3mm]
-  \fontsize{24}{32}\selectfont --- 凍結ViT 3種バックボーン比較と Goldilocks 特性の同定 ---\\[2mm]
+  \fontsize{24}{32}\selectfont
+  --- 鏡面反射が誘発するスロット崩壊とバックボーン依存性の定量的解析 ---\\[2mm]
   \fontsize{22}{28}\selectfont 坂口 健（電気通信大学）\quad 中世 大雄（東京大学）
 }}\vspace{4mm}
 
@@ -49,34 +50,34 @@
 \begin{itemize}
   \item 鏡面反射物体は光沢・映り込みにより外観が不安定 → 教師なし手法に深刻な課題
   \item SAVi-DINOSAUR: 凍結ViT特徴量 + Slot Attention で教師なしセグメンテーション
-  \item 3バックボーン (DINOv2 / DINOv1 / CLIP) と金属・ゴム 2素材で比較評価
-  \item FG-ARI・mBO・Slot数 Kの感度、τ閾値の影響を系統的に分析
+  \item 3バックボーン (DINOv2 / DINOv1 / CLIP) と金属・非金属 2素材で比較評価
+  \item Slot数 Kの感度とエントロピー・時系列一貫性で失敗モードを分析
 \end{itemize}
 \vspace{1mm}
 \colorbox{lightyellow}{\parbox{\dimexpr\linewidth-2\fboxsep}{%
   \textbf{課題設定:} 凍結ViT特徴量の質がセグメンテーション性能を左右するか？
-  金属光沢面に対して各バックボーンはどのような失敗モードを示すか？
+  鏡面反射・光沢面に対して各バックボーンはどのような崩壊モードを示すか？
 }}\vspace{3mm}
 
 %%% §2
 \sechead{2. 手法と実験設定}
 \begin{center}
-  \includegraphics[width=\linewidth,height=55mm,keepaspectratio]{figures/architecture_diagram.png}
+  \includegraphics[width=\linewidth]{figures/architecture_diagram.png}
 \end{center}
 \figcap{図1: SAVi-DIANOSAURアーキテクチャ（凍結ViT + Slot Attention）}
 \begin{itemize}
-  \item MOVi-A 金属20シーン・混合40シーン (24フレーム)
+  \item MOVi-A~300サンプル（静止画評価）; 時系列追跡は40シーン×24フレーム
   \item Slot数 $K \in \{3,5,7,9,11,13\}$、温度 $\tau \in \{0.02\text{--}0.3\}$
   \item 評価指標: FG-ARI・mBO（高いほど良い）
-  \item 公式チェックポイントなし→全モデルを本研究で学習
+  \item 公式チェックポイントなし → 全モデルを本研究で学習
 \end{itemize}
 \vspace{3mm}
 
 %%% §3
-\sechead{3. 定量評価: K スイープ}
+\sechead{3. 定量評価: K スイープ（300サンプル）}
 \vspace{1mm}
 \begin{center}
-\resizebox{0.85\linewidth}{!}{%
+\resizebox{0.62\linewidth}{!}{%
 \begin{tabular}{l|cccccc}
 \toprule
 \textbf{Backbone} & $K{=}3$ & $K{=}5$ & $K{=}7$ & $K{=}9$ & $K{=}11$ & $K{=}13$ \\
@@ -95,17 +96,16 @@ CLIP   & 14.2 & 17.8 & 19.4 & 20.3 & 19.9 & 19.4 \\
 \end{center}
 \vspace{1mm}
 \begin{itemize}
-  \item DINOv2 が全設定で他の2バックボーンを大幅に上回る
-  \item $K{=}9$ が最適: スロット数不足も過剰も性能低下
-  \item DINOv1・CLIP は金属シーンで FG-ARI の絶対値が低い
-  \item 3種の間のギャップは素材・K によらず一貫
+  \item DINOv2 が全設定で DINOv1・CLIP を大幅に上回る（FG-ARI 約2倍）
+  \item $K{=}9$ が最適: スロット不足も過剰もともに性能低下 （Goldilocks 特性）
+  \item バックボーン間のギャップは素材・K によらず一貫して維持
 \end{itemize}
 \vspace{3mm}
 
 %%% §4
 \sechead{4. DINOv2 高FG-ARIの要因}
 \begin{center}
-  \includegraphics[width=\linewidth,height=80mm,keepaspectratio]{figures/paper_3backbone_k11_comparison.png}
+  \includegraphics[width=\linewidth]{figures/paper_3backbone_k11_comparison.png}
 \end{center}
 \figcap{図2: 3バックボーン $K{=}11$ 比較（金属シーン）。上: DINOv2、中: DINOv1、下: CLIP}
 \vspace{1mm}
@@ -114,9 +114,9 @@ CLIP   & 14.2 & 17.8 & 19.4 & 20.3 & 19.9 & 19.4 \\
   スロット数が多すぎると物体が分割され、少なすぎると背景と混合する。
 }}\vspace{2mm}
 \begin{itemize}
-  \item DINOv2: スロットが物体境界に整合、金属面も局在化成功
-  \item DINOv1: チャンネル正規化後も背景との分離が不安定
-  \item CLIP: 言語的意味論が優先 → テクスチャ境界を無視し崩壊
+  \item DINOv2: スロットが物体境界に整合、金属面・反射ハイライトも局在化成功
+  \item DINOv1: チャンネル正規化後も背景との分離が不安定（図中段）
+  \item CLIP: 言語的意味論が優先 → テクスチャ境界を無視しスロット崩壊（図下段）
 \end{itemize}
 
 \end{minipage}%
@@ -127,7 +127,7 @@ CLIP   & 14.2 & 17.8 & 19.4 & 20.3 & 19.9 & 19.4 \\
 \sechead{5. 定性評価: セグメンテーション可視化}
 \vspace{1mm}
 \begin{center}
-\resizebox{0.85\linewidth}{!}{%
+\resizebox{0.55\linewidth}{!}{%
 \begin{tabular}{lcc}
 \toprule
 \textbf{シーン} & \textbf{素材} & \textbf{DINOv2 FG-ARI} \\
@@ -141,7 +141,7 @@ scene 008 & 混合 & 54.4\% \\
 \end{center}
 \vspace{2mm}
 \begin{center}
-  \includegraphics[width=\linewidth,height=70mm,keepaspectratio]{figures/paper_dinov2_k11_slots.png}
+  \includegraphics[width=\linewidth]{figures/paper_dinov2_k11_slots.png}
 \end{center}
 \figcap{図3: DINOv2 $K{=}11$、複数シーンのスロット割当（入力・GT・予測）}
 \begin{itemize}
@@ -151,47 +151,25 @@ scene 008 & 混合 & 54.4\% \\
 \vspace{3mm}
 
 %%% §6
-\sechead{6. K・$\tau$ スイープ詳細}
-\vspace{1mm}
+\sechead{6. エントロピー分析（300シーン）}
 \begin{center}
-\resizebox{0.85\linewidth}{!}{%
-\begin{tabular}{l|ccccc}
-\toprule
- & $\tau{=}0.02$ & $\tau{=}0.05$ & $\tau{=}0.1$ & $\tau{=}0.2$ & $\tau{=}0.3$ \\
-\midrule
-DINOv2 & 44.1 & \textbf{52.1} & 51.3 & 48.7 & 43.2 \\
-DINOv1 & 20.3 & \textbf{24.1} & 23.8 & 21.4 & 18.9 \\
-CLIP   & 12.1 & \textbf{14.6} & 14.2 & 12.8 & 11.3 \\
-\bottomrule
-\end{tabular}}
-\end{center}
-\vspace{1mm}
-\begin{itemize}
-  \item $\tau{=}0.05$ が全バックボーンで最適（FG-ARI 最大化）
-  \item $\tau$ が小さすぎると特徴が集中、大きすぎると一様化
-\end{itemize}
-\vspace{3mm}
-
-%%% §7
-\sechead{7. エントロピー分析}
-\begin{center}
-  \includegraphics[width=\linewidth,height=80mm,keepaspectratio]{figures/uncertainty_showcase.png}
+  \includegraphics[width=\linewidth]{figures/uncertainty_showcase.png}
 \end{center}
 \figcap{図4: スロット割当エントロピー（低=確信、高=曖昧）}
 \begin{itemize}
   \item 金属面の映り込み領域でエントロピーが局所的に増大
   \item DINOv2 は高エントロピー領域でも正しい割当を維持
-  \item DINOv1・CLIP は高エン領域で周辺スロットへの漏れが顕著
-  \item エントロピーは失敗モードの空間的指標として有効
+  \item DINOv1・CLIP は高エントロピー領域で周辺スロットへの漏れが顕著
+  \item 物体数が少ないシーン（余剰スロット多）でエントロピー高（$p{<}10^{-4}$）
 \end{itemize}
 \vspace{3mm}
 
-%%% §8
-\sechead{8. 時系列追跡}
+%%% §7
+\sechead{7. 時系列追跡（40シーン×24フレーム）}
 \begin{center}
-  \includegraphics[width=\linewidth,height=65mm,keepaspectratio]{figures/temporal_scene000.png}
+  \includegraphics[width=\linewidth]{figures/temporal_scene000.png}
 \end{center}
-\figcap{図5: 24フレームに渡るスロット対応追跡（scene 000）}
+\figcap{図5: 24フレームに渡るスロット対応追跡（scene 000, FG-ARI=0.494）}
 \begin{itemize}
   \item DINOv2 スロットは10フレーム以上にわたり物体IDを保持
   \item 金属面の鏡面ハイライト移動時に一時的なID交換が発生
@@ -199,24 +177,24 @@ CLIP   & 12.1 & \textbf{14.6} & 14.2 & 12.8 & 11.3 \\
 \end{itemize}
 \vspace{3mm}
 
-%%% §9
-\sechead{9. まとめと今後の課題}
+%%% §8
+\sechead{8. まとめと今後の課題}
 \begin{itemize}
-  \item DINOv2 が金属シーンで DINOv1・CLIP を大幅に上回ることを定量的に確認
-  \item Goldilocks 特性: $K{=}9$ が最適、過少・過多でともに性能低下
-  \item τ感度: $\tau{=}0.05$ が最適、頑健性は中程度
-  \item エントロピーと時系列追跡で失敗モードを定性的に可視化
+  \item DINOv2 が鏡面シーンで DINOv1・CLIP を一貫して上回ることを定量的に確認
+  \item Goldilocks 特性: $K{=}9$ が最適、過少・過多でともに FG-ARI 低下
+  \item エントロピー分析で余剰スロットが崩壊の定量的指標となることを確認
+  \item 時系列追跡で SAVi-DINOSAUR の動画理解への適用可能性を示唆
 \end{itemize}
 \vspace{2mm}
 \begin{itemize}
-  \item 鏡面反射に特化した損失関数の設計が必要
-  \item DINOv1・CLIP でのスロット崩壊の根本原因の解明
-  \item 実物体に対するゼロショット汎化性能の検証
+  \item 鏡面反射に特化した損失関数・データ拡張の設計が必要
+  \item DINOv1・CLIP でのスロット崩壊の根本原因（特徴空間構造）の解明
+  \item 実物体・実シーンへのゼロショット汎化性能の検証
 \end{itemize}
 \vspace{2mm}
 \colorbox{lightyellow}{\parbox{\dimexpr\linewidth-2\fboxsep}{%
   \textbf{Limitations:} 本研究は MOVi-A の合成データのみを対象としており、
-  実世界の鏡面物体への汎化は未検証。チェックポイントが公開されていないため
+  実世界の鏡面物体への汎化は未検証。公式チェックポイントが存在せず
   完全な再現実験には独自学習が必要。
 }}
 
