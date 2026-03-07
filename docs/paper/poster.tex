@@ -8,6 +8,8 @@
 \usepackage{amsmath}
 \usepackage{enumitem}
 \usepackage{array}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
 \AtBeginDvi{\special{papersize=594mm,841mm}}
 
 \setlength\topskip{0pt}
@@ -30,9 +32,9 @@
 
 \setlist[itemize]{leftmargin=1.2em, itemsep=0pt, topsep=1pt, parsep=0pt}
 
-\begin{document}\enlargethispage{80mm}\fontsize{22}{30}\selectfont\noindent
+\begin{document}\enlargethispage{200mm}\fontsize{22}{30}\selectfont\noindent
 %
-%--- ヘッダー ---
+%--- header ---
 \colorbox{titleblue}{\parbox{\linewidth}{%
   \centering\color{white}%
   \fontsize{38}{46}\selectfont\textbf{事前学習済みViTを用いた鏡面反射物体の\\[2mm]
@@ -42,10 +44,10 @@
   \fontsize{22}{28}\selectfont 坂口 健（電気通信大学）\quad 中世 大雄（東京大学）
 }}\vspace{4mm}
 
-%--- 2カラム本文 ---
+%--- 2-column body ---
 \begin{minipage}[t]{0.487\linewidth}
 
-%%% §1
+%%% sec1
 \sechead{1. 背景と目的}
 \begin{itemize}
   \item 鏡面反射物体は光沢・映り込みにより外観が不安定 → 教師なし手法に深刻な課題
@@ -59,12 +61,80 @@
   鏡面反射・光沢面に対して各バックボーンはどのような崩壊モードを示すか？
 }}\vspace{3mm}
 
-%%% §2
+%%% sec2
 \sechead{2. 手法と実験設定}
+% ---- architecture diagram (2-row TikZ) ----
 \begin{center}
-  \includegraphics[width=\linewidth]{figures/architecture_diagram.png}
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+  font=\sffamily\fontsize{9}{11}\selectfont,
+  % node styles
+  io/.style={draw=green!60!black, fill=green!13, rounded corners=5pt,
+             text width=2.5cm, align=center, minimum height=1.0cm, line width=1.5pt},
+  frozen/.style={draw=blue!70!black, fill=blue!12, rounded corners=5pt,
+                 text width=2.8cm, align=center, minimum height=1.0cm, line width=1.5pt},
+  proc/.style={draw=orange!80!black, fill=orange!12, rounded corners=5pt,
+               text width=2.5cm, align=center, minimum height=1.0cm, line width=1.5pt},
+  slt/.style={draw=purple!80!black, fill=purple!10, rounded corners=5pt,
+              text width=2.9cm, align=center, minimum height=1.5cm, line width=1.5pt},
+  dec/.style={draw=red!65!black, fill=red!8, rounded corners=5pt,
+              text width=2.9cm, align=center, minimum height=1.0cm, line width=1.5pt},
+  lossnode/.style={draw=gray!70, fill=gray!18, rounded corners=5pt,
+                   text width=2.2cm, align=center, minimum height=1.0cm, line width=1.5pt},
+  % arrow styles
+  arr/.style={-{Latex[length=3.5mm,width=2.5mm]}, line width=1.8pt, draw=gray!60},
+  darr/.style={-{Latex[length=3.5mm,width=2.5mm]}, line width=1.5pt, draw=gray!45, dashed},
+  lbl/.style={font=\sffamily\footnotesize, text=gray!80, align=center,
+              fill=white, inner sep=1.5pt},
+]
+%--- TOP ROW: encoding path (y=0) ---
+\node[io]     (img)   at ( 0.0, 0)
+  {\textbf{Input Image}\\\footnotesize(B,\,3,\,224,\,224)};
+\node[frozen] (vit)   at ( 4.3, 0)
+  {\textbf{Frozen ViT}\\\textbf{Encoder}\\\footnotesize DINOv2\,/\,DINOv1\,/\,CLIP};
+\node[io]     (fmap)  at ( 9.0, 0)
+  {\textbf{Patch Features}\\\footnotesize(B,\,256,\,384)};
+\node[proc]   (mlp)   at (13.1, 0)
+  {\textbf{MLP Proj.}\\\footnotesize 384\,$\to$\,64};
+\node[slt]    (sa)    at (17.6, 0)
+  {\textbf{Slot Attention}\\\footnotesize K,V$\,\leftarrow\,$features\\
+   Q$\,\leftarrow\,$slots\\ iters=5,\;GRU};
+\node[slt]    (slots) at (21.8, 0)
+  {\textbf{Slots}\\\footnotesize($B$,\,$K$,\,64)};
+
+%--- BOTTOM ROW: decoding path (y=-5.5) ---
+\node[proc]     (mlpup) at (21.8,-4.2)
+  {\textbf{MLP Up-proj.}\\\footnotesize 64\,$\to$\,384};
+\node[dec]      (sbd)   at (16.5,-4.2)
+  {\textbf{Spatial Broadcast}\\\textbf{Decoder}\\\footnotesize $\tau{=}0.5$};
+\node[io]       (recon) at (11.0,-4.2)
+  {\textbf{Recon.+Masks}\\\footnotesize(B,K,384,16,16)};
+\node[lossnode] (mse)   at ( 5.5,-4.2)
+  {\textbf{MSE Loss}};
+
+%--- ARROWS: forward encoding path ---
+\draw[arr] (img.east)   -- (vit.west);
+\draw[arr] (vit.east)   -- (fmap.west);
+\draw[arr] (fmap.east)
+  -- node[above, lbl]{flatten\\(B,\,256,\,384)} (mlp.west);
+\draw[arr] (mlp.east)
+  -- node[above, lbl]{(B,\,256,\,64)} (sa.west);
+\draw[arr] (sa.east)    -- (slots.west);
+
+%--- ARROWS: decoding path (right to left on bottom row) ---
+\draw[arr] (slots.south) -- (mlpup.north);
+\draw[arr] (mlpup.west)  -- (sbd.east);
+\draw[arr] (sbd.west)
+  -- node[above, lbl]{feat\,+\,mask} (recon.east);
+\draw[arr] (recon.west)  -- (mse.east);
+
+%--- TARGET: Patch Features -> MSE Loss (dashed, routed below bottom row) ---
+\draw[darr] (fmap.south)
+  -- node[right=2mm, lbl]{target\\(detach)} ++(0,-2.8)
+  -| (mse.south);
+\end{tikzpicture}}
 \end{center}
-\figcap{図1: SAVi-DIANOSAURアーキテクチャ（凍結ViT + Slot Attention）}
+\figcap{図1: SAVi-DIANOSAURアーキテクチャ\\（上段: エンコード、下段: デコード + MSE 損失）}
 \begin{itemize}
   \item MOVi-A~300サンプル（静止画評価）; 時系列追跡は40シーン×24フレーム
   \item Slot数 $K \in \{3,5,7,9,11,13\}$、温度 $\tau \in \{0.02\text{--}0.3\}$
@@ -73,36 +143,39 @@
 \end{itemize}
 \vspace{3mm}
 
-%%% §3
+%%% sec3
 \sechead{3. 定量評価: K スイープ（300サンプル）}
-\vspace{1mm}
-\begin{center}
-\resizebox{0.62\linewidth}{!}{%
-\begin{tabular}{l|cccccc}
-\toprule
-\textbf{Backbone} & $K{=}3$ & $K{=}5$ & $K{=}7$ & $K{=}9$ & $K{=}11$ & $K{=}13$ \\
-\midrule
-\multicolumn{7}{l}{\textit{FG-ARI (\%)}} \\
-DINOv2 & 28.4 & 41.2 & 47.6 & \textbf{52.1} & 51.8 & 50.3 \\
-DINOv1 & 12.1 & 18.4 & 22.3 & 24.1 & 23.8 & 23.2 \\
-CLIP   & 8.3  & 11.2 & 13.4 & 14.6 & 14.1 & 13.8 \\
-\midrule
-\multicolumn{7}{l}{\textit{mBO (\%)}} \\
-DINOv2 & 31.2 & 38.4 & 42.1 & \textbf{44.8} & 44.2 & 43.1 \\
-DINOv1 & 18.3 & 22.1 & 25.4 & 26.8 & 26.2 & 25.7 \\
-CLIP   & 14.2 & 17.8 & 19.4 & 20.3 & 19.9 & 19.4 \\
-\bottomrule
-\end{tabular}}
-\end{center}
-\vspace{1mm}
-\begin{itemize}
-  \item DINOv2 が全設定で DINOv1・CLIP を大幅に上回る（FG-ARI 約2倍）
-  \item $K{=}9$ が最適: スロット不足も過剰もともに性能低下 （Goldilocks 特性）
-  \item バックボーン間のギャップは素材・K によらず一貫して維持
-\end{itemize}
+\noindent%
+\begin{minipage}[t]{130mm}
+  \vspace{0pt}
+  \resizebox{130mm}{!}{%
+  \begin{tabular}{l|cccccc}
+  \toprule
+  \textbf{Backbone} & $K{=}3$ & $K{=}5$ & $K{=}7$ & $K{=}9$ & $K{=}11$ & $K{=}13$ \\
+  \midrule
+  \multicolumn{7}{l}{\textit{FG-ARI (\%)}} \\
+  DINOv2 & 28.4 & 41.2 & 47.6 & \textbf{52.1} & 51.8 & 50.3 \\
+  DINOv1 & 12.1 & 18.4 & 22.3 & 24.1 & 23.8 & 23.2 \\
+  CLIP   & 8.3  & 11.2 & 13.4 & 14.6 & 14.1 & 13.8 \\
+  \midrule
+  \multicolumn{7}{l}{\textit{mBO (\%)}} \\
+  DINOv2 & 31.2 & 38.4 & 42.1 & \textbf{44.8} & 44.2 & 43.1 \\
+  DINOv1 & 18.3 & 22.1 & 25.4 & 26.8 & 26.2 & 25.7 \\
+  CLIP   & 14.2 & 17.8 & 19.4 & 20.3 & 19.9 & 19.4 \\
+  \bottomrule
+  \end{tabular}}
+\end{minipage}\hfill%
+\begin{minipage}[t]{133mm}
+  \vspace{0pt}
+  \begin{itemize}
+    \item DINOv2 が全設定で DINOv1・CLIP を大幅に上回る（FG-ARI 約2倍）
+    \item $K{=}9$ が最適: スロット不足も過剰もともに性能低下（Goldilocks 特性）
+    \item バックボーン間のギャップは素材・K によらず一貫して維持
+  \end{itemize}
+\end{minipage}
 \vspace{3mm}
 
-%%% §4
+%%% sec4
 \sechead{4. DINOv2 高FG-ARIの要因}
 \begin{center}
   \includegraphics[width=\linewidth]{figures/paper_3backbone_k11_comparison.png}
@@ -118,44 +191,31 @@ CLIP   & 14.2 & 17.8 & 19.4 & 20.3 & 19.9 & 19.4 \\
   \item DINOv1: チャンネル正規化後も背景との分離が不安定（図中段）
   \item CLIP: 言語的意味論が優先 → テクスチャ境界を無視しスロット崩壊（図下段）
 \end{itemize}
+\vspace{3mm}
 
 \end{minipage}%
 \hfill%
 \begin{minipage}[t]{0.487\linewidth}
 
-%%% §5
-\sechead{5. 定性評価: セグメンテーション可視化}
-\vspace{1mm}
-\begin{center}
-\resizebox{0.55\linewidth}{!}{%
-\begin{tabular}{lcc}
-\toprule
-\textbf{シーン} & \textbf{素材} & \textbf{DINOv2 FG-ARI} \\
-\midrule
-scene 001 & 金属 & 58.3\% \\
-scene 003 & 金属 & 49.7\% \\
-scene 005 & 混合 & 61.2\% \\
-scene 008 & 混合 & 54.4\% \\
-\bottomrule
-\end{tabular}}
-\end{center}
-\vspace{2mm}
+%%% sec5
+\sechead{5. 定性評価: スロット可視化}
 \begin{center}
   \includegraphics[width=\linewidth]{figures/paper_dinov2_k11_slots.png}
 \end{center}
-\figcap{図3: DINOv2 $K{=}11$、複数シーンのスロット割当（入力・GT・予測）}
+\figcap{図3: DINOv2 $K{=}11$ の複数シーン（入力・GT・予測）}
 \begin{itemize}
-  \item DINOv2 は鏡面ハイライトにも頑健にスロットを割当
-  \item 金属シーンでは反射像がノイズとなり mBO が有意に低下
+  \item 代表4シーン（金属2・混合2）の FG-ARI 範囲: 49.7\%〜61.2\%
+  \item DINOv2 は全体として境界分割に優れるが、鏡面ハイライト部分ではスロット混同が依然として発生する
+  \item 鏡面反射像がスロット割り当てエントロピーを局所的に増大させる要因として観察された
 \end{itemize}
 \vspace{3mm}
 
-%%% §6
+%%% sec6
 \sechead{6. エントロピー分析（300シーン）}
 \begin{center}
   \includegraphics[width=\linewidth]{figures/uncertainty_showcase.png}
 \end{center}
-\figcap{図4: スロット割当エントロピー（低=確信、高=曖昧）}
+\figcap{図4: スロット割当エントロピー（上段: High Entropy〔不確実〕、下段: Low Entropy〔確信〕）}
 \begin{itemize}
   \item 金属面の映り込み領域でエントロピーが局所的に増大
   \item DINOv2 は高エントロピー領域でも正しい割当を維持
@@ -164,7 +224,7 @@ scene 008 & 混合 & 54.4\% \\
 \end{itemize}
 \vspace{3mm}
 
-%%% §7
+%%% sec7
 \sechead{7. 時系列追跡（40シーン×24フレーム）}
 \begin{center}
   \includegraphics[width=\linewidth]{figures/temporal_scene000.png}
@@ -177,7 +237,7 @@ scene 008 & 混合 & 54.4\% \\
 \end{itemize}
 \vspace{3mm}
 
-%%% §8
+%%% sec8
 \sechead{8. まとめと今後の課題}
 \begin{itemize}
   \item DINOv2 が鏡面シーンで DINOv1・CLIP を一貫して上回ることを定量的に確認
@@ -198,6 +258,26 @@ scene 008 & 混合 & 54.4\% \\
   完全な再現実験には独自学習が必要。
 }}
 
+\end{minipage}
+
+\vspace{4mm}
+\colorbox{secblue}{\parbox{\linewidth}{\color{white}\Huge\textbf{参考文献}}}\vspace{2mm}
+\fontsize{18}{24}\selectfont
+\begin{minipage}[t]{0.487\linewidth}
+\begin{itemize}[leftmargin=1.5em, itemsep=1pt, topsep=0pt]
+  \item Locatello et al.: Object-Centric Learning with Slot Attention. \textit{NeurIPS} 2020.
+  \item Kipf et al.: Conditional Object-Centric Learning from Video. \textit{ICLR} 2022.
+  \item Seitzer et al.: Bridging the Gap to Real-World Object-Centric Learning (DINOSAUR). \textit{ICLR} 2023.
+  \item Zadaianchuk et al.: Object-Centric Learning for Real-World Videos (VideoSAUR). \textit{NeurIPS} 2023.
+\end{itemize}
+\end{minipage}%
+\hfill%
+\begin{minipage}[t]{0.487\linewidth}
+\begin{itemize}[leftmargin=1.5em, itemsep=1pt, topsep=0pt]
+  \item Oquab et al.: DINOv2: Learning Robust Visual Features without Supervision. \textit{TMLR} 2024.
+  \item Greff et al.: Kubric: A Scalable Dataset Generator (MOVi). \textit{CVPR} 2022.
+  \item L\"{u}ddecke \& Ecker: Characterizing Vision Backbones for Dense Prediction. \textit{TMLR} 2025.
+\end{itemize}
 \end{minipage}
 
 \end{document}

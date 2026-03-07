@@ -482,4 +482,178 @@ logs/
 
 ---
 
-*Last updated: 2026-02-15 20:30*
+*Last updated: 2026-03-07 (Final)*
+
+---
+
+## 2026年3月: Phase 3 — 大規模評価・論文・ポスター完成
+
+**ハードウェア**: Core Ultra 285K + RTX 5090 (32GB) + 128GB RAM, WSL Ubuntu
+**データセット**: MOVi-A 300サンプル (60→300に拡大: metal 20 + mixed 40 → metal 20 + mixed 280)
+
+---
+
+### 2026-03-01 (Day 1): 材質ラベル修正 & 300サンプル再評価
+
+**実施内容**:
+- データセットを60→300サンプルに拡大
+- 材質ラベル (metal / mixed) の修正・再確認
+- 300サンプルでの基礎評価
+
+---
+
+### 2026-03-01 (Day 2): 統計的検証
+
+**実施内容**:
+- Material ARI (金属 vs 混合) の統計的有意性検定
+- bootstrap confidence interval による検証
+- 統計的アーティファクトの修正
+
+---
+
+### 2026-03-01 (Day 3): 300サンプル再学習
+
+**実施内容**:
+- DINOv2 を300サンプルで再学習、60サンプルモデルと比較
+- Train-test overlap 分析、材質比率検証
+- 教育用ノートブック (§1-§13 全セル実行)
+
+---
+
+### 2026-03-02~04 (Day 4): 3バックボーン比較 & 失敗解析
+
+**実施内容**:
+- 解像度実験 (448 vs 224)
+- K=5 ボトルネック診断
+- K=11 での DINOv2 / DINOv1 / CLIP 3バックボーン比較
+- DINOv1 / CLIP の失敗モード解析
+
+**結果**: DINOv2が全設定で圧倒的に優位。DINOv1は背景分離不安定、CLIPはテクスチャ境界を無視しスロット崩壊。
+
+---
+
+### 2026-03-05 (Day 5): 論文v1 & スロット可視化
+
+**実施内容**:
+- 第2報論文 (paper.tex, 9ページ) 初稿完成
+- ポスター初稿作成
+- スロット可視化図 (paper_dinov2_k11_slots.png) 生成
+- 付録図追加、未公開自己引用 [Sakaguchi 26a] 削除
+
+---
+
+### 2026-03-06~07 (Day 6-7): K sweep / τ sweep / エントロピー / 時系列
+
+**実施内容 (Day 6)**:
+- **K sweep**: K ∈ {3,5,7,9,11,13} × 3バックボーン = 18モデル学習 (300サンプル)
+- **τ sweep**: τ ∈ {0.02 ~ 0.3} グリッドサーチ
+- アーキテクチャ図 (generate_architecture_fig.py) 作成
+
+**結果 (K sweep)**:
+| Backbone | K=3 | K=5 | K=7 | K=9 | K=11 | K=13 |
+|----------|-----|-----|-----|-----|------|------|
+| DINOv2 FG-ARI | 28.4 | 41.2 | 47.6 | **52.1** | 51.8 | 50.3 |
+| DINOv1 FG-ARI | 12.1 | 18.4 | 22.3 | 24.1 | 23.8 | 23.2 |
+| CLIP FG-ARI | 8.3 | 11.2 | 13.4 | 14.6 | 14.1 | 13.8 |
+
+**主要知見**:
+- K=9 が全バックボーンで最適 (Goldilocks 特性)
+- DINOv2 が DINOv1 を約2倍、CLIP を約3.5倍上回る
+- バックボーン間ギャップは K によらず一貫
+
+**実施内容 (Day 7)**:
+- **エントロピー分析**: 300シーン全体でスロット割り当てエントロピーマップ算出
+- **時系列追跡**: 40シーン×24フレームでスロットID対応追跡
+- 448px τ sweep 完了、K=9 + τ=0.07 の相互作用確認
+- 論文 (paper.tex) 最終版完成 (9ページ、参考文献8件)
+
+**エントロピー分析の知見**:
+- 金属面映り込み領域でエントロピーが局所的に増大
+- DINOv2 は高エントロピー領域でも正しい割当を維持
+- 物体数が少ないシーン (余剰スロット多) でエントロピー高 (p < 10^-4)
+
+**時系列追跡の知見**:
+- DINOv2 スロットは10フレーム以上にわたり物体IDを保持
+- 鏡面ハイライト移動時に一時的なID交換が発生
+
+---
+
+### 2026-03-07: ポスター作成 & 反復修正 (Revision 1-9)
+
+**A1ポスター (594mm × 841mm)** を `poster.tex` で作成。9回の反復修正を実施。
+
+**最終ポスター構成**:
+- **左カラム**: §1背景と目的、§2手法と実験設定 (TikZ 2行アーキテクチャ図)、§3定量評価Kスイープ (minipage[t]+vspace{0pt}並列)、§4 DINOv2高FG-ARIの要因
+- **右カラム**: §5定性評価スロット可視化、§6エントロピー分析、§7時系列追跡、§8まとめと今後の課題
+- **全幅フッタ**: 参考文献7件 (2カラム配置)
+
+**主な修正履歴**:
+1. Rev 1: RQ→課題設定、グラフ→表、フォント拡大
+2. Rev 2: LARGE見出し、K/τ表、3バックボーン比較図追加
+3. Rev 3: 空白ページ修正、新タイトル、Huge見出し
+4. Rev 4: 副題課題設定化、300サンプル表記修正、τ sweep節削除
+5. Rev 5: TikZ 2行アーキテクチャ図、overconfident表現修正
+6. Rev 6: §5移動、表削除、uncertainty_showcase.png ラベル除去 (PIL crop)
+7. Rev 7: TikZ図を generate_architecture_fig.py 準拠に再構築
+8. Rev 8: §5を右カラムに移動 (左カラムオーバーフロー対策)
+9. Rev 9: 参考文献7件追加 (全幅フッタ、18pt、2カラム)
+10. Rev 10: §3表+箇条書きの minipage[t]+vspace{0pt} による上端揃え、§5全幅図化
+
+**技術的教訓 (LaTeX)**:
+- jarticle + A1 での空白ページ防止: `\setlength\topskip{0pt}` + `\enlargethispage{200mm}`
+- nested minipage の上端揃え: `[t]` + `\vspace{0pt}` が必須トリック
+- TikZ ノード内フォント: body の 22pt が継承されるため `font=\sffamily\fontsize{9}{11}` で明示指定
+- `\resizebox` 内 tabular の Overfull \hbox 警告はスケーリング前測定の偽警告、PDF に影響なし
+- 日本語 UTF-8 テキストの replace_string_in_file は不安定、heredoc 全書き換えが確実
+
+---
+
+## 最終成果物一覧
+
+### 論文・発表資料
+- `docs/paper/paper.tex` → `paper.pdf` (9ページ、jsai-acl スタイル)
+- `docs/paper/poster.tex` → `poster.pdf` (A1 1枚)
+- `docs/paper/slide.tex` → `slide.pdf` (発表スライド)
+- `docs/paper/script.md` (発表原稿)
+
+### 実験ノートブック
+- `notebooks/day2_analysis.ipynb`: 統計検証
+- `notebooks/day3_retrain_analysis.ipynb`: 300サンプル再学習
+- `notebooks/day4_failure_analysis.ipynb`: 3バックボーン失敗解析
+- `notebooks/day4_resolution_experiment.ipynb`: 解像度448 vs 224
+- `notebooks/day6_sweep_experiments.ipynb`: K sweep / τ sweep
+- `notebooks/day7_analysis_report.ipynb`: エントロピー・時系列・最終分析
+
+### 図表
+- `figures/paper_3backbone_k11_comparison.png`: 3バックボーン K=11 比較
+- `figures/paper_dinov2_k11_slots.png`: DINOv2 K=11 スロット可視化
+- `figures/uncertainty_showcase.png`: エントロピーマップ (PIL crop 済)
+- `figures/temporal_scene000.png`: 時系列24フレーム追跡
+- `figures/architecture_diagram.png`: アーキテクチャ図 (matplotlib)
+
+### コアコード
+- `src/savi_dinosaur.py`: SAVi-DINOSAUR モデル本体
+- `src/train_movi.py`: 学習スクリプト
+- `src/analyze_metal_vs_rubber.py`: 素材別分析
+- `scripts/generate_architecture_fig.py`: アーキテクチャ図生成
+
+---
+
+## 研究の総括
+
+### 主要な貢献
+1. **DINOv2 の優位性を定量的に実証**: 3バックボーン × 6 K値 × 300シーンで FG-ARI 約2倍の差
+2. **Goldilocks 特性の発見**: K=9 が最適、過少・過多でともに性能低下
+3. **エントロピー分析による崩壊メカニズムの解明**: 余剰スロットが崩壊の定量的指標
+4. **時系列追跡で映像理解への発展可能性を示唆**
+
+### 構造的限界
+- 16×16 パッチ解像度によるマスク境界にじみ (小物体で19-31%)
+- MOVi-A 合成データのみ (実世界データ未検証)
+- 公式チェックポイント不在のため独自学習が必要
+
+### 今後の展望
+- 鏡面反射に特化した損失関数・データ拡張の設計
+- DINOv1/CLIP スロット崩壊の特徴空間構造的原因の解明
+- 実物体・実シーンへのゼロショット汎化
+- 32×32 解像度でのマスク境界改善
