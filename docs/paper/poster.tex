@@ -6,12 +6,11 @@
 \usepackage{color}
 \usepackage{amsmath,amssymb}
 \usepackage{enumitem}
+\usepackage{array}
 \pagestyle{empty}
 
-%% dvipdfmx に用紙サイズを伝える
 \AtBeginDvi{\special{papersize=594mm,841mm}}
 
-%% カラー定義
 \definecolor{titleblue}{rgb}{0.10,0.22,0.46}
 \definecolor{secblue}{rgb}{0.16,0.36,0.64}
 \definecolor{accentred}{rgb}{0.78,0.10,0.10}
@@ -19,21 +18,15 @@
 \definecolor{darkgreen}{rgb}{0.0,0.50,0.0}
 \definecolor{lightyellow}{rgb}{1.0,0.97,0.85}
 
-%% セクションヘッダ（大型化）
 \newcommand{\sechead}[1]{%
   \par\noindent
-  \colorbox{secblue}{\textcolor{white}{\Large\textbf{\,#1\,}}}\\[3mm]%
+  \colorbox{secblue}{\textcolor{white}{\LARGE\textbf{\,#1\,}}}\\[3mm]%
 }
-
-%% 図キャプション
-\newcommand{\figcap}[1]{{\normalsize\textbf{#1}}}
+\newcommand{\figcap}[1]{{\large\textbf{#1}}}
 
 \begin{document}
 \fontsize{22}{30}\selectfont
 
-%% ════════════════════════════════════════════
-%% ヘッダー（フル幅）
-%% ════════════════════════════════════════════
 \noindent
 \colorbox{titleblue}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
   \centering\vspace{4mm}%
@@ -48,13 +41,8 @@
 
 \vspace{5mm}
 
-%% ════════════════════════════════════════════
-%% 本文（2段組）
-%% ════════════════════════════════════════════
 \noindent
 \begin{minipage}[t]{0.487\linewidth}
-
-%% ── 左カラム ─────────────────────────────────
 
 \sechead{1.\ 背景と目的}
 
@@ -76,13 +64,14 @@
 \sechead{2.\ 手法と実験設定}
 
 \begin{center}
-\includegraphics[width=\linewidth,keepaspectratio]{figures/architecture_diagram.png}\\[1mm]
-\figcap{図1: SAVi-DINOSAURアーキテクチャ．凍結ViT $\to$ 2層MLP(384$\to$64) $\to$ Slot Attention($K$スロット) $\to$ Decoder}
+\includegraphics[width=\linewidth,keepaspectratio]{figures/architecture_diagram.png}\\[2mm]
+\figcap{図1: SAVi-DINOSAURアーキテクチャ．\\
+凍結ViT $\to$ 2層MLP(384$\to$64) $\to$ Slot Attention($K$スロット) $\to$ Decoder}
 \end{center}
 
 \vspace{1mm}
 \begin{itemize}[noitemsep,topsep=1mm]
-\item \textbf{バックボーン}：DINOv2 ViT-S/14（自己蒸留v2），DINOv1 ViT-S/16（自己蒸留v1），CLIP ViT-B/16（画像-テキスト）
+\item \textbf{バックボーン}：DINOv2 ViT-S/14，DINOv1 ViT-S/16，CLIP ViT-B/16
 \item \textbf{データ}：MOVi-A 300シーン（金属・ゴム混在，3--10個/シーン）
 \item \textbf{$K$スイープ}：$K{=}\{3,5,7,9,11,13\}$ $\times$ 3バックボーン = 18モデル
 \item \textbf{評価}：FG-ARI（前景分離精度 $\uparrow$），per-object Material ARI
@@ -92,25 +81,38 @@
 
 \sechead{3.\ 定量評価：$K$スイープ結果 \textcolor{staryellow}{\large$\bigstar$}}
 
+\vspace{1mm}
 \begin{center}
-\includegraphics[width=\linewidth,keepaspectratio]{figures/k_sweep_fg_ari.png}\\[1mm]
-\figcap{図2: FG-ARI vs.\ スロット数$K$．DINOv2のみ単調改善，DINOv1は急崩壊，CLIPは全$K$で低水準}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{l|cccccc}
+\toprule
+ & $K{=}3$ & $K{=}5$ & $K{=}7$ & $K{=}9$ & $K{=}11$ & $K{=}13$ \\
+\midrule
+\textbf{DINOv2} & .354 & .349 & .458 & \textcolor{darkgreen}{\textbf{.651}} & .588 & .602 \\
+DINOv1         & .119 & \textbf{.403} & .316 & .176 & .107 & .292 \\
+CLIP           & .082 & .155 & .122 & .077 & .153 & .166 \\
+\bottomrule
+\end{tabular}}
 \end{center}
 
+\vspace{1mm}
 \begin{itemize}[noitemsep,topsep=1mm]
-\item \textbf{DINOv2}：K=9でFG-ARI \textcolor{darkgreen}{\textbf{0.651}}（K=3比 $+$84\%）
-\item \textbf{DINOv1}：K=5ピーク（0.403）後に急崩壊（K=11で0.107）
-\item \textbf{CLIP}：全$K$で0.08--0.17，改善なし
+\item \textbf{DINOv2}：K=9で FG-ARI \textcolor{darkgreen}{\textbf{0.651}}（K=3比 $+$84\%）
+\item \textbf{DINOv1}：K=5ピーク（0.403）後に急崩壊（K=11で 0.107）
+\item \textbf{CLIP}：全$K$で 0.08--0.17，改善なし
 \item 最適$K$はバックボーンごとに\textbf{質的に分岐} $\Rightarrow$ §4で原因分析
 \end{itemize}
 
 \vspace{3mm}
 
-\sechead{4.\ Goldilocks特性：DINOv2成功の要因 \textcolor{staryellow}{\large$\bigstar$（中心的貢献）}}
+\sechead{4.\ DINOv2 高FG-ARIの要因}
 
 \begin{center}
-\includegraphics[width=\linewidth,keepaspectratio]{figures/poster_3backbone_k11_masks.png}\\[1mm]
-\figcap{図3: K=11スロットマスク（同一シーン）．\textbf{上段 DINOv2}：物体ごとに分化 ／ \textbf{中段 DINOv1}：1スロット支配（崩壊） ／ \textbf{下段 CLIP}：全マスク均一（空間弁別なし）}
+\includegraphics[width=\linewidth,keepaspectratio]{figures/paper_3backbone_k11_comparison.png}\\[2mm]
+\figcap{図2: K=11スロットマスク比較（同一シーン）．\\
+\textbf{上段 DINOv2}：各スロットが物体・背景に対応 ／\\
+\textbf{中段 DINOv1}：1スロットが支配的（スロット崩壊） ／\\
+\textbf{下段 CLIP}：全マスクがほぼ均一（空間弁別なし）}
 \end{center}
 
 \vspace{1mm}
@@ -120,33 +122,41 @@ $\Rightarrow$ 空間多様性・情報コンパクト性・特徴スケールの
 
 \vspace{2mm}
 \begin{itemize}[noitemsep,topsep=1mm]
-\item \textbf{CLIP失敗}：空間均一（cos=0.92）$\to$ 投影で悪化（0.99）$\to$ 自明解に収束
-\item \textbf{DINOv1失敗}：PCA 45次元が64次元スロットに収まらず$\to$ 1スロット支配
-\item \textbf{DINOv2成功}：PCA 20次元にコンパクト$\to$ 全11スロット分化$\to$ FG-ARI 0.651
+\item \textbf{CLIP失敗}：空間均一（cos=0.92）$\to$ 投影でさらに悪化（0.99）$\to$ 自明解に収束
+\item \textbf{DINOv1失敗}：PCA 45次元が64次元スロットに収まらず $\to$ 1スロット支配
+\item \textbf{DINOv2成功}：PCA 20次元にコンパクト $\to$ 全11スロット分化 $\to$ FG-ARI 0.651
 \end{itemize}
 
 \end{minipage}%
 \hfill%
 \begin{minipage}[t]{0.487\linewidth}
 
-%% ── 右カラム ─────────────────────────────────
-
 \sechead{5.\ 定性評価：スロット可視化}
 
+\vspace{1mm}
 \begin{center}
-\includegraphics[width=\linewidth,keepaspectratio]{figures/poster_k5_vs_k11.png}\\[1mm]
-\figcap{図4: DINOv2 K=5 vs K=11のスロットマスク比較．K=5は全スロット均一（物体未分離）$\to$ K=11は物体・背景ごとに分化達成}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lcc}
+\toprule
+ & \textbf{DINOv2\ \ K=5} & \textbf{DINOv2\ \ K=11} \\
+\midrule
+FG-ARI & 0.349 & \textcolor{darkgreen}{\textbf{0.588}} \\
+活性スロット & 均一・未分離 & \textcolor{darkgreen}{全11スロット分化} \\
+\bottomrule
+\end{tabular}}
 \end{center}
 
+\vspace{2mm}
 \begin{center}
-\includegraphics[width=\linewidth,keepaspectratio]{figures/poster_dinov2_k11_masks.png}\\[1mm]
-\figcap{図5: DINOv2 K=11の複数シーン可視化（金属・ゴム混在）．物体数が異なるシーンでも一貫したスロット分化}
+\includegraphics[width=\linewidth,keepaspectratio]{figures/paper_dinov2_k11_slots.png}\\[2mm]
+\figcap{図3: DINOv2 K=11の3シーン可視化（金属・ゴム混在）．\\
+各行：入力画像 ／ スロットセグメンテーション ／ 上位スロットheatmap}
 \end{center}
 
 \vspace{1mm}
 \begin{itemize}[noitemsep,topsep=1mm]
 \item \textbf{16$\times$16パッチの限界}：マスク境界がにじむ $\to$ K=11でも解消しない（ViT構造的制約）
-\item 金属/ゴムのMaterial ARI差：\textbf{p=0.12（有意でない）}\\
+\item 金属/ゴムの Material ARI差：\textbf{p=0.12（有意でない）}\\
   \hspace*{1em}$\to$ スロット数確保（K=11）で部分緩和，根本解決には\textbf{動画学習が必要}
 \end{itemize}
 
@@ -154,9 +164,17 @@ $\Rightarrow$ 空間多様性・情報コンパクト性・特徴スケールの
 
 \sechead{6.\ $K$・$\tau$探索の概要}
 
+\vspace{1mm}
 \begin{center}
-\includegraphics[width=\linewidth,keepaspectratio]{figures/tau_sweep_fg_ari.png}\\[1mm]
-\figcap{図6: FG-ARI vs.\ $\tau$（DINOv2 K=11）．448px $\times$ $\tau$=0.3が全条件最良（\textbf{FG-ARI 0.696}）}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{l|ccccc}
+\toprule
+ & $\tau{=}0.1$ & $\tau{=}0.3$ & $\tau{=}0.5$ & $\tau{=}0.7$ & $\tau{=}1.0$ \\
+\midrule
+224px & .292 & .575 & .577 & \textbf{.616} & .476 \\
+\textbf{448px} & .183 & \textcolor{darkgreen}{\textbf{.696}} & .475 & .462 & .557 \\
+\bottomrule
+\end{tabular}}
 \end{center}
 
 \begin{itemize}[noitemsep,topsep=1mm]
@@ -169,8 +187,9 @@ $\Rightarrow$ 空間多様性・情報コンパクト性・特徴スケールの
 \sechead{7.\ マスク不確実性（エントロピー）分析}
 
 \begin{center}
-\includegraphics[width=\linewidth,keepaspectratio]{figures/uncertainty_showcase.png}\\[1mm]
-\figcap{図7: per-pixelエントロピーマップ（黄=高不確実性）．物体境界で競合が集中 $\Rightarrow$ 物理的境界と一致}
+\includegraphics[width=\linewidth,keepaspectratio]{figures/uncertainty_showcase.png}\\[2mm]
+\figcap{図4: per-pixelエントロピーマップ（黄=高不確実性）．\\
+物体境界で競合が集中 $\Rightarrow$ 物理的境界と一致}
 \end{center}
 
 \begin{itemize}[noitemsep,topsep=1mm]
@@ -185,8 +204,9 @@ $\Rightarrow$ 空間多様性・情報コンパクト性・特徴スケールの
 \sechead{8.\ 時系列追跡の予備実験（今後への橋渡し）}
 
 \begin{center}
-\includegraphics[width=\linewidth,keepaspectratio]{figures/temporal_scene000.png}\\[1mm]
-\figcap{図8: Scene 000（IoU=0.494，最良シーン）の時系列セグメンテーション推移．前半で追跡維持，後半でスロット入替り発生}
+\includegraphics[width=\linewidth,keepaspectratio]{figures/temporal_scene000.png}\\[2mm]
+\figcap{図5: Scene 000（IoU=0.494，最良シーン）の時系列セグメンテーション推移．\\
+前半フレームで追跡維持，後半でスロット入替り発生}
 \end{center}
 
 \begin{itemize}[noitemsep,topsep=1mm]
