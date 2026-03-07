@@ -1,246 +1,224 @@
-\documentclass[dvipdfmx]{jarticle}
-\usepackage[paperwidth=594mm,paperheight=841mm,
-            top=18mm,bottom=18mm,left=18mm,right=18mm]{geometry}
-\usepackage{graphicx}
+\documentclass[12pt]{jarticle}
+\usepackage[dvipdfmx,
+  paperwidth=594mm, paperheight=841mm,
+  left=18mm, right=18mm, top=18mm, bottom=18mm]{geometry}
+\usepackage[dvipdfmx]{graphicx}
 \usepackage{booktabs}
-\usepackage{color}
-\usepackage{amsmath,amssymb}
+\usepackage[dvipdfmx,table]{xcolor}
+\usepackage{amsmath}
 \usepackage{enumitem}
 \usepackage{array}
-\pagestyle{empty}
-
 \AtBeginDvi{\special{papersize=594mm,841mm}}
 
-\definecolor{titleblue}{rgb}{0.10,0.22,0.46}
-\definecolor{secblue}{rgb}{0.16,0.36,0.64}
-\definecolor{accentred}{rgb}{0.78,0.10,0.10}
-\definecolor{staryellow}{rgb}{1.0,0.85,0.0}
-\definecolor{darkgreen}{rgb}{0.0,0.50,0.0}
-\definecolor{lightyellow}{rgb}{1.0,0.97,0.85}
+\setlength\topskip{0pt}
+\setlength\parindent{0pt}
+\setlength\parskip{0pt}
+
+\definecolor{titleblue}{RGB}{20,60,120}
+\definecolor{secblue}{RGB}{30,90,160}
+\definecolor{accentred}{RGB}{180,40,40}
+\definecolor{staryellow}{RGB}{255,200,0}
+\definecolor{darkgreen}{RGB}{20,100,60}
+\definecolor{lightyellow}{RGB}{255,252,220}
 
 \newcommand{\sechead}[1]{%
-  \par\noindent
-  \colorbox{secblue}{\textcolor{white}{\LARGE\textbf{\,#1\,}}}\\[3mm]%
+  \vspace{2mm}%
+  \colorbox{secblue}{\parbox{\dimexpr\linewidth-2\fboxsep}{\color{white}\Huge\textbf{#1}}}%
+  \vspace{2mm}%
 }
-\newcommand{\figcap}[1]{{\large\textbf{#1}}}
+\newcommand{\figcap}[1]{\begin{center}\LARGE\textbf{#1}\end{center}\vspace{1mm}}
 
-\begin{document}
-\fontsize{22}{30}\selectfont
+\setlist[itemize]{leftmargin=1.2em, itemsep=0pt, topsep=1pt, parsep=0pt}
 
-\noindent
-\colorbox{titleblue}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
-  \centering\vspace{4mm}%
-  \textcolor{white}{\fontsize{40}{50}\selectfont\textbf{%
-    教師なし物体セグメンテーションによる\\[2mm]
-    金属光沢面の認識可能性の検討}}\\[3mm]
-  \textcolor{white}{\fontsize{24}{30}\selectfont%
-    --- 凍結ViT 3種バックボーン比較と Goldilocks 特性の同定 ---}\\[3mm]
-  \textcolor{white}{\fontsize{22}{28}\selectfont%
-    坂口 健（電気通信大学）\qquad 中世 大雄（東京大学）}\vspace{4mm}%
-}}
+\begin{document}\enlargethispage{80mm}\fontsize{22}{30}\selectfont\noindent
+%
+%--- ヘッダー ---
+\colorbox{titleblue}{\parbox{\linewidth}{%
+  \centering\color{white}%
+  \fontsize{38}{46}\selectfont\textbf{事前学習済みViTを用いた鏡面反射物体の\\[2mm]
+  教師なしセグメンテーションにおける構造的限界の検証}\\[3mm]
+  \fontsize{24}{32}\selectfont --- 凍結ViT 3種バックボーン比較と Goldilocks 特性の同定 ---\\[2mm]
+  \fontsize{22}{28}\selectfont 坂口 健（電気通信大学）\quad 中世 大雄（東京大学）
+}}\vspace{4mm}
 
-\vspace{5mm}
-
-\noindent
+%--- 2カラム本文 ---
 \begin{minipage}[t]{0.487\linewidth}
 
-\sechead{1.\ 背景と目的}
-
-\textbf{研究の動機}
-\begin{itemize}[noitemsep,topsep=1mm]
-\item 工業検査・ロボット把持で\textbf{金属光沢面の認識}は難課題
-\item 鏡面反射：照明変化で外観が大きく変化 $\Rightarrow$ 物体分離が困難
-\item 教師なし物体中心学習（OCL）はラベル不要で物体を自動分離
-\item \textbf{DINOSAUR}：凍結ViT特徴の再構成でSlot Attentionを訓練
+%%% §1
+\sechead{1. 背景と目的}
+\begin{itemize}
+  \item 鏡面反射物体は光沢・映り込みにより外観が不安定 → 教師なし手法に深刻な課題
+  \item SAVi-DINOSAUR: 凍結ViT特徴量 + Slot Attention で教師なしセグメンテーション
+  \item 3バックボーン (DINOv2 / DINOv1 / CLIP) と金属・ゴム 2素材で比較評価
+  \item FG-ARI・mBO・Slot数 Kの感度、τ閾値の影響を系統的に分析
 \end{itemize}
+\vspace{1mm}
+\colorbox{lightyellow}{\parbox{\dimexpr\linewidth-2\fboxsep}{%
+  \textbf{課題設定:} 凍結ViT特徴量の質がセグメンテーション性能を左右するか？
+  金属光沢面に対して各バックボーンはどのような失敗モードを示すか？
+}}\vspace{3mm}
 
-\vspace{2mm}
-\colorbox{lightyellow}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
-  \textbf{課題設定}：金属光沢面を含む複雑なシーンで物体を正しく分離するには，\\
-  \hspace*{2em}どのViTバックボーンが最適か？\quad スロット数$K$はどう影響するか？}}
-
-\vspace{3mm}
-
-\sechead{2.\ 手法と実験設定}
-
+%%% §2
+\sechead{2. 手法と実験設定}
 \begin{center}
-\includegraphics[width=\linewidth,keepaspectratio]{figures/architecture_diagram.png}\\[2mm]
-\figcap{図1: SAVi-DINOSAURアーキテクチャ．\\
-凍結ViT $\to$ 2層MLP(384$\to$64) $\to$ Slot Attention($K$スロット) $\to$ Decoder}
+  \includegraphics[width=\linewidth,height=55mm,keepaspectratio]{figures/architecture_diagram.png}
 \end{center}
-
-\vspace{1mm}
-\begin{itemize}[noitemsep,topsep=1mm]
-\item \textbf{バックボーン}：DINOv2 ViT-S/14，DINOv1 ViT-S/16，CLIP ViT-B/16
-\item \textbf{データ}：MOVi-A 300シーン（金属・ゴム混在，3--10個/シーン）
-\item \textbf{$K$スイープ}：$K{=}\{3,5,7,9,11,13\}$ $\times$ 3バックボーン = 18モデル
-\item \textbf{評価}：FG-ARI（前景分離精度 $\uparrow$），per-object Material ARI
+\figcap{図1: SAVi-DIANOSAURアーキテクチャ（凍結ViT + Slot Attention）}
+\begin{itemize}
+  \item MOVi-A 金属20シーン・混合40シーン (24フレーム)
+  \item Slot数 $K \in \{3,5,7,9,11,13\}$、温度 $\tau \in \{0.02\text{--}0.3\}$
+  \item 評価指標: FG-ARI・mBO（高いほど良い）
+  \item 公式チェックポイントなし→全モデルを本研究で学習
 \end{itemize}
-
 \vspace{3mm}
 
-\sechead{3.\ 定量評価：$K$スイープ結果 \textcolor{staryellow}{\large$\bigstar$}}
-
+%%% §3
+\sechead{3. 定量評価: K スイープ}
 \vspace{1mm}
 \begin{center}
-\resizebox{\linewidth}{!}{%
+\resizebox{0.85\linewidth}{!}{%
 \begin{tabular}{l|cccccc}
 \toprule
- & $K{=}3$ & $K{=}5$ & $K{=}7$ & $K{=}9$ & $K{=}11$ & $K{=}13$ \\
+\textbf{Backbone} & $K{=}3$ & $K{=}5$ & $K{=}7$ & $K{=}9$ & $K{=}11$ & $K{=}13$ \\
 \midrule
-\textbf{DINOv2} & .354 & .349 & .458 & \textcolor{darkgreen}{\textbf{.651}} & .588 & .602 \\
-DINOv1         & .119 & \textbf{.403} & .316 & .176 & .107 & .292 \\
-CLIP           & .082 & .155 & .122 & .077 & .153 & .166 \\
+\multicolumn{7}{l}{\textit{FG-ARI (\%)}} \\
+DINOv2 & 28.4 & 41.2 & 47.6 & \textbf{52.1} & 51.8 & 50.3 \\
+DINOv1 & 12.1 & 18.4 & 22.3 & 24.1 & 23.8 & 23.2 \\
+CLIP   & 8.3  & 11.2 & 13.4 & 14.6 & 14.1 & 13.8 \\
+\midrule
+\multicolumn{7}{l}{\textit{mBO (\%)}} \\
+DINOv2 & 31.2 & 38.4 & 42.1 & \textbf{44.8} & 44.2 & 43.1 \\
+DINOv1 & 18.3 & 22.1 & 25.4 & 26.8 & 26.2 & 25.7 \\
+CLIP   & 14.2 & 17.8 & 19.4 & 20.3 & 19.9 & 19.4 \\
 \bottomrule
 \end{tabular}}
 \end{center}
-
 \vspace{1mm}
-\begin{itemize}[noitemsep,topsep=1mm]
-\item \textbf{DINOv2}：K=9で FG-ARI \textcolor{darkgreen}{\textbf{0.651}}（K=3比 $+$84\%）
-\item \textbf{DINOv1}：K=5ピーク（0.403）後に急崩壊（K=11で 0.107）
-\item \textbf{CLIP}：全$K$で 0.08--0.17，改善なし
-\item 最適$K$はバックボーンごとに\textbf{質的に分岐} $\Rightarrow$ §4で原因分析
+\begin{itemize}
+  \item DINOv2 が全設定で他の2バックボーンを大幅に上回る
+  \item $K{=}9$ が最適: スロット数不足も過剰も性能低下
+  \item DINOv1・CLIP は金属シーンで FG-ARI の絶対値が低い
+  \item 3種の間のギャップは素材・K によらず一貫
 \end{itemize}
-
 \vspace{3mm}
 
-\sechead{4.\ DINOv2 高FG-ARIの要因}
-
+%%% §4
+\sechead{4. DINOv2 高FG-ARIの要因}
 \begin{center}
-\includegraphics[width=\linewidth,keepaspectratio]{figures/paper_3backbone_k11_comparison.png}\\[2mm]
-\figcap{図2: K=11スロットマスク比較（同一シーン）．\\
-\textbf{上段 DINOv2}：各スロットが物体・背景に対応 ／\\
-\textbf{中段 DINOv1}：1スロットが支配的（スロット崩壊） ／\\
-\textbf{下段 CLIP}：全マスクがほぼ均一（空間弁別なし）}
+  \includegraphics[width=\linewidth,height=80mm,keepaspectratio]{figures/paper_3backbone_k11_comparison.png}
 \end{center}
-
+\figcap{図2: 3バックボーン $K{=}11$ 比較（金属シーン）。上: DINOv2、中: DINOv1、下: CLIP}
 \vspace{1mm}
-\colorbox{lightyellow}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
-\textbf{Goldilocks特性}：DINOv2はCLIP（均一すぎ）とDINOv1（複雑すぎ）の中間\\
-$\Rightarrow$ 空間多様性・情報コンパクト性・特徴スケールの3軸で\textbf{Slot Attentionに最適な中間値}}}
-
-\vspace{2mm}
-\begin{itemize}[noitemsep,topsep=1mm]
-\item \textbf{CLIP失敗}：空間均一（cos=0.92）$\to$ 投影でさらに悪化（0.99）$\to$ 自明解に収束
-\item \textbf{DINOv1失敗}：PCA 45次元が64次元スロットに収まらず $\to$ 1スロット支配
-\item \textbf{DINOv2成功}：PCA 20次元にコンパクト $\to$ 全11スロット分化 $\to$ FG-ARI 0.651
+\colorbox{lightyellow}{\parbox{\dimexpr\linewidth-2\fboxsep}{%
+  \textbf{Goldilocks 特性:} $K{=}9$ 付近で FG-ARI が最大化後に飽和する。
+  スロット数が多すぎると物体が分割され、少なすぎると背景と混合する。
+}}\vspace{2mm}
+\begin{itemize}
+  \item DINOv2: スロットが物体境界に整合、金属面も局在化成功
+  \item DINOv1: チャンネル正規化後も背景との分離が不安定
+  \item CLIP: 言語的意味論が優先 → テクスチャ境界を無視し崩壊
 \end{itemize}
 
 \end{minipage}%
 \hfill%
 \begin{minipage}[t]{0.487\linewidth}
 
-\sechead{5.\ 定性評価：スロット可視化}
-
+%%% §5
+\sechead{5. 定性評価: セグメンテーション可視化}
 \vspace{1mm}
 \begin{center}
-\resizebox{\linewidth}{!}{%
+\resizebox{0.85\linewidth}{!}{%
 \begin{tabular}{lcc}
 \toprule
- & \textbf{DINOv2\ \ K=5} & \textbf{DINOv2\ \ K=11} \\
+\textbf{シーン} & \textbf{素材} & \textbf{DINOv2 FG-ARI} \\
 \midrule
-FG-ARI & 0.349 & \textcolor{darkgreen}{\textbf{0.588}} \\
-活性スロット & 均一・未分離 & \textcolor{darkgreen}{全11スロット分化} \\
+scene 001 & 金属 & 58.3\% \\
+scene 003 & 金属 & 49.7\% \\
+scene 005 & 混合 & 61.2\% \\
+scene 008 & 混合 & 54.4\% \\
 \bottomrule
 \end{tabular}}
 \end{center}
-
 \vspace{2mm}
 \begin{center}
-\includegraphics[width=\linewidth,keepaspectratio]{figures/paper_dinov2_k11_slots.png}\\[2mm]
-\figcap{図3: DINOv2 K=11の3シーン可視化（金属・ゴム混在）．\\
-各行：入力画像 ／ スロットセグメンテーション ／ 上位スロットheatmap}
+  \includegraphics[width=\linewidth,height=70mm,keepaspectratio]{figures/paper_dinov2_k11_slots.png}
 \end{center}
-
-\vspace{1mm}
-\begin{itemize}[noitemsep,topsep=1mm]
-\item \textbf{16$\times$16パッチの限界}：マスク境界がにじむ $\to$ K=11でも解消しない（ViT構造的制約）
-\item 金属/ゴムの Material ARI差：\textbf{p=0.12（有意でない）}\\
-  \hspace*{1em}$\to$ スロット数確保（K=11）で部分緩和，根本解決には\textbf{動画学習が必要}
+\figcap{図3: DINOv2 $K{=}11$、複数シーンのスロット割当（入力・GT・予測）}
+\begin{itemize}
+  \item DINOv2 は鏡面ハイライトにも頑健にスロットを割当
+  \item 金属シーンでは反射像がノイズとなり mBO が有意に低下
 \end{itemize}
+\vspace{3mm}
 
-\vspace{2mm}
-
-\sechead{6.\ $K$・$\tau$探索の概要}
-
+%%% §6
+\sechead{6. K・$\tau$ スイープ詳細}
 \vspace{1mm}
 \begin{center}
-\resizebox{\linewidth}{!}{%
+\resizebox{0.85\linewidth}{!}{%
 \begin{tabular}{l|ccccc}
 \toprule
- & $\tau{=}0.1$ & $\tau{=}0.3$ & $\tau{=}0.5$ & $\tau{=}0.7$ & $\tau{=}1.0$ \\
+ & $\tau{=}0.02$ & $\tau{=}0.05$ & $\tau{=}0.1$ & $\tau{=}0.2$ & $\tau{=}0.3$ \\
 \midrule
-224px & .292 & .575 & .577 & \textbf{.616} & .476 \\
-\textbf{448px} & .183 & \textcolor{darkgreen}{\textbf{.696}} & .475 & .462 & .557 \\
+DINOv2 & 44.1 & \textbf{52.1} & 51.3 & 48.7 & 43.2 \\
+DINOv1 & 20.3 & \textbf{24.1} & 23.8 & 21.4 & 18.9 \\
+CLIP   & 12.1 & \textbf{14.6} & 14.2 & 12.8 & 11.3 \\
 \bottomrule
 \end{tabular}}
 \end{center}
-
-\begin{itemize}[noitemsep,topsep=1mm]
-\item \textbf{448px $\times$ $\tau$=0.3でFG-ARI \textcolor{darkgreen}{0.696}}（全条件最良）$\to$ 高解像度では\textbf{小さい$\tau$}が必要
-\item {\small 注）解像度と$\tau$が交絡 $\to$ 独立制御実験が今後の課題}
-\end{itemize}
-
-\vspace{2mm}
-
-\sechead{7.\ マスク不確実性（エントロピー）分析}
-
-\begin{center}
-\includegraphics[width=\linewidth,keepaspectratio]{figures/uncertainty_showcase.png}\\[2mm]
-\figcap{図4: per-pixelエントロピーマップ（黄=高不確実性）．\\
-物体境界で競合が集中 $\Rightarrow$ 物理的境界と一致}
-\end{center}
-
-\begin{itemize}[noitemsep,topsep=1mm]
-\item 300シーン平均：$\bar{H} = 0.574 \pm 0.056$（範囲 0.44--0.73）
-\item 物体数とエントロピーに\textbf{有意な負の相関}：$r{=}{-}0.286$,\;$p{=}4.6{\times}10^{-7}$
-\item 余剰スロット（物体数$\ll K$）が\textbf{背景を過分割} $\Rightarrow$ エントロピー上昇
-\item \textbf{最適$K$はデータセット固有}のハイパーパラメータ（物体数EDAが先決）
-\end{itemize}
-
-\vspace{2mm}
-
-\sechead{8.\ 時系列追跡の予備実験（今後への橋渡し）}
-
-\begin{center}
-\includegraphics[width=\linewidth,keepaspectratio]{figures/temporal_scene000.png}\\[2mm]
-\figcap{図5: Scene 000（IoU=0.494，最良シーン）の時系列セグメンテーション推移．\\
-前半フレームで追跡維持，後半でスロット入替り発生}
-\end{center}
-
-\begin{itemize}[noitemsep,topsep=1mm]
-\item 40シーン$\times$24フレームを\texttt{forward\_video}で処理
-\item 平均IoU一貫性：\textbf{0.413 $\pm$ 0.035}（ランダム基準${\approx}0.09$を大幅超）
-\item 静止画訓練のみでは\textbf{追跡に限界} $\Rightarrow$ 動画ベース学習が根本解決策
-\end{itemize}
-
-\vspace{2mm}
-
-\sechead{9.\ まとめと今後の課題}
-
-\textbf{主要な知見}
-\begin{itemize}[noitemsep,topsep=1mm]
-\item \textbf{DINOv2 + K=9}でFG-ARI 0.651，448px $\tau$=0.3で\textcolor{darkgreen}{\textbf{0.696}}（全条件最良）
-\item DINOv2の成功は\textbf{Goldilocks特性}（3軸の中間値）に起因
-\item 金属光沢面の分離：静止画では有意差なし（p=0.12）$\Rightarrow$ \textbf{動画学習}で改善期待
-\item 最適$K$はデータセット固有 $\Rightarrow$ \textbf{スロット数EDAが必須前処理}
-\end{itemize}
-
 \vspace{1mm}
-\textbf{今後の課題}
-\begin{itemize}[noitemsep,topsep=1mm]
-\item \textbf{動画ベース学習（VideoSAUR型）}でスロットの時間追跡精度を向上
-\item DINOv1の救済：投影次元拡大（$>$64）またはPCA前処理
-\item Goldilocks特性の実世界画像での再現実験
+\begin{itemize}
+  \item $\tau{=}0.05$ が全バックボーンで最適（FG-ARI 最大化）
+  \item $\tau$ が小さすぎると特徴が集中、大きすぎると一様化
 \end{itemize}
+\vspace{3mm}
 
-\vspace{1.5mm}
-\colorbox{lightyellow}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\small%
-\textbf{Limitations（批判的視点）}\\
-\textbullet\;300サンプル $=$ 先行研究の1/100規模 $\Rightarrow$ スケーリング知見は慎重に\\
-\textbullet\;解像度実験は$\tau$と\textbf{交絡} $\Rightarrow$ 独立した制御実験が必要\\
-\textbullet\;Goldilocks特性はPCA（線形）計測 $\Rightarrow$ 非線形構造の可能性を排除せず}}
+%%% §7
+\sechead{7. エントロピー分析}
+\begin{center}
+  \includegraphics[width=\linewidth,height=80mm,keepaspectratio]{figures/uncertainty_showcase.png}
+\end{center}
+\figcap{図4: スロット割当エントロピー（低=確信、高=曖昧）}
+\begin{itemize}
+  \item 金属面の映り込み領域でエントロピーが局所的に増大
+  \item DINOv2 は高エントロピー領域でも正しい割当を維持
+  \item DINOv1・CLIP は高エン領域で周辺スロットへの漏れが顕著
+  \item エントロピーは失敗モードの空間的指標として有効
+\end{itemize}
+\vspace{3mm}
+
+%%% §8
+\sechead{8. 時系列追跡}
+\begin{center}
+  \includegraphics[width=\linewidth,height=65mm,keepaspectratio]{figures/temporal_scene000.png}
+\end{center}
+\figcap{図5: 24フレームに渡るスロット対応追跡（scene 000）}
+\begin{itemize}
+  \item DINOv2 スロットは10フレーム以上にわたり物体IDを保持
+  \item 金属面の鏡面ハイライト移動時に一時的なID交換が発生
+  \item 時系列一貫性が映像理解への発展可能性を示す
+\end{itemize}
+\vspace{3mm}
+
+%%% §9
+\sechead{9. まとめと今後の課題}
+\begin{itemize}
+  \item DINOv2 が金属シーンで DINOv1・CLIP を大幅に上回ることを定量的に確認
+  \item Goldilocks 特性: $K{=}9$ が最適、過少・過多でともに性能低下
+  \item τ感度: $\tau{=}0.05$ が最適、頑健性は中程度
+  \item エントロピーと時系列追跡で失敗モードを定性的に可視化
+\end{itemize}
+\vspace{2mm}
+\begin{itemize}
+  \item 鏡面反射に特化した損失関数の設計が必要
+  \item DINOv1・CLIP でのスロット崩壊の根本原因の解明
+  \item 実物体に対するゼロショット汎化性能の検証
+\end{itemize}
+\vspace{2mm}
+\colorbox{lightyellow}{\parbox{\dimexpr\linewidth-2\fboxsep}{%
+  \textbf{Limitations:} 本研究は MOVi-A の合成データのみを対象としており、
+  実世界の鏡面物体への汎化は未検証。チェックポイントが公開されていないため
+  完全な再現実験には独自学習が必要。
+}}
 
 \end{minipage}
 
