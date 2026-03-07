@@ -135,17 +135,59 @@ $\Rightarrow$ 材質：Metal ARI $>$ Rubber（DINOv2 K=11で0.491 vs 0.446，$p{
 \vspace{2mm}
 
 %% ============================================================
-%% Row 3: まとめ
+%% Row 3: 時系列追跡の予備実験
 %% ============================================================
 \noindent
-\sechead{4.\ まとめと工学的教訓}
+\sechead{4.\ 時系列追跡の予備実験（今後の課題）}
+\vspace{1mm}
+
+\noindent
+\begin{minipage}[t]{0.55\linewidth}
+\centering
+\includegraphics[width=\linewidth,height=34mm,keepaspectratio]{figures/temporal_scene000.png}\\[-0.5mm]
+{\tiny\textbf{図2}: 最良シーン（IoU=0.494）の時系列セグメンテーション推移 --- 前半フレームで追跡が維持されるが後半でスロット入替りが発生}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.43\linewidth}
+\scriptsize
+\textbf{静止画訓練→動画追跡の検証}
+
+\vspace{1mm}
+\centering
+\begin{tabular}{lc}
+\toprule
+{\scriptsize 指標} & {\scriptsize 値} \\
+\midrule
+{\scriptsize 平均IoU一貫性} & $0.413 \pm 0.035$ \\
+{\scriptsize 最良シーン} & 0.494 \\
+{\scriptsize 最悪シーン} & 0.356 \\
+{\scriptsize ランダム基準} & $\approx 0.09$ \\
+\bottomrule
+\end{tabular}
+
+\vspace{1mm}
+\raggedright
+\fbox{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\tiny
+\textcolor{accentred}{\textbf{課題}}: 静止画訓練のみでは時間的一貫性IoU$\approx$0.41に限界\\
+\textcolor{darkgreen}{\textbf{展望}}: VideoSAUR型の動画損失導入でスロット追跡性能の大幅改善が期待
+}}
+\end{minipage}
+
+\vspace{2mm}
+
+%% ============================================================
+%% Row 4: まとめ
+%% ============================================================
+\noindent
+\sechead{5.\ まとめと工学的教訓}
 \vspace{1mm}
 
 \noindent{\scriptsize
 \textbf{(1)}\,DINOv2は``Goldilocks特性''によりSlot Attentionと最適な相性 $\to$ K=11でFG-ARI\,\textbf{0.470}\hfill
 \textbf{(2)}\,スロット数はバックボーン特性に強く依存（DINOv2のみK=11が有効）\\[0.5mm]
 \textbf{(3)}\,工学的知見：2層MLP射影，ch-norm損失（DINOv1），勾配detach（CLIP），温度$\tau{=}0.5$\hfill
-\textbf{(4)}\,16$\times$16パッチ解像度の壁 $\to$ SAM等との統合が今後の課題
+\textbf{(4)}\,最適$K$はデータセット固有（物体数分布に依存）\\[0.5mm]
+\textbf{(5)}\,静止画訓練のみでは時系列追跡に限界（IoU$\approx$0.41）$\to$ 動画学習が今後の課題
 }
 
 \end{document}
